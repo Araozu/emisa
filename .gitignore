@@ -21,5 +21,6 @@ pnpm-debug.log*
 *.sln
 *.sw?
 out
+lib
 
-
+/build/
