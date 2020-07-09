@@ -1,3 +1,5 @@
+const servidor = "http://localhost:8080/Emisa"
+
 const app = new Vue({
     el: "#app",
     template: `
@@ -30,7 +32,13 @@ const app = new Vue({
                         </tr>
                         </thead>
                         <tbody>
-
+                        <template v-for="fila in filas">
+                            <tr>
+                                <td>{{ fila.AstCod }}</td>
+                                <td>{{ fila.AstNom }}</td>
+                                <td>{{ fila.AstTip }}</td>
+                            </tr>
+                        </template>
                         </tbody>
                     </table>
                 </div>
@@ -43,7 +51,7 @@ const app = new Vue({
                         <button>Modificar</button>
                     </div>
                     <div>
-                        <button>Elimitar</button>
+                        <button>Eliminar</button>
                     </div>
                     <div>
                         <button>Cancelar</button>
@@ -61,6 +69,7 @@ const app = new Vue({
                         <button @click="cerrarVentana">Salir</button>
                     </div>
                 </div>
+                <div class="mensaje-error" :style="estilosMensajeError">{{ mensajeError }}</div>
             </div>
         </template>
         <template v-else>
@@ -70,15 +79,43 @@ const app = new Vue({
     `,
     data() {
         return {
-            astCod: -1,
-            astNom: "",
-            astTip: -1,
-            conexionActiva: true
+            astCod: undefined,
+            astNom: undefined,
+            astTip: undefined,
+            conexionActiva: true,
+            filas: [],
+            mensajeError: "_"
+        }
+    },
+    computed: {
+        estilosMensajeError() {
+            return {
+                opacity: this.mensajeError === "_"? "0": 1
+            }
         }
     },
     methods: {
         cerrarVentana() {
             this.conexionActiva = false;
+        },
+        async cargarFilas() {
+            const url = `${servidor}/api/gzz_astro/`;
+            try {
+                const peticion = await fetch(url);
+                if (peticion.ok) {
+                    this.filas = await peticion.json();
+                    this.mensajeError = "_";
+                } else {
+                    console.error(peticion);
+                    this.mensajeError = "Ocurrió un error al recuperar los datos del servidor.";
+                }
+            } catch (e) {
+                console.error(e);
+                this.mensajeError = "Ocurrió un error al recuperar los datos del servidor.";
+            }
         }
+    },
+    created() {
+        this.cargarFilas();
     }
 });

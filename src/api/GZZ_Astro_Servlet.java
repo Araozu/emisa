@@ -31,8 +31,6 @@ public class GZZ_Astro_Servlet extends HttpServlet {
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (!conn.isClosed()) {
-                System.out.println("Conectado a la base de datos.");
-
                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM gzz_astros;");
 
                 ResultSet rs = stmt.executeQuery();
@@ -40,6 +38,7 @@ public class GZZ_Astro_Servlet extends HttpServlet {
 
                 response.setStatus(200);
                 response.addHeader("Content-Type", "application/json");
+                response.addHeader("Access-Control-Allow-Origin", "*");
                 writer.print("[");
                 boolean esPrimer = true;
                 while (rs.next()) {

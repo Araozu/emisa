@@ -40,12 +40,26 @@
 
 .botones div button {
     cursor: pointer;
+    display: inline-block;
+    width: 6rem;
+    height: 1.75rem;
 }
 
 .tabla_datos {
     display: table;
     width: 100%;
+}
 
+.tabla_datos thead tr {
+    background-color: #eeeeee;
+}
+
+.tabla_datos tbody tr {
+    cursor: pointer;
+}
+
+.tabla_datos tbody tr:hover {
+    background-color: #e9e9e9;
 }
 
 .tabla_datos, .tabla_datos td {
@@ -55,5 +69,12 @@
 
 .tabla_datos td {
     padding: 0.5rem;
+}
+
+.mensaje-error {
+    text-align: center;
+    color: #f44336;
+    font-weight: bold;
+    padding-top: 1rem;
 }
 
