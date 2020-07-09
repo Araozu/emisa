@@ -45,25 +45,25 @@ const app = new Vue({
                 <br>
                 <div class="botones">
                     <div>
-                        <button>Adicionar</button>
+                        <button :class="'boton-' + estadoBotones.adicionar" @click="iniciarAdicion">Adicionar</button>
                     </div>
                     <div>
-                        <button>Modificar</button>
+                        <button :class="'boton-' + estadoBotones.modificar">Modificar</button>
                     </div>
                     <div>
-                        <button>Eliminar</button>
+                        <button :class="'boton-' + estadoBotones.eliminar">Eliminar</button>
                     </div>
                     <div>
-                        <button>Cancelar</button>
+                        <button @click="limpiarBotones">Cancelar</button>
                     </div>
                     <div>
-                        <button>Inactivar</button>
+                        <button :class="'boton-' + estadoBotones.inactivar">Inactivar</button>
                     </div>
                     <div>
-                        <button>Reactivar</button>
+                        <button :class="'boton-' + estadoBotones.reactivar">Reactivar</button>
                     </div>
                     <div>
-                        <button>Actualizar</button>
+                        <button :class="'boton-' + estadoBotones.actualizar">Actualizar</button>
                     </div>
                     <div>
                         <button @click="cerrarVentana">Salir</button>
@@ -84,7 +84,15 @@ const app = new Vue({
             astTip: undefined,
             conexionActiva: true,
             filas: [],
-            mensajeError: "_"
+            mensajeError: "_",
+            estadoBotones: {
+                adicionar: "disponible",
+                modificar: "disponible",
+                eliminar: "disponible",
+                inactivar: "disponible",
+                reactivar: "disponible",
+                actualizar: "disponible"
+            }
         }
     },
     computed: {
@@ -95,6 +103,25 @@ const app = new Vue({
         }
     },
     methods: {
+        limpiarBotones() {
+            this.estadoBotones.adicionar = "disponible";
+            this.estadoBotones.modificar = "disponible";
+            this.estadoBotones.eliminar = "disponible";
+            this.estadoBotones.inactivar = "disponible";
+            this.estadoBotones.reactivar = "disponible";
+            this.estadoBotones.actualizar = "disponible";
+        },
+        iniciarAdicion() {
+            this.astCod = undefined;
+            this.astNom = undefined;
+            this.astTip = undefined;
+            this.estadoBotones.adicionar = "activo";
+            this.estadoBotones.modificar = "inactivo";
+            this.estadoBotones.eliminar = "inactivo";
+            this.estadoBotones.inactivar = "inactivo";
+            this.estadoBotones.reactivar = "inactivo";
+            this.estadoBotones.actualizar = "disponible";
+        },
         cerrarVentana() {
             this.conexionActiva = false;
         },

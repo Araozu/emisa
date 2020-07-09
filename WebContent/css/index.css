@@ -43,6 +43,22 @@
     display: inline-block;
     width: 6rem;
     height: 1.75rem;
+    border: solid 1px #151515;
+}
+
+.botones div button:focus {
+    outline: none;
+}
+
+.boton-activo {
+    border: solid 2px #009688 !important;
+}
+
+.boton-inactivo {
+    border: solid 1px #EEEEEE !important;
+    background-color: #EEEEEE !important;
+    color: #757575 !important;
+    cursor: not-allowed !important;
 }
 
 .tabla_datos {
