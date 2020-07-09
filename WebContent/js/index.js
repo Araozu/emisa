@@ -1,4 +1,6 @@
-<template>
+const app = new Vue({
+    el: "#app",
+    template: `
     <div>
         <template v-if="conexionActiva">
             <div class="gzz_astro">
@@ -65,91 +67,18 @@
             <p>Conexión terminada. Puedes cerrar esta pestaña.</p>
         </template>
     </div>
-</template>
-
-<script>
-    import { ref } from "vue";
-
-    export default {
-        setup () {
-            const astCod = ref(-1);
-            const astNom = ref("");
-            const astTip = ref(-1);
-            const conexionActiva = ref(true);
-
-            const cerrarVentana = () => conexionActiva.value = false;
-
-            return {
-                astCod,
-                astNom,
-                astTip,
-                conexionActiva,
-                cerrarVentana
-            }
+    `,
+    data() {
+        return {
+            astCod: -1,
+            astNom: "",
+            astTip: -1,
+            conexionActiva: true
+        }
+    },
+    methods: {
+        cerrarVentana() {
+            this.conexionActiva = false;
         }
     }
-
-</script>
-
-<style scoped>
-
-    .gzz_astro {
-        border: solid 1px black;
-        margin: 1rem;
-        padding: 1rem;
-        border-radius: var(--tamanio-border-radius);
-        max-width: 50rem;
-    }
-
-    .estr_form {
-        display: grid;
-        grid-template-columns: 20% auto;
-        grid-column-gap: 1rem;
-        grid-row-gap: 1rem;
-    }
-
-    .estr_form * {
-        display: inline-block;
-    }
-
-    .registro, .tabla {
-        border: solid 1px black;
-        padding: 1rem;
-        border-radius: var(--tamanio-border-radius);
-    }
-
-    .registro h3, .tabla h3 {
-        margin: 0 0 2rem 0;
-    }
-
-    .botones {
-        display: grid;
-        grid-template-columns: auto auto auto auto;
-        grid-row-gap: 1rem;
-    }
-
-    .botones div {
-        text-align: center;
-    }
-
-    .botones div button {
-        cursor: pointer;
-    }
-
-    .tabla_datos {
-        display: table;
-        width: 100%;
-
-    }
-
-    .tabla_datos, .tabla_datos td {
-        border: 1px solid #151515;
-        border-collapse: collapse;
-    }
-
-    .tabla_datos td {
-        padding: 0.5rem;
-    }
-
-
-</style>
+});
