@@ -63,7 +63,7 @@ const app = new Vue({
                         <button :class="'boton-' + estadoBotones.reactivar">Reactivar</button>
                     </div>
                     <div>
-                        <button :class="'boton-' + estadoBotones.actualizar">Actualizar</button>
+                        <button :class="'boton-' + estadoBotones.actualizar" @click="actualizar">Actualizar</button>
                     </div>
                     <div>
                         <button @click="cerrarVentana">Salir</button>
@@ -92,7 +92,8 @@ const app = new Vue({
                 inactivar: "disponible",
                 reactivar: "disponible",
                 actualizar: "disponible"
-            }
+            },
+            operacionActual: ""
         }
     },
     computed: {
@@ -111,16 +112,64 @@ const app = new Vue({
             this.estadoBotones.reactivar = "disponible";
             this.estadoBotones.actualizar = "disponible";
         },
-        iniciarAdicion() {
+        limpiarFormulario() {
             this.astCod = undefined;
             this.astNom = undefined;
             this.astTip = undefined;
-            this.estadoBotones.adicionar = "activo";
-            this.estadoBotones.modificar = "inactivo";
-            this.estadoBotones.eliminar = "inactivo";
-            this.estadoBotones.inactivar = "inactivo";
-            this.estadoBotones.reactivar = "inactivo";
-            this.estadoBotones.actualizar = "disponible";
+        },
+        marcarBotones(activos, inactivos) {
+            this.limpiarBotones();
+            for (const a of activos) {
+                this.estadoBotones[a] = "activo";
+            }
+            for (const i of inactivos) {
+                this.estadoBotones[i] = "inactivo";
+            }
+        },
+        iniciarAdicion() {
+            this.limpiarFormulario();
+            this.marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"]);
+            this.operacionActual = "adicionar";
+        },
+        async adicionar() {
+            const AstCod = parseInt(this.astCod);
+            const AstNom = this.astNom.toString();
+            const AstTip = parseInt(this.astCod) === 1? 1: 0;
+            const datos = { AstCod, AstNom, AstTip };
+
+            const url = `${servidor}/api/gzz_astro/`;
+            try {
+                const peticion = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                if (peticion.ok) {
+                    this.mensajeError = "_";
+                    this.filas.push(datos);
+                    this.limpiarFormulario();
+                    this.limpiarBotones();
+                } else {
+                    console.error(peticion);
+                    this.mensajeError = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+                }
+
+            } catch (e) {
+                console.error(e);
+                this.mensajeError = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+            }
+
+        },
+        actualizar() {
+            switch (this.operacionActual) {
+                case "adicionar": {
+                    this.adicionar();
+                    break;
+                }
+            }
         },
         cerrarVentana() {
             this.conexionActiva = false;
