@@ -87,6 +87,10 @@
     padding: 0.5rem;
 }
 
+.tabla_datos .fila-seleccionada {
+    border: solid 2px red;
+}
+
 .mensaje-error {
     text-align: center;
     color: #f44336;

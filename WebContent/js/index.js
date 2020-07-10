@@ -32,8 +32,10 @@ const app = new Vue({
                         </tr>
                         </thead>
                         <tbody>
-                        <template v-for="fila in filas">
-                            <tr>
+                        <template v-for="(fila, pos) in filas">
+                            <tr :class="pos === posFilaSeleccionada? 'fila-seleccionada': ''" 
+                                @click="seleccionarFila(pos)"
+                            >
                                 <td>{{ fila.AstCod }}</td>
                                 <td>{{ fila.AstNom }}</td>
                                 <td>{{ fila.AstTip }}</td>
@@ -54,7 +56,7 @@ const app = new Vue({
                         <button :class="'boton-' + estadoBotones.eliminar">Eliminar</button>
                     </div>
                     <div>
-                        <button @click="limpiarBotones">Cancelar</button>
+                        <button @click="limpiar(true)">Cancelar</button>
                     </div>
                     <div>
                         <button :class="'boton-' + estadoBotones.inactivar">Inactivar</button>
@@ -93,7 +95,8 @@ const app = new Vue({
                 reactivar: "disponible",
                 actualizar: "disponible"
             },
-            operacionActual: ""
+            operacionActual: "",
+            posFilaSeleccionada: -1
         }
     },
     computed: {
@@ -104,13 +107,16 @@ const app = new Vue({
         }
     },
     methods: {
-        limpiarBotones() {
+        limpiar(limpiarFila = false) {
             this.estadoBotones.adicionar = "disponible";
             this.estadoBotones.modificar = "disponible";
             this.estadoBotones.eliminar = "disponible";
             this.estadoBotones.inactivar = "disponible";
             this.estadoBotones.reactivar = "disponible";
             this.estadoBotones.actualizar = "disponible";
+            if (limpiarFila) {
+                this.posFilaSeleccionada = -1;
+            }
         },
         limpiarFormulario() {
             this.astCod = undefined;
@@ -118,7 +124,7 @@ const app = new Vue({
             this.astTip = undefined;
         },
         marcarBotones(activos, inactivos) {
-            this.limpiarBotones();
+            this.limpiar();
             for (const a of activos) {
                 this.estadoBotones[a] = "activo";
             }
@@ -151,7 +157,7 @@ const app = new Vue({
                     this.mensajeError = "_";
                     this.filas.push(datos);
                     this.limpiarFormulario();
-                    this.limpiarBotones();
+                    this.limpiar();
                 } else {
                     console.error(peticion);
                     this.mensajeError = "Error al adicionar los datos a la tabla GZZ_ASTROS";
@@ -189,6 +195,10 @@ const app = new Vue({
                 console.error(e);
                 this.mensajeError = "Ocurrió un error al recuperar los datos del servidor.";
             }
+        },
+        seleccionarFila(posFila) {
+            this.marcarBotones([], ["adicionar"]);
+            this.posFilaSeleccionada = posFila;
         }
     },
     created() {
