@@ -88,7 +88,7 @@
 }
 
 .tabla_datos .fila-seleccionada {
-    border: solid 2px red;
+    border: solid 2px #009688;
 }
 
 .mensaje-error {

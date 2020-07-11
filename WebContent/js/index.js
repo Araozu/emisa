@@ -17,6 +17,11 @@ const app = new Vue({
                             <input id="AstNom" type="text" name="AstNom" v-model="astNom">
                             <label for="AstTip">AstTip</label>
                             <input id="AstTip" type="number" name="AstTip" v-model="astTip">
+                            <label for="AstEstReg">AstEstReg</label>
+                            <select name="AstEstReg" id="AstEstReg" v-model="astEstReg">
+                                <option value="A" selected>A</option>
+                                <option value="*">I</option>
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -29,6 +34,7 @@ const app = new Vue({
                             <td>AstCod</td>
                             <td>AstNom</td>
                             <td>AstTip</td>
+                            <td>AstEstReg</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -39,6 +45,7 @@ const app = new Vue({
                                 <td>{{ fila.AstCod }}</td>
                                 <td>{{ fila.AstNom }}</td>
                                 <td>{{ fila.AstTip }}</td>
+                                <td>{{ fila.AstEstReg }}</td>
                             </tr>
                         </template>
                         </tbody>
@@ -84,6 +91,7 @@ const app = new Vue({
             astCod: undefined,
             astNom: undefined,
             astTip: undefined,
+            astEstReg: "A",
             conexionActiva: true,
             filas: [],
             mensajeError: "_",
@@ -122,6 +130,7 @@ const app = new Vue({
             this.astCod = undefined;
             this.astNom = undefined;
             this.astTip = undefined;
+            this.astEstReg = "A";
         },
         marcarBotones(activos, inactivos) {
             this.limpiar();
@@ -133,29 +142,50 @@ const app = new Vue({
             }
         },
         iniciarAdicion() {
+            if (this.estadoBotones.adicionar !== "disponible") return;
             this.limpiarFormulario();
             this.marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"]);
             this.operacionActual = "adicionar";
+        },
+        mostrarMensaje(msg, ms) {
+            this.mensajeError = msg;
+            const vm = this;
+            setTimeout(() => {
+                vm.mensajeError = "_";
+            }, ms);
         },
         async adicionar() {
             const AstCod = parseInt(this.astCod);
             const AstNom = this.astNom.toString();
             const AstTip = parseInt(this.astCod) === 1? 1: 0;
-            const datos = { AstCod, AstNom, AstTip };
+            const AstEstReg = this.astEstReg.toString();
+
+            const datos = { AstCod, AstNom, AstTip, AstEstReg };
+            const body = [];
+            for (const datosKey in datos) {
+                body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
+            }
 
             const url = `${servidor}/api/gzz_astro/`;
             try {
                 const peticion = await fetch(url, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/x-www-form-urlencoded"
                     },
-                    body: JSON.stringify(datos)
+                    body: body.join("&")
                 });
 
                 if (peticion.ok) {
-                    this.mensajeError = "_";
-                    this.filas.push(datos);
+
+                    const resultado = await peticion.json();
+                    if (resultado.count > 0) {
+                        this.mensajeError = "_";
+                        this.filas.push(datos);
+                    } else {
+                        this.mostrarMensaje("No se insertó ningún dato.", 5000);
+                    }
+
                     this.limpiarFormulario();
                     this.limpiar();
                 } else {
