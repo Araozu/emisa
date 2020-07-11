@@ -24,6 +24,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
     static Connection conn = null;
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
@@ -32,6 +33,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
             if (conn.isClosed()) {
                 System.err.println("Error al iniciar conexion a la base de datos.");
+                response.addHeader("Access-Control-Allow-Origin", "*");
                 response.setStatus(500);
                 return;
             }
@@ -44,6 +46,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
             response.setStatus(200);
             response.addHeader("Content-Type", "application/json");
             response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
             writer.print("[");
             boolean esPrimer = true;
             while (rs.next()) {
@@ -60,6 +63,8 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Error al enviar los datos al cliente.");
             e.printStackTrace();
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
             response.setStatus(500);
         } finally {
             try {
@@ -74,6 +79,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             new Driver();
@@ -81,6 +87,8 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
             if (conn.isClosed()) {
                 System.err.println("Error al iniciar conexion a la base de datos.");
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
                 response.setStatus(500);
                 return;
             }
@@ -104,12 +112,15 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
             response.setStatus(200);
             response.addHeader("Content-Type", "application/json");
             response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
             
             response.getWriter().print("{\"count\":" + count + "}");
 
         } catch (Exception e) {
             System.err.println("Error al enviar los datos al cliente.");
             e.printStackTrace();
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
             response.setStatus(500);
         } finally {
             try {
@@ -124,8 +135,85 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            new Driver();
+            conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
+            System.out.println(request.getRequestURL());
+
+            if (conn.isClosed()) {
+                System.err.println("Error al iniciar conexion a la base de datos.");
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+                response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+                response.setStatus(500);
+                return;
+            }
+
+            try {
+                String operacion = request.getParameter("operacion");
+
+                if (operacion.equals("Modificar")) {
+                    int astCod = Integer.parseInt(request.getParameter("AstCod"));
+                    String astNom = request.getParameter("AstNom");
+                    int astTip = Integer.parseInt(request.getParameter("AstTip"));
+
+                    PreparedStatement statement = conn.prepareStatement(
+                        "UPDATE gzz_astros SET AstNom=?, AstTip=? WHERE AstCod=?;"
+                    );
+
+                    statement.setString(1, astNom);
+                    statement.setInt(2, astTip);
+                    statement.setInt(3, astCod);
+
+                    int count = statement.executeUpdate();
+
+                    response.setStatus(200);
+                    response.addHeader("Content-Type", "application/json");
+                    response.addHeader("Access-Control-Allow-Origin", "*");
+                    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+                    response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+
+                    response.getWriter().print("{\"count\":" + count + "}");
+
+                } else {
+                    response.addHeader("Access-Control-Allow-Origin", "*");
+                    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+                    response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+                    response.setStatus(400);
+                }
+            } catch (NullPointerException e) {
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+                response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+                response.setStatus(400);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al enviar los datos al cliente.");
+            e.printStackTrace();
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+            response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+            response.setStatus(500);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.err.println("Error al terminar la conexión con la base de datos.");
+                e.printStackTrace();
+            }
+        }
     }
 
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doOptions(req, resp);
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
+    }
 }

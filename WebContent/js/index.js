@@ -236,20 +236,21 @@ new Vue({
             const AstNom = this.astNom.toString();
             const AstTip = this.astTip;
 
-            const datos = { Op: "Modificar", AstCod, AstNom, AstTip };
+            const datos = { operacion: "Modificar", AstCod, AstNom, AstTip };
             const body = [];
             for (const datosKey in datos) {
                 body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
             }
 
-            const url = `${servidor}/api/gzz_astro/`;
+            const url = `${servidor}/api/gzz_astro/?${body.join("&")}`;
             try {
                 const peticion = await fetch(url, {
                     method: "PUT",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: body.join("&")
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Access-Control-Request-Method": "PUT",
+                        "Access-Control-Request-Headers": "Content-Type"
+                    }
                 });
 
                 if (peticion.ok) {
@@ -269,7 +270,7 @@ new Vue({
                     }
 
                     this.limpiarFormulario();
-                    this.limpiar();
+                    this.limpiar(true);
                 } else {
                     console.error(peticion);
                     this.mensajeError = "Error al modificar la fila de la tabla GZZ_ASTROS";
