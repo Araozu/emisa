@@ -1,6 +1,6 @@
 const servidor = "http://localhost:8080/Emisa"
 
-const app = new Vue({
+new Vue({
     el: "#app",
     template: `
     <div>
@@ -12,13 +12,18 @@ const app = new Vue({
                     <form @submit.prevent>
                         <div class="estr_form">
                             <label for="AstCod">AstCod</label>
-                            <input id="AstCod" type="number" name="AstCod" v-model="astCod">
+                            <input id="AstCod" type="number" name="AstCod" v-model="astCod" 
+                                :disabled="inputsDesactivados.astCod || operacionActual === ''">
                             <label for="AstNom">AstNom</label>
-                            <input id="AstNom" type="text" name="AstNom" v-model="astNom">
+                            <input id="AstNom" type="text" name="AstNom" v-model="astNom" 
+                                :disabled="inputsDesactivados.astNom || operacionActual === ''">
                             <label for="AstTip">AstTip</label>
-                            <input id="AstTip" type="number" name="AstTip" v-model="astTip">
+                            <input id="AstTip" type="number" name="AstTip" v-model="astTip" 
+                                :disabled="inputsDesactivados.astTip || operacionActual === ''">
                             <label for="AstEstReg">AstEstReg</label>
-                            <select name="AstEstReg" id="AstEstReg" v-model="astEstReg">
+                            <select name="AstEstReg" id="AstEstReg" v-model="astEstReg" 
+                                :disabled="inputsDesactivados.astEstReg || operacionActual === ''"
+                            >
                                 <option value="A" selected>A</option>
                                 <option value="*">I</option>
                             </select>
@@ -57,7 +62,7 @@ const app = new Vue({
                         <button :class="'boton-' + estadoBotones.adicionar" @click="iniciarAdicion">Adicionar</button>
                     </div>
                     <div>
-                        <button :class="'boton-' + estadoBotones.modificar">Modificar</button>
+                        <button :class="'boton-' + estadoBotones.modificar" @click="iniciarModificacion">Modificar</button>
                     </div>
                     <div>
                         <button :class="'boton-' + estadoBotones.eliminar">Eliminar</button>
@@ -92,6 +97,12 @@ const app = new Vue({
             astNom: undefined,
             astTip: undefined,
             astEstReg: "A",
+            inputsDesactivados: {
+                astCod: false,
+                astNom: false,
+                astTip: false,
+                astEstReg: false
+            },
             conexionActiva: true,
             filas: [],
             mensajeError: "_",
@@ -122,6 +133,12 @@ const app = new Vue({
             this.estadoBotones.inactivar = "disponible";
             this.estadoBotones.reactivar = "disponible";
             this.estadoBotones.actualizar = "disponible";
+            this.inputsDesactivados.astCod = false;
+            this.inputsDesactivados.astEstReg = false;
+            this.inputsDesactivados.astEstNom = false;
+            this.inputsDesactivados.astTip = false;
+            this.operacionActual = "";
+            this.limpiarFormulario();
             if (limpiarFila) {
                 this.posFilaSeleccionada = -1;
             }
@@ -147,6 +164,21 @@ const app = new Vue({
             this.marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"]);
             this.operacionActual = "adicionar";
         },
+        iniciarModificacion() {
+            if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
+            this.limpiarFormulario();
+            this.marcarBotones(["modificar"], ["adicionar", "eliminar", "inactivar", "reactivar"]);
+            this.operacionActual = "modificar";
+
+            const numFila = this.posFilaSeleccionada;
+            const fila = this.filas[numFila];
+            this.astCod = fila.AstCod;
+            this.astNom = fila.AstNom;
+            this.astTip = fila.AstTip;
+            this.astEstReg = fila.AstEstReg;
+            this.inputsDesactivados.astCod = true;
+            this.inputsDesactivados.astEstReg = true;
+        },
         mostrarMensaje(msg, ms) {
             this.mensajeError = msg;
             const vm = this;
@@ -157,7 +189,7 @@ const app = new Vue({
         async adicionar() {
             const AstCod = parseInt(this.astCod);
             const AstNom = this.astNom.toString();
-            const AstTip = parseInt(this.astCod) === 1? 1: 0;
+            const AstTip = parseInt(this.astTip) === 1? 1: 0;
             const AstEstReg = this.astEstReg.toString();
 
             const datos = { AstCod, AstNom, AstTip, AstEstReg };
@@ -199,10 +231,64 @@ const app = new Vue({
             }
 
         },
+        async modificar() {
+            const AstCod = this.astCod;
+            const AstNom = this.astNom.toString();
+            const AstTip = this.astTip;
+
+            const datos = { Op: "Modificar", AstCod, AstNom, AstTip };
+            const body = [];
+            for (const datosKey in datos) {
+                body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
+            }
+
+            const url = `${servidor}/api/gzz_astro/`;
+            try {
+                const peticion = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: body.join("&")
+                });
+
+                if (peticion.ok) {
+                    const resultado = await peticion.json();
+                    if (resultado.count > 0) {
+                        this.mensajeError = "_";
+                        const nuevaFila = {
+                            AstCod,
+                            AstNom,
+                            AstTip,
+                            AstEstReg: this.astEstReg
+                        };
+                        const posFila = this.posFilaSeleccionada;
+                        this.filas.splice(posFila, 1, nuevaFila);
+                    } else {
+                        this.mostrarMensaje("No se modificó la fila.", 5000);
+                    }
+
+                    this.limpiarFormulario();
+                    this.limpiar();
+                } else {
+                    console.error(peticion);
+                    this.mensajeError = "Error al modificar la fila de la tabla GZZ_ASTROS";
+                }
+
+            } catch (e) {
+                console.error(e);
+                this.mensajeError = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+            }
+
+        },
         actualizar() {
             switch (this.operacionActual) {
                 case "adicionar": {
                     this.adicionar();
+                    break;
+                }
+                case "modificar": {
+                    this.modificar();
                     break;
                 }
             }
@@ -227,6 +313,7 @@ const app = new Vue({
             }
         },
         seleccionarFila(posFila) {
+            if (this.operacionActual !== "") return;
             this.marcarBotones([], ["adicionar"]);
             this.posFilaSeleccionada = posFila;
         }

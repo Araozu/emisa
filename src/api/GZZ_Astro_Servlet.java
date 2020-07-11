@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import com.mysql.jdbc.Driver;
 
-public class GZZ_Astro_Servlet extends HttpServlet {
+public final class GZZ_Astro_Servlet extends HttpServlet {
 
     final static String url = "jdbc:mysql://localhost:3306/";
     final static String dbName = "emisa";
@@ -121,6 +121,11 @@ public class GZZ_Astro_Servlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     }
 
 }
