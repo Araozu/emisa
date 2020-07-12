@@ -113,11 +113,11 @@ new Vue({
             mensajeError: "_",
             estadoBotones: {
                 adicionar: "disponible",
-                modificar: "disponible",
-                eliminar: "disponible",
-                inactivar: "disponible",
-                reactivar: "disponible",
-                actualizar: "disponible"
+                modificar: "inactivo",
+                eliminar: "inactivo",
+                inactivar: "inactivo",
+                reactivar: "inactivo",
+                actualizar: "inactivo"
             },
             operacionActual: "",
             posFilaSeleccionada: -1
@@ -133,11 +133,11 @@ new Vue({
     methods: {
         limpiar(limpiarFila = false) {
             this.estadoBotones.adicionar = "disponible";
-            this.estadoBotones.modificar = "disponible";
-            this.estadoBotones.eliminar = "disponible";
-            this.estadoBotones.inactivar = "disponible";
-            this.estadoBotones.reactivar = "disponible";
-            this.estadoBotones.actualizar = "disponible";
+            this.estadoBotones.modificar = "inactivo";
+            this.estadoBotones.eliminar = "inactivo";
+            this.estadoBotones.inactivar = "inactivo";
+            this.estadoBotones.reactivar = "inactivo";
+            this.estadoBotones.actualizar = "inactivo";
             this.inputsDesactivados.astCod = false;
             this.inputsDesactivados.astEstReg = false;
             this.inputsDesactivados.astEstNom = false;
@@ -154,13 +154,16 @@ new Vue({
             this.astTip = undefined;
             this.astEstReg = "A";
         },
-        marcarBotones(activos, inactivos) {
+        marcarBotones(activos, inactivos, disponibles = []) {
             this.limpiar();
             for (const a of activos) {
                 this.estadoBotones[a] = "activo";
             }
             for (const i of inactivos) {
                 this.estadoBotones[i] = "inactivo";
+            }
+            for (const d of disponibles) {
+                this.estadoBotones[d] = "disponible";
             }
         },
         iniciarAdicion() {
@@ -477,7 +480,8 @@ new Vue({
         },
         seleccionarFila(posFila) {
             if (this.operacionActual !== "") return;
-            this.marcarBotones([], ["adicionar"]);
+            const botonesDisponibles = ["modificar", "eliminar", "actualizar", "reactivar", "inactivar"];
+            this.marcarBotones([], ["adicionar"], botonesDisponibles);
             this.posFilaSeleccionada = posFila;
         }
     },
