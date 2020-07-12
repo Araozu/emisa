@@ -18,14 +18,19 @@ new Vue({
                             <input id="AstNom" type="text" name="AstNom" v-model="astNom" 
                                 :disabled="inputsDesactivados.astNom || operacionActual === ''">
                             <label for="AstTip">AstTip</label>
-                            <input id="AstTip" type="number" name="AstTip" v-model="astTip" 
-                                :disabled="inputsDesactivados.astTip || operacionActual === ''">
+                            <select name="AstTip" id="AstTip" v-model="astTip"
+                                :disabled="inputsDesactivados.astTip || operacionActual === ''"
+                            >
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                            </select>
                             <label for="AstEstReg">AstEstReg</label>
                             <select name="AstEstReg" id="AstEstReg" v-model="astEstReg" 
                                 :disabled="inputsDesactivados.astEstReg || operacionActual === ''"
                             >
                                 <option value="A" selected>A</option>
-                                <option value="*">I</option>
+                                <option value="I">I</option>
+                                <option value="*">*</option>
                             </select>
                         </div>
                     </form>
@@ -65,7 +70,7 @@ new Vue({
                         <button :class="'boton-' + estadoBotones.modificar" @click="iniciarModificacion">Modificar</button>
                     </div>
                     <div>
-                        <button :class="'boton-' + estadoBotones.eliminar">Eliminar</button>
+                        <button :class="'boton-' + estadoBotones.eliminar" @click="iniciarEliminar">Eliminar</button>
                     </div>
                     <div>
                         <button @click="limpiar(true)">Cancelar</button>
@@ -95,7 +100,7 @@ new Vue({
         return {
             astCod: undefined,
             astNom: undefined,
-            astTip: undefined,
+            astTip: "0",
             astEstReg: "A",
             inputsDesactivados: {
                 astCod: false,
@@ -178,6 +183,23 @@ new Vue({
             this.astEstReg = fila.AstEstReg;
             this.inputsDesactivados.astCod = true;
             this.inputsDesactivados.astEstReg = true;
+        },
+        iniciarEliminar() {
+            if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
+            this.limpiarFormulario();
+            this.marcarBotones(["eliminar"], ["adicionar", "modificar", "inactivar", "reactivar"]);
+            this.operacionActual = "eliminar";
+
+            const numFila = this.posFilaSeleccionada;
+            const fila = this.filas[numFila];
+            this.astCod = fila.AstCod;
+            this.astNom = fila.AstNom;
+            this.astTip = fila.AstTip;
+            this.astEstReg = "*";
+            this.inputsDesactivados.astCod = true;
+            this.inputsDesactivados.astEstReg = true;
+            this.inputsDesactivados.astNom = true;
+            this.inputsDesactivados.astTip = true;
         },
         mostrarMensaje(msg, ms) {
             this.mensajeError = msg;
@@ -278,9 +300,52 @@ new Vue({
 
             } catch (e) {
                 console.error(e);
-                this.mensajeError = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+                this.mensajeError = "Error al modificar la fila de la tabla GZZ_ASTROS";
             }
 
+        },
+        async eliminar() {
+            const AstCod = this.astCod;
+            const AstNom = this.astNom.toString();
+            const AstTip = this.astTip;
+            const url = `${servidor}/api/gzz_astro/?AstCod=${decodeURIComponent(AstCod)}`;
+            try {
+                const peticion = await fetch(url, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Access-Control-Request-Method": "PUT",
+                        "Access-Control-Request-Headers": "Content-Type"
+                    }
+                });
+
+                if (peticion.ok) {
+                    const resultado = await peticion.json();
+                    if (resultado.count > 0) {
+                        this.mensajeError = "_";
+                        const nuevaFila = {
+                            AstCod,
+                            AstNom,
+                            AstTip,
+                            AstEstReg: "*"
+                        };
+                        const posFila = this.posFilaSeleccionada;
+                        this.filas.splice(posFila, 1, nuevaFila);
+                    } else {
+                        this.mostrarMensaje("No se eliminó la fila.", 5000);
+                    }
+
+                    this.limpiarFormulario();
+                    this.limpiar(true);
+                } else {
+                    console.error(peticion);
+                    this.mensajeError = "Error al eliminar la fila de la tabla GZZ_ASTROS";
+                }
+
+            } catch (e) {
+                console.error(e);
+                this.mensajeError = "Error al eliminar la fila de la tabla GZZ_ASTROS";
+            }
         },
         actualizar() {
             switch (this.operacionActual) {
@@ -290,6 +355,10 @@ new Vue({
                 }
                 case "modificar": {
                     this.modificar();
+                    break;
+                }
+                case "eliminar": {
+                    this.eliminar();
                     break;
                 }
             }
