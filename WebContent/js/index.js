@@ -6,7 +6,7 @@ new Vue({
     <div>
         <template v-if="conexionActiva">
             <div class="gzz_astro">
-                <h1>GZZ_ASTRO</h1>
+                <h1>GZZ_ASTROS</h1>
                 <div class="registro">
                     <h3>Registro de Astro</h3>
                     <form @submit.prevent>
@@ -169,13 +169,13 @@ new Vue({
         iniciarAdicion() {
             if (this.estadoBotones.adicionar !== "disponible") return;
             this.limpiarFormulario();
-            this.marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"]);
+            this.marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
             this.operacionActual = "adicionar";
         },
         iniciarModificacion() {
             if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
             this.limpiarFormulario();
-            this.marcarBotones(["modificar"], ["adicionar", "eliminar", "inactivar", "reactivar"]);
+            this.marcarBotones(["modificar"], ["adicionar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
             this.operacionActual = "modificar";
 
             const numFila = this.posFilaSeleccionada;
@@ -190,7 +190,7 @@ new Vue({
         iniciarEliminar() {
             if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
             this.limpiarFormulario();
-            this.marcarBotones(["eliminar"], ["adicionar", "modificar", "inactivar", "reactivar"]);
+            this.marcarBotones(["eliminar"], ["adicionar", "modificar", "inactivar", "reactivar"], ["actualizar"]);
             this.operacionActual = "eliminar";
 
             const numFila = this.posFilaSeleccionada;
@@ -207,7 +207,7 @@ new Vue({
         iniciarInactivar() {
             if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
             this.limpiarFormulario();
-            this.marcarBotones(["inactivar"], ["adicionar", "modificar", "eliminar", "reactivar"]);
+            this.marcarBotones(["inactivar"], ["adicionar", "modificar", "eliminar", "reactivar"], ["actualizar"]);
             this.operacionActual = "inactivar";
 
             const numFila = this.posFilaSeleccionada;
@@ -224,7 +224,7 @@ new Vue({
         iniciarReactivar() {
             if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
             this.limpiarFormulario();
-            this.marcarBotones(["reactivar"], ["adicionar", "modificar", "eliminar", "inactivar"]);
+            this.marcarBotones(["reactivar"], ["adicionar", "modificar", "eliminar", "inactivar"], ["actualizar"]);
             this.operacionActual = "reactivar";
 
             const numFila = this.posFilaSeleccionada;
