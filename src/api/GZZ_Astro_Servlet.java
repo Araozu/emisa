@@ -113,7 +113,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
             res.addHeader("Content-Type", "application/json");
             res.addHeader("Access-Control-Allow-Origin", "*");
             res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            
+
             res.getWriter().print("{\"count\":" + count + "}");
 
         } catch (Exception e) {
@@ -172,7 +172,25 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
                     res.addHeader("Access-Control-Allow-Origin", "*");
                     res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
                     res.addHeader("Access-Control-Allow-Headers", "Content-Type");
+                    res.getWriter().print("{\"count\":" + count + "}");
 
+                } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
+
+                    int astCod = Integer.parseInt(req.getParameter("AstCod"));
+
+                    PreparedStatement statement = conn.prepareStatement(
+                        "UPDATE gzz_astros SET AstEstReg=? WHERE AstCod=?;"
+                    );
+                    statement.setString(1, operacion.equals("inactivar")? "I": "A");
+                    statement.setInt(2, astCod);
+
+                    int count = statement.executeUpdate();
+
+                    res.setStatus(200);
+                    res.addHeader("Content-Type", "application/json");
+                    res.addHeader("Access-Control-Allow-Origin", "*");
+                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
                     res.getWriter().print("{\"count\":" + count + "}");
 
                 } else {
