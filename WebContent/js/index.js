@@ -36,58 +36,24 @@ new Vue({
                     </form>
                 </div>
                 <br>
-                <div class="tabla">
-                    <h3>Tabla GZZ_ASTRO</h3>
-                    <table class="tabla_datos">
-                        <thead>
-                        <tr>
-                            <td>AstCod</td>
-                            <td>AstNom</td>
-                            <td>AstTip</td>
-                            <td>AstEstReg</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <template v-for="(fila, pos) in filas">
-                            <tr :class="pos === posFilaSeleccionada? 'fila-seleccionada': ''" 
-                                @click="seleccionarFila(pos)"
-                            >
-                                <td>{{ fila.AstCod }}</td>
-                                <td>{{ fila.AstNom }}</td>
-                                <td>{{ fila.AstTip }}</td>
-                                <td>{{ fila.AstEstReg }}</td>
-                            </tr>
-                        </template>
-                        </tbody>
-                    </table>
-                </div>
+                <tabla-datos 
+                    nombre="Tabla GZZ_ASTROS"
+                    :nombresColumnas="['AstCod', 'AstNom', 'AstTip', 'AstEstReg']"
+                    :filas="filas"
+                    :funAlClick="seleccionarFila"
+                    :posFilaSeleccionada="posFilaSeleccionada"/>
                 <br>
-                <div class="botones">
-                    <div>
-                        <button :class="'boton-' + estadoBotones.adicionar" @click="iniciarAdicion">Adicionar</button>
-                    </div>
-                    <div>
-                        <button :class="'boton-' + estadoBotones.modificar" @click="iniciarModificacion">Modificar</button>
-                    </div>
-                    <div>
-                        <button :class="'boton-' + estadoBotones.eliminar" @click="iniciarEliminar">Eliminar</button>
-                    </div>
-                    <div>
-                        <button @click="limpiar(true)">Cancelar</button>
-                    </div>
-                    <div>
-                        <button :class="'boton-' + estadoBotones.inactivar" @click="iniciarInactivar">Inactivar</button>
-                    </div>
-                    <div>
-                        <button :class="'boton-' + estadoBotones.reactivar" @click="iniciarReactivar">Reactivar</button>
-                    </div>
-                    <div>
-                        <button :class="'boton-' + estadoBotones.actualizar" @click="actualizar">Actualizar</button>
-                    </div>
-                    <div>
-                        <button @click="cerrarVentana">Salir</button>
-                    </div>
-                </div>
+                <grilla-botones
+                    :estadoBotones="estadoBotones"
+                    :funAdicionar="iniciarAdicion"
+                    :funModificar="iniciarModificacion"
+                    :funEliminar="iniciarEliminar"
+                    :funCancelar="limpiar"
+                    :funInactivar="iniciarInactivar"
+                    :funReactivar="iniciarReactivar"
+                    :funActualizar="actualizar"
+                    :funSalir="cerrarVentana"
+                    />
                 <div class="mensaje-error" :style="estilosMensajeError">{{ mensajeError }}</div>
             </div>
         </template>
