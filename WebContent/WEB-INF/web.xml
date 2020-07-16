@@ -6,12 +6,62 @@
 
     <servlet>
         <servlet-name>GZZ_Astro</servlet-name>
-        <servlet-class>api.GZZ_Astro_Servlet</servlet-class>
+        <servlet-class>api.referencial.GZZ_Astro_Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>GZZ_Astro</servlet-name>
         <url-pattern>/api/gzz_astro/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GZM_Mineral</servlet-name>
+        <servlet-class>api.referencial.GZM_Mineral_Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GZM_Mineral</servlet-name>
+        <url-pattern>/api/gzm_mineral/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>P8M_Centro</servlet-name>
+        <servlet-class>api.referencial.P8M_Centro_Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>P8M_Centro</servlet-name>
+        <url-pattern>/api/p8m_centro/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>R7C_Alimento</servlet-name>
+        <servlet-class>api.referencial.R7C_Alimento_Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>R7C_Alimento</servlet-name>
+        <url-pattern>/api/r7c_alimento/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>R7C_Empleo</servlet-name>
+        <servlet-class>api.referencial.R7C_Empleo_Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>R7C_Empleo</servlet-name>
+        <url-pattern>/api/r7c_empleo/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RZC_Categoria</servlet-name>
+        <servlet-class>api.referencial.RZC_Categoria_Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RZC_Categoria</servlet-name>
+        <url-pattern>/api/rzc_categoria/</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
