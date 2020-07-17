@@ -4,56 +4,56 @@ new Vue({
     el: "#app",
     template: `
     <div class="gzz_astro">
-            <h1>GZZ_ASTROS</h1>
-            <div class="registro">
-                <h3>Registro de Astro</h3>
-                <form @submit.prevent>
-                    <div class="estr_form">
-                        <label for="AstCod">AstCod</label>
-                        <input id="AstCod" type="number" name="AstCod" v-model="astCod" 
-                            :disabled="inputsDesactivados.astCod || operacionActual === ''">
-                        <label for="AstNom">AstNom</label>
-                        <input id="AstNom" type="text" name="AstNom" v-model="astNom" 
-                            :disabled="inputsDesactivados.astNom || operacionActual === ''">
-                        <label for="AstTip">AstTip</label>
-                        <select name="AstTip" id="AstTip" v-model="astTip"
-                            :disabled="inputsDesactivados.astTip || operacionActual === ''"
-                        >
-                            <option value="0" selected>0</option>
-                            <option value="1">1</option>
-                        </select>
-                        <label for="AstEstReg">AstEstReg</label>
-                        <select name="AstEstReg" id="AstEstReg" v-model="astEstReg" 
-                            :disabled="inputsDesactivados.astEstReg || operacionActual === ''"
-                        >
-                            <option value="A" selected>A</option>
-                            <option value="I">I</option>
-                            <option value="*">*</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <br>
-            <tabla-datos 
-                nombre="Tabla GZZ_ASTROS"
-                :nombresColumnas="['AstCod', 'AstNom', 'AstTip', 'AstEstReg']"
-                :filas="filas"
-                :funAlClick="seleccionarFila"
-                :posFilaSeleccionada="posFilaSeleccionada"/>
-            <br>
-            <grilla-botones
-                :estadoBotones="estadoBotones"
-                :funAdicionar="iniciarAdicion"
-                :funModificar="iniciarModificacion"
-                :funEliminar="iniciarEliminar"
-                :funCancelar="limpiar"
-                :funInactivar="iniciarInactivar"
-                :funReactivar="iniciarReactivar"
-                :funActualizar="actualizar"
-                :funSalir="cerrarVentana"
-                />
-            <div class="mensaje-error" :style="estilosMensajeError">{{ mensajeError }}</div>
+        <h1>GZZ_ASTROS</h1>
+        <div class="registro">
+            <h3>Registro de Astro</h3>
+            <form @submit.prevent>
+                <div class="estr_form">
+                    <label for="AstCod">AstCod</label>
+                    <input id="AstCod" type="number" name="AstCod" v-model="astCod" 
+                        :disabled="inputsDesactivados.astCod || operacionActual === ''">
+                    <label for="AstNom">AstNom</label>
+                    <input id="AstNom" type="text" name="AstNom" v-model="astNom" 
+                        :disabled="inputsDesactivados.astNom || operacionActual === ''">
+                    <label for="AstTip">AstTip</label>
+                    <select name="AstTip" id="AstTip" v-model="astTip"
+                        :disabled="inputsDesactivados.astTip || operacionActual === ''"
+                    >
+                        <option value="0" selected>0</option>
+                        <option value="1">1</option>
+                    </select>
+                    <label for="AstEstReg">AstEstReg</label>
+                    <select name="AstEstReg" id="AstEstReg" v-model="astEstReg" 
+                        :disabled="inputsDesactivados.astEstReg || operacionActual === ''"
+                    >
+                        <option value="A" selected>A</option>
+                        <option value="I">I</option>
+                        <option value="*">*</option>
+                    </select>
+                </div>
+            </form>
         </div>
+        <br>
+        <tabla-datos 
+            nombre="Tabla GZZ_ASTROS"
+            :nombresColumnas="['AstCod', 'AstNom', 'AstTip', 'AstEstReg']"
+            :filas="filas"
+            :funAlClick="seleccionarFila"
+            :posFilaSeleccionada="posFilaSeleccionada"/>
+        <br>
+        <grilla-botones
+            :estadoBotones="estadoBotones"
+            :funAdicionar="iniciarAdicion"
+            :funModificar="iniciarModificacion"
+            :funEliminar="iniciarEliminar"
+            :funCancelar="limpiar"
+            :funInactivar="iniciarInactivar"
+            :funReactivar="iniciarReactivar"
+            :funActualizar="actualizar"
+            :funSalir="cerrarVentana"
+            />
+        <div class="mensaje-error" :style="estilosMensajeError">{{ mensajeError }}</div>
+    </div>
     `,
     data() {
         return {

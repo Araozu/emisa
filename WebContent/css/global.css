@@ -1,8 +1,23 @@
 :root {
     --tamanio-border-radius: 2px;
+    --color-texto: #151515;
+    --color-fondo: #ffffff;
+    --color-fondo2: #e9e9e9;
+    --color-borde: #151515;
 }
+
+/* */
+:root {
+    --color-texto: #dedede;
+    --color-fondo: #151515;
+    --color-fondo2: #202020;
+    --color-borde: #454545;
+}
+/*  */
 
 body {
     font-family: "Open Sans", sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto)
 }
 

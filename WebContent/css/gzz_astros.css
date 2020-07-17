@@ -1,6 +1,6 @@
 
 .gzz_astro {
-    border: solid 1px black;
+    border: solid 1px var(--color-borde);
     margin: 1rem;
     padding: 1rem;
     border-radius: var(--tamanio-border-radius);
@@ -18,77 +18,14 @@
     display: inline-block;
 }
 
-.registro, .tabla {
-    border: solid 1px black;
+.registro {
+    border: solid 1px var(--color-borde);
     padding: 1rem;
     border-radius: var(--tamanio-border-radius);
 }
 
 .registro h3, .tabla h3 {
     margin: 0 0 2rem 0;
-}
-
-.botones {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-row-gap: 1rem;
-}
-
-.botones div {
-    text-align: center;
-}
-
-.botones div button {
-    cursor: pointer;
-    display: inline-block;
-    width: 6rem;
-    height: 1.75rem;
-    border: solid 1px #151515;
-}
-
-.botones div button:focus {
-    outline: none;
-}
-
-.boton-activo {
-    border: solid 2px #009688 !important;
-}
-
-.boton-inactivo {
-    border: solid 1px #EEEEEE !important;
-    background-color: #EEEEEE !important;
-    color: #757575 !important;
-    cursor: not-allowed !important;
-}
-
-.tabla_datos {
-    display: table;
-    width: 100%;
-}
-
-.tabla_datos thead tr {
-    background-color: #eeeeee;
-}
-
-.tabla_datos tbody tr {
-    cursor: pointer;
-}
-
-.tabla_datos tbody tr:hover {
-    background-color: #e9e9e9;
-}
-
-.tabla_datos, .tabla_datos td {
-    border: 1px solid #151515;
-    border-collapse: collapse;
-}
-
-.tabla_datos td {
-    padding: 0.5rem;
-}
-
-.tabla_datos .fila-seleccionada {
-    border: solid 2px #009688;
 }
 
 .mensaje-error {
