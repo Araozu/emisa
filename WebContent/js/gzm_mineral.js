@@ -1,9 +1,3 @@
-const servidor = "http://localhost:8080/Emisa";
-
-const ref = Vue.ref;
-const reactive = Vue.reactive;
-const computed = Vue.computed;
-
 const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
@@ -79,44 +73,10 @@ const app =  Vue.createApp({
             iniciarInactivar,
             iniciarReactivar,
             seleccionarFila,
-            generarBody,
-            realizarOperacion,
             cargarFilas,
-            enExitoModificarFila,
-            adicionar,
-            modificar,
-            eliminar,
-            in_re_activar
+            actualizar,
+            cerrarVentana
         } = usarCamposAdaptados(campos, estados, mensajeError, mostrarMensaje);
-
-        const actualizar = async () => {
-            switch (operacionActual.value) {
-                case "adicionar": {
-                    adicionar();
-                    break;
-                }
-                case "modificar": {
-                    modificar();
-                    break;
-                }
-                case "eliminar": {
-                    eliminar();
-                    break;
-                }
-                case "inactivar": {
-                    in_re_activar(true);
-                    break;
-                }
-                case "reactivar": {
-                    in_re_activar(false);
-                    break;
-                }
-            }
-        };
-
-        const cerrarVentana = () => {
-            window.location.assign("./");
-        };
 
         setTimeout(cargarFilas, 0);
 

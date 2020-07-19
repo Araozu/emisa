@@ -1,3 +1,4 @@
+const servidor = "http://localhost:8080/Emisa";
 
 const usarMensajesError = () => {
     const mensajeError = Vue.ref("_");
@@ -311,6 +312,35 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
         realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
     };
 
+    const actualizar = async () => {
+        switch (operacionActual.value) {
+            case "adicionar": {
+                adicionar();
+                break;
+            }
+            case "modificar": {
+                modificar();
+                break;
+            }
+            case "eliminar": {
+                eliminar();
+                break;
+            }
+            case "inactivar": {
+                in_re_activar(true);
+                break;
+            }
+            case "reactivar": {
+                in_re_activar(false);
+                break;
+            }
+        }
+    };
+
+    const cerrarVentana = () => {
+        window.location.assign("./");
+    };
+
     return {
         filas,
         valores,
@@ -329,13 +359,8 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
         iniciarInactivar,
         iniciarReactivar,
         seleccionarFila,
-        generarBody,
-        realizarOperacion,
         cargarFilas,
-        enExitoModificarFila,
-        adicionar,
-        modificar,
-        eliminar,
-        in_re_activar
+        actualizar,
+        cerrarVentana
     }
 };
