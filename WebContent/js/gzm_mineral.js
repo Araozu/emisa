@@ -34,12 +34,7 @@ const app =  Vue.createApp({
         <div class="mensaje-error" :style="estilosMensajeError">{{ mensajeError }}</div>
     </div>`,
     setup() {
-        const MinCod = ref(undefined);
-        const MinNom = ref(undefined);
-        const astTip = ref("0");
-        const MinEstReg = ref("A");
 
-        const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();
         const campos = [
             {
                 tipo: "number",
@@ -55,125 +50,38 @@ const app =  Vue.createApp({
                 valores: ["A", "I", "*"]
             }
         ];
+        const estados = {
+            nombreCampoEstReg: "MinEstReg",
+            estadoCamposModificar: [["astNom", "astTip"], ["astCod", "astEstReg"]],
+            estadoCamposEliminar: [[], ["astCod", "astEstReg", "astNom", "astTip"]],
+            estadoCamposInactivar: [[], ["astCod", "astEstReg", "astNom", "astTip"]],
+            estadoCamposReactivar: [[], ["astCod", "astEstReg", "astNom", "astTip"]]
+        };
+
+        const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();
         const {
             filas,
             valores,
             funActualizarValor,
             camposDesactivados,
-            cambiarEstadoCampos,
             limpiarCampos,
             limpiar,
             marcarBotones,
-            cargarFilaAInputs,
             nombresColumnas,
             operacionActual,
             posFilaSeleccionada,
-            estadoBotones
-        } = usarCamposAdaptados(campos);
-
-        // ==============================================
-        //   Operaciones especificas
-        // ==============================================
-
-        const iniciarAdicion = () => {
-            if (estadoBotones.adicionar !== "disponible") return;
-            limpiarCampos();
-            marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
-            operacionActual.value = "adicionar";
-        };
-
-        const iniciarModificacion = () => {
-            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
-            limpiarCampos();
-            marcarBotones(["modificar"], ["adicionar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
-            operacionActual.value = "modificar";
-
-            cargarFilaAInputs();
-            cambiarEstadoCampos(["astNom", "astTip"], ["astCod", "astEstReg"]);
-        };
-
-        const iniciarEliminar = () => {
-            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
-            limpiarCampos();
-            marcarBotones(["eliminar"], ["adicionar", "modificar", "inactivar", "reactivar"], ["actualizar"]);
-            operacionActual.value = "eliminar";
-
-            cargarFilaAInputs();
-            MinEstReg.value = "*";
-            cambiarEstadoCampos([], ["astCod", "astEstReg", "astNom", "astTip"]);
-        };
-
-        const iniciarInactivar = () => {
-            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
-            limpiarCampos();
-            marcarBotones(["inactivar"], ["adicionar", "modificar", "eliminar", "reactivar"], ["actualizar"]);
-            operacionActual.value = "inactivar";
-
-            cargarFilaAInputs();
-            MinEstReg.value = "I";
-            cambiarEstadoCampos([], ["astCod", "astEstReg", "astNom", "astTip"]);
-        };
-
-        const iniciarReactivar = () => {
-            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
-            limpiarCampos();
-            marcarBotones(["reactivar"], ["adicionar", "modificar", "eliminar", "inactivar"], ["actualizar"]);
-            operacionActual.value = "reactivar";
-
-            cargarFilaAInputs();
-            MinEstReg.value = "A";
-            cambiarEstadoCampos([], ["astCod", "astEstReg", "astNom", "astTip"]);
-        };
-
-        const generarBody = (datos) => {
-            const body = [];
-            for (const datosKey in datos) if (datos.hasOwnProperty(datosKey)) {
-                body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
-            }
-            return body.join("&");
-        }
-
-        const realizarOperacion = async (body, metodo, recurso, enExito, enError) => {
-            const bodyEnUrl = metodo === "GET" || metodo === "PUT" || metodo === "DELETE";
-            const url = `${servidor}/api/${recurso}/${bodyEnUrl? '?' + body: ''}`;
-            try {
-                const datos = {
-                    method: metodo,
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                }
-                if (!bodyEnUrl) datos.body = body;
-                const peticion = await fetch(url, datos);
-                if (peticion.ok) {
-                    const resultado = await peticion.json();
-                    enExito(resultado);
-                } else {
-                    enError(peticion);
-                }
-            } catch (e) {
-                enError(e);
-            }
-        };
-
-        const enExitoModificarFila = (resultado) => {
-            if (resultado.count > 0) {
-                mensajeError.value = "_";
-                const nuevaFila = {
-                    AstCod: MinCod.value,
-                    AstNom: MinNom.value.toString(),
-                    AstTip: astTip.value,
-                    AstEstReg: MinEstReg.value
-                };
-                const posFila = posFilaSeleccionada.value;
-                filas.value.splice(posFila, 1, nuevaFila);
-            } else {
-                mostrarMensaje("No se modificó la fila.", 5000);
-            }
-
-            limpiarCampos();
-            limpiar(true);
-        };
+            estadoBotones,
+            iniciarAdicion,
+            iniciarModificacion,
+            iniciarEliminar,
+            iniciarInactivar,
+            iniciarReactivar,
+            seleccionarFila,
+            generarBody,
+            realizarOperacion,
+            cargarFilas,
+            enExitoModificarFila
+        } = usarCamposAdaptados("gzm_mineral", campos, estados, mensajeError, mostrarMensaje);
 
         const adicionar = async () => {
             const AstCod = parseInt(MinCod.value);
@@ -271,36 +179,9 @@ const app =  Vue.createApp({
             window.location.assign("./");
         };
 
-        const cargarFilas = async () => {
-            const url = `${servidor}/api/gzz_astro/`;
-            try {
-                const peticion = await fetch(url);
-                if (peticion.ok) {
-                    filas.value = await peticion.json();
-                    mensajeError.value = "_";
-                } else {
-                    console.error(peticion);
-                    mensajeError.value = "Ocurrió un error al recuperar los datos del servidor.";
-                }
-            } catch (e) {
-                console.error(e);
-                mensajeError.value = "Ocurrió un error al recuperar los datos del servidor.";
-            }
-        };
-
-        const seleccionarFila = (posFila) => {
-            if (operacionActual.value !== "") return;
-            const botonesDisponibles = ["modificar", "eliminar", "actualizar", "reactivar", "inactivar"];
-            marcarBotones([], ["adicionar"], botonesDisponibles);
-            posFilaSeleccionada.value = posFila;
-        };
-
         setTimeout(cargarFilas, 0);
 
         return {
-            MinCod,
-            MinNom,
-            MinEstReg,
             camposDesactivados,
             filas,
             mensajeError,
