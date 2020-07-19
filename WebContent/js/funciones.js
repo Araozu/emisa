@@ -18,13 +18,15 @@ const usarMensajesError = () => {
     };
 };
 
-const usarCamposAdaptados = (recurso, campos, estados, mensajeError, mostrarMensaje) => {
+const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
 
     // ==============================================
     //   Declaracion de estados
     // ==============================================
 
     const {
+        recurso,
+        nombreCampoCod,
         nombreCampoEstReg,
         estadoCamposModificar,
         estadoCamposEliminar,
@@ -272,6 +274,20 @@ const usarCamposAdaptados = (recurso, campos, estados, mensajeError, mostrarMens
         realizarOperacion(body, "POST", "gzz_astro", enExito, enError);
     };
 
+    const modificar = async () => {
+        const datos = Object.assign({operacion: "Modificar"}, valores);
+        delete datos[nombreCampoEstReg];
+
+        const body = generarBody(datos);
+
+        const enError = (e) => {
+            console.error(e);
+            mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
+        }
+
+        realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
+    };
+
     return {
         filas,
         valores,
@@ -294,6 +310,7 @@ const usarCamposAdaptados = (recurso, campos, estados, mensajeError, mostrarMens
         realizarOperacion,
         cargarFilas,
         enExitoModificarFila,
-        adicionar
+        adicionar,
+        modificar
     }
 };

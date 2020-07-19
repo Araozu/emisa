@@ -51,6 +51,8 @@ const app =  Vue.createApp({
             }
         ];
         const estados = {
+            recurso: "gzm_mineral",
+            nombreCampoCod: "MinCod",
             nombreCampoEstReg: "MinEstReg",
             estadoCamposModificar: [["astNom", "astTip"], ["astCod", "astEstReg"]],
             estadoCamposEliminar: [[], ["astCod", "astEstReg", "astNom", "astTip"]],
@@ -81,23 +83,9 @@ const app =  Vue.createApp({
             realizarOperacion,
             cargarFilas,
             enExitoModificarFila,
-            adicionar
-        } = usarCamposAdaptados("gzm_mineral", campos, estados, mensajeError, mostrarMensaje);
-
-        const modificar = async () => {
-            const AstCod = MinCod.value;
-            const AstNom = MinNom.value.toString();
-            const AstTip = astTip.value;
-
-            const body = generarBody({ operacion: "Modificar", AstCod, AstNom, AstTip });
-
-            const enError = (e) => {
-                console.error(e);
-                mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
-            }
-
-            realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
-        };
+            adicionar,
+            modificar
+        } = usarCamposAdaptados(campos, estados, mensajeError, mostrarMensaje);
 
         const eliminar = async () => {
             const AstCod = MinCod.value;
