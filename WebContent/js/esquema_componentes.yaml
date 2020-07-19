@@ -1,0 +1,10 @@
+-   tipo: number
+    nombre: AstCod
+-   tipo: text
+    nombre: AstNom
+-   tipo: select
+    nombre: AstTipo
+    valores:
+        - A
+        - I
+        - *
