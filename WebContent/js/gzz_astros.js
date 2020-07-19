@@ -207,46 +207,55 @@ const app =  Vue.createApp({
             return body.join("&");
         }
 
+        const realizarOperacion = async (body, metodo, recurso, enExito, enError) => {
+            const bodyEnUrl = metodo === "GET" || metodo === "PUT" || metodo === "DELETE";
+            const url = `${servidor}/api/${recurso}/${bodyEnUrl? '?' + body: ''}`;
+            try {
+                const datos = {
+                    method: metodo,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }
+                if (!bodyEnUrl) datos.body = body;
+                const peticion = await fetch(url, datos);
+                if (peticion.ok) {
+                    const resultado = await peticion.json();
+                    enExito(resultado);
+                } else {
+                    enError(peticion);
+                }
+            } catch (e) {
+                enError(e);
+            }
+        };
+
         const adicionar = async () => {
             const AstCod = parseInt(astCod.value);
             const AstNom = astNom.value.toString();
             const AstTip = parseInt(astTip.value) === 1? 1: 0;
             const AstEstReg = astEstReg.value.toString();
 
-            const body = generarBody({ AstCod, AstNom, AstTip, AstEstReg });
+            const datos = { AstCod, AstNom, AstTip, AstEstReg };
+            const body = generarBody(datos);
 
-            const url = `${servidor}/api/gzz_astro/`;
-            try {
-                const peticion = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body
-                });
-
-                if (peticion.ok) {
-
-                    const resultado = await peticion.json();
-                    if (resultado.count > 0) {
-                        mensajeError.value = "_";
-                        filas.value.push(datos);
-                    } else {
-                        mostrarMensaje("No se insertó ningún dato.", 5000);
-                    }
-
-                    limpiarFormulario();
-                    limpiar();
+            const enExito = (resultado) => {
+                if (resultado.count > 0) {
+                    mensajeError.value = "_";
+                    filas.value.push(datos);
                 } else {
-                    console.error(peticion);
-                    mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+                    mostrarMensaje("No se insertó ningún dato.", 5000);
                 }
+                limpiarFormulario();
+                limpiar();
+            };
 
-            } catch (e) {
+            const enError = (e) => {
                 console.error(e);
                 mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
-            }
+            };
 
+            realizarOperacion(body, "POST", "gzz_astro", enExito, enError);
         };
 
         const modificar = async () => {
