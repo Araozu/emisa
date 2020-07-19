@@ -272,7 +272,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
             mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
         };
 
-        realizarOperacion(body, "POST", "gzz_astro", enExito, enError);
+        realizarOperacion(body, "POST", enExito, enError);
     };
 
     const modificar = async () => {
@@ -286,7 +286,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
             mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
         }
 
-        realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
+        realizarOperacion(body, "PUT", enExitoModificarFila, enError);
     };
 
     const eliminar = async () => {
@@ -297,7 +297,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
             mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
         }
 
-        realizarOperacion(body, "DELETE", "gzz_astro", enExitoModificarFila, enError);
+        realizarOperacion(body, "DELETE", enExitoModificarFila, enError);
     };
 
     const in_re_activar = async (esIn) => {
@@ -309,7 +309,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
             console.error(e);
             mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
         };
-        realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
+        realizarOperacion(body, "PUT", enExitoModificarFila, enError);
     };
 
     const actualizar = async () => {
