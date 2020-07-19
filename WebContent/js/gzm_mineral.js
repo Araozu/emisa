@@ -28,7 +28,6 @@ const app =  Vue.createApp({
         <div class="mensaje-error" :style="estilosMensajeError">{{ mensajeError }}</div>
     </div>`,
     setup() {
-
         const campos = [
             {
                 tipo: "number",
