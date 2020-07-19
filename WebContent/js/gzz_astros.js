@@ -230,6 +230,25 @@ const app =  Vue.createApp({
             }
         };
 
+        const enExitoModificarFila = (resultado) => {
+            if (resultado.count > 0) {
+                mensajeError.value = "_";
+                const nuevaFila = {
+                    AstCod: astCod.value,
+                    AstNom: astNom.value.toString(),
+                    AstTip: astTip.value,
+                    AstEstReg: astEstReg.value
+                };
+                const posFila = posFilaSeleccionada.value;
+                filas.value.splice(posFila, 1, nuevaFila);
+            } else {
+                mostrarMensaje("No se modificó la fila.", 5000);
+            }
+
+            limpiarFormulario();
+            limpiar(true);
+        };
+
         const adicionar = async () => {
             const AstCod = parseInt(astCod.value);
             const AstNom = astNom.value.toString();
@@ -265,131 +284,36 @@ const app =  Vue.createApp({
 
             const body = generarBody({ operacion: "Modificar", AstCod, AstNom, AstTip });
 
-            const url = `${servidor}/api/gzz_astro/?${body}`;
-            try {
-                const peticion = await fetch(url, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                });
-
-                if (peticion.ok) {
-                    const resultado = await peticion.json();
-                    if (resultado.count > 0) {
-                        mensajeError.value = "_";
-                        const nuevaFila = {
-                            AstCod,
-                            AstNom,
-                            AstTip,
-                            AstEstReg: astEstReg.value
-                        };
-                        const posFila = posFilaSeleccionada.value;
-                        filas.value.splice(posFila, 1, nuevaFila);
-                    } else {
-                        mostrarMensaje("No se modificó la fila.", 5000);
-                    }
-
-                    limpiarFormulario();
-                    limpiar(true);
-                } else {
-                    console.error(peticion);
-                    mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
-                }
-
-            } catch (e) {
+            const enError = (e) => {
                 console.error(e);
                 mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
             }
 
+            realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
         };
 
-        const eliminar= async () => {
+        const eliminar = async () => {
             const AstCod = astCod.value;
-            const AstNom = astNom.value.toString();
-            const AstTip = astTip.value;
-            const url = `${servidor}/api/gzz_astro/?AstCod=${decodeURIComponent(AstCod)}`;
-            try {
-                const peticion = await fetch(url, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                });
+            const body = `AstCod=${decodeURIComponent(AstCod)}`;
 
-                if (peticion.ok) {
-                    const resultado = await peticion.json();
-                    if (resultado.count > 0) {
-                        mensajeError.value = "_";
-                        const nuevaFila = {
-                            AstCod,
-                            AstNom,
-                            AstTip,
-                            AstEstReg: "*"
-                        };
-                        const posFila = posFilaSeleccionada.value;
-                        filas.value.splice(posFila, 1, nuevaFila);
-                    } else {
-                        mostrarMensaje("No se eliminó la fila.", 5000);
-                    }
-
-                    limpiarFormulario();
-                    limpiar(true);
-                } else {
-                    console.error(peticion);
-                    mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
-                }
-
-            } catch (e) {
+            const enError = (e) => {
                 console.error(e);
                 mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
             }
+
+            realizarOperacion(body, "DELETE", "gzz_astro", enExitoModificarFila, enError);
         };
 
         const in_re_activar = async (esIn) => {
             const AstCod = astCod.value;
-            const AstNom = astNom.value.toString();
-            const AstTip = astTip.value;
-            const AstEstReg = astEstReg.value;
 
             const body = generarBody({ operacion: esIn? "Inactivar": "Reactivar", AstCod });
 
-            const url = `${servidor}/api/gzz_astro/?${body}`;
-            try {
-                const peticion = await fetch(url, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                });
-
-                if (peticion.ok) {
-                    const resultado = await peticion.json();
-                    if (resultado.count > 0) {
-                        mensajeError.value = "_";
-                        const nuevaFila = {
-                            AstCod,
-                            AstNom,
-                            AstTip,
-                            AstEstReg
-                        };
-                        const posFila = posFilaSeleccionada.value;
-                        filas.value.splice(posFila, 1, nuevaFila);
-                    } else {
-                        mostrarMensaje("No se modificó la fila.", 5000);
-                    }
-
-                    limpiarFormulario();
-                    limpiar(true);
-                } else {
-                    console.error(peticion);
-                    mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
-                }
-
-            } catch (e) {
+            const enError = (e) => {
                 console.error(e);
                 mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
-            }
+            };
+            realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
         };
 
         const actualizar = async () => {
