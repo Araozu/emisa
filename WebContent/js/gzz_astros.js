@@ -126,7 +126,7 @@ const app =  Vue.createApp({
         };
 
         const cargarFilaAInputs = () => {
-            const fila = filas[posFilaSeleccionada.value];
+            const fila = filas.value[posFilaSeleccionada.value];
             astCod.value = fila.AstCod;
             astNom.value = fila.AstNom;
             astTip.value = fila.AstTip;
@@ -199,17 +199,21 @@ const app =  Vue.createApp({
             }, ms);
         };
 
+        const generarBody = (datos) => {
+            const body = [];
+            for (const datosKey in datos) if (datos.hasOwnProperty(datosKey)) {
+                body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
+            }
+            return body.join("&");
+        }
+
         const adicionar = async () => {
             const AstCod = parseInt(astCod.value);
             const AstNom = astNom.value.toString();
             const AstTip = parseInt(astTip.value) === 1? 1: 0;
             const AstEstReg = astEstReg.value.toString();
 
-            const datos = { AstCod, AstNom, AstTip, AstEstReg };
-            const body = [];
-            for (const datosKey in datos) {
-                body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
-            }
+            const body = generarBody({ AstCod, AstNom, AstTip, AstEstReg });
 
             const url = `${servidor}/api/gzz_astro/`;
             try {
@@ -218,7 +222,7 @@ const app =  Vue.createApp({
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
-                    body: body.join("&")
+                    body
                 });
 
                 if (peticion.ok) {
@@ -226,7 +230,7 @@ const app =  Vue.createApp({
                     const resultado = await peticion.json();
                     if (resultado.count > 0) {
                         mensajeError.value = "_";
-                        filas.push(datos);
+                        filas.value.push(datos);
                     } else {
                         mostrarMensaje("No se insertó ningún dato.", 5000);
                     }
@@ -250,20 +254,14 @@ const app =  Vue.createApp({
             const AstNom = astNom.value.toString();
             const AstTip = astTip.value;
 
-            const datos = { operacion: "Modificar", AstCod, AstNom, AstTip };
-            const body = [];
-            for (const datosKey in datos) {
-                body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
-            }
+            const body = generarBody({ operacion: "Modificar", AstCod, AstNom, AstTip });
 
-            const url = `${servidor}/api/gzz_astro/?${body.join("&")}`;
+            const url = `${servidor}/api/gzz_astro/?${body}`;
             try {
                 const peticion = await fetch(url, {
                     method: "PUT",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "Access-Control-Request-Method": "PUT",
-                        "Access-Control-Request-Headers": "Content-Type"
+                        "Content-Type": "application/x-www-form-urlencoded"
                     }
                 });
 
@@ -278,7 +276,7 @@ const app =  Vue.createApp({
                             AstEstReg: astEstReg.value
                         };
                         const posFila = posFilaSeleccionada.value;
-                        filas.splice(posFila, 1, nuevaFila);
+                        filas.value.splice(posFila, 1, nuevaFila);
                     } else {
                         mostrarMensaje("No se modificó la fila.", 5000);
                     }
@@ -306,9 +304,7 @@ const app =  Vue.createApp({
                 const peticion = await fetch(url, {
                     method: "DELETE",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "Access-Control-Request-Method": "PUT",
-                        "Access-Control-Request-Headers": "Content-Type"
+                        "Content-Type": "application/x-www-form-urlencoded"
                     }
                 });
 
@@ -323,7 +319,7 @@ const app =  Vue.createApp({
                             AstEstReg: "*"
                         };
                         const posFila = posFilaSeleccionada.value;
-                        filas.splice(posFila, 1, nuevaFila);
+                        filas.value.splice(posFila, 1, nuevaFila);
                     } else {
                         mostrarMensaje("No se eliminó la fila.", 5000);
                     }
@@ -347,20 +343,14 @@ const app =  Vue.createApp({
             const AstTip = astTip.value;
             const AstEstReg = astEstReg.value;
 
-            const datos = { operacion: esIn? "Inactivar": "Reactivar", AstCod };
-            const body = [];
-            for (const datosKey in datos) {
-                body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
-            }
+            const body = generarBody({ operacion: esIn? "Inactivar": "Reactivar", AstCod });
 
-            const url = `${servidor}/api/gzz_astro/?${body.join("&")}`;
+            const url = `${servidor}/api/gzz_astro/?${body}`;
             try {
                 const peticion = await fetch(url, {
                     method: "PUT",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "Access-Control-Request-Method": "PUT",
-                        "Access-Control-Request-Headers": "Content-Type"
+                        "Content-Type": "application/x-www-form-urlencoded"
                     }
                 });
 
@@ -375,7 +365,7 @@ const app =  Vue.createApp({
                             AstEstReg
                         };
                         const posFila = posFilaSeleccionada.value;
-                        filas.splice(posFila, 1, nuevaFila);
+                        filas.value.splice(posFila, 1, nuevaFila);
                     } else {
                         mostrarMensaje("No se modificó la fila.", 5000);
                     }
