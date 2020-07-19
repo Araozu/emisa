@@ -288,6 +288,17 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
         realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
     };
 
+    const eliminar = async () => {
+        const body = `${nombreCampoCod}=${decodeURIComponent(valores[nombreCampoCod])}`;
+
+        const enError = (e) => {
+            console.error(e);
+            mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
+        }
+
+        realizarOperacion(body, "DELETE", "gzz_astro", enExitoModificarFila, enError);
+    };
+
     return {
         filas,
         valores,
@@ -311,6 +322,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
         cargarFilas,
         enExitoModificarFila,
         adicionar,
-        modificar
+        modificar,
+        eliminar
     }
 };

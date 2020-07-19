@@ -84,20 +84,9 @@ const app =  Vue.createApp({
             cargarFilas,
             enExitoModificarFila,
             adicionar,
-            modificar
+            modificar,
+            eliminar
         } = usarCamposAdaptados(campos, estados, mensajeError, mostrarMensaje);
-
-        const eliminar = async () => {
-            const AstCod = MinCod.value;
-            const body = `AstCod=${decodeURIComponent(AstCod)}`;
-
-            const enError = (e) => {
-                console.error(e);
-                mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
-            }
-
-            realizarOperacion(body, "DELETE", "gzz_astro", enExitoModificarFila, enError);
-        };
 
         const in_re_activar = async (esIn) => {
             const AstCod = MinCod.value;
