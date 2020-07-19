@@ -1,5 +1,5 @@
 
-Vue.component("tabla-datos", {
+app.component("tabla-datos", {
     template: `
         <div class="tabla">
             <h3>{{ nombre }}</h3>
@@ -47,7 +47,7 @@ Vue.component("tabla-datos", {
     }
 });
 
-Vue.component("grilla-botones", {
+app.component("grilla-botones", {
     template: `
     <div class="botones">
         <div>
@@ -88,3 +88,5 @@ Vue.component("grilla-botones", {
         "funSalir"
     ]
 });
+
+app.mount("#app");

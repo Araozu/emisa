@@ -1,7 +1,10 @@
 const servidor = "http://localhost:8080/Emisa";
 
-new Vue({
-    el: "#app",
+const ref = Vue.ref;
+const reactive = Vue.reactive;
+const computed = Vue.computed;
+
+const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
         <h1>GZZ_ASTROS</h1>
@@ -10,21 +13,21 @@ new Vue({
             <form @submit.prevent>
                 <div class="estr_form">
                     <label for="AstCod">AstCod</label>
-                    <input id="AstCod" type="number" name="AstCod" v-model="astCod" 
-                        :disabled="inputsDesactivados.astCod || operacionActual === ''">
+                    <input id="AstCod" type="number" name="AstCod" v-model="astCod"
+                           :disabled="inputsDesactivados.astCod || operacionActual === ''">
                     <label for="AstNom">AstNom</label>
-                    <input id="AstNom" type="text" name="AstNom" v-model="astNom" 
-                        :disabled="inputsDesactivados.astNom || operacionActual === ''">
+                    <input id="AstNom" type="text" name="AstNom" v-model="astNom"
+                           :disabled="inputsDesactivados.astNom || operacionActual === ''">
                     <label for="AstTip">AstTip</label>
                     <select name="AstTip" id="AstTip" v-model="astTip"
-                        :disabled="inputsDesactivados.astTip || operacionActual === ''"
+                            :disabled="inputsDesactivados.astTip || operacionActual === ''"
                     >
                         <option value="0" selected>0</option>
                         <option value="1">1</option>
                     </select>
                     <label for="AstEstReg">AstEstReg</label>
-                    <select name="AstEstReg" id="AstEstReg" v-model="astEstReg" 
-                        :disabled="inputsDesactivados.astEstReg || operacionActual === ''"
+                    <select name="AstEstReg" id="AstEstReg" v-model="astEstReg"
+                            :disabled="inputsDesactivados.astEstReg || operacionActual === ''"
                     >
                         <option value="A" selected>A</option>
                         <option value="I">I</option>
@@ -34,9 +37,9 @@ new Vue({
             </form>
         </div>
         <br>
-        <tabla-datos 
+        <tabla-datos
             nombre="Tabla GZZ_ASTROS"
-            :nombresColumnas="['AstCod', 'AstNom', 'AstTip', 'AstEstReg']"
+            :nombresColumnas="nombresColumnas"
             :filas="filas"
             :funAlClick="seleccionarFila"
             :posFilaSeleccionada="posFilaSeleccionada"/>
@@ -51,163 +54,156 @@ new Vue({
             :funReactivar="iniciarReactivar"
             :funActualizar="actualizar"
             :funSalir="cerrarVentana"
-            />
+        />
         <div class="mensaje-error" :style="estilosMensajeError">{{ mensajeError }}</div>
-    </div>
-    `,
-    data() {
-        return {
-            astCod: undefined,
-            astNom: undefined,
-            astTip: "0",
-            astEstReg: "A",
-            inputsDesactivados: {
-                astCod: false,
-                astNom: false,
-                astTip: false,
-                astEstReg: false
-            },
-            filas: [],
-            mensajeError: "_",
-            estadoBotones: {
-                adicionar: "disponible",
-                modificar: "inactivo",
-                eliminar: "inactivo",
-                inactivar: "inactivo",
-                reactivar: "inactivo",
-                actualizar: "inactivo"
-            },
-            operacionActual: "",
-            posFilaSeleccionada: -1
-        }
-    },
-    computed: {
-        estilosMensajeError() {
-            return {
-                opacity: this.mensajeError === "_"? "0": 1
-            }
-        }
-    },
-    methods: {
-        limpiar(limpiarFila = false) {
-            this.estadoBotones.adicionar = "disponible";
-            this.estadoBotones.modificar = "inactivo";
-            this.estadoBotones.eliminar = "inactivo";
-            this.estadoBotones.inactivar = "inactivo";
-            this.estadoBotones.reactivar = "inactivo";
-            this.estadoBotones.actualizar = "inactivo";
-            this.inputsDesactivados.astCod = false;
-            this.inputsDesactivados.astEstReg = false;
-            this.inputsDesactivados.astEstNom = false;
-            this.inputsDesactivados.astTip = false;
-            this.operacionActual = "";
-            this.limpiarFormulario();
+    </div>`,
+    setup() {
+        const astCod = ref(undefined);
+        const astNom = ref(undefined);
+        const astTip = ref("0");
+        const astEstReg = ref("A");
+        const inputsDesactivados = reactive({
+            astCod: false,
+            astNom: false,
+            astTip: false,
+            astEstReg: false
+        });
+        const filas = ref([]);
+        const mensajeError = ref("_");
+        const estadoBotones = reactive({
+            adicionar: "disponible",
+            modificar: "inactivo",
+            eliminar: "inactivo",
+            inactivar: "inactivo",
+            reactivar: "inactivo",
+            actualizar: "inactivo"
+        });
+        const operacionActual = ref("");
+        const posFilaSeleccionada = ref(-1);
+        const nombresColumnas = ['AstCod', 'AstNom', 'AstTip', 'AstEstReg'];
+
+        const estilosMensajeError =
+            computed(() => ({
+                opacity: mensajeError.value === "_"? "0": 1
+            }));
+
+        const limpiarFormulario = () => {
+            astCod.value = undefined;
+            astNom.value = undefined;
+            astTip.value = undefined;
+            astEstReg.value = "A";
+        };
+
+        const limpiar = (limpiarFila = false) => {
+            estadoBotones.adicionar = "disponible";
+            estadoBotones.modificar = "inactivo";
+            estadoBotones.eliminar = "inactivo";
+            estadoBotones.inactivar = "inactivo";
+            estadoBotones.reactivar = "inactivo";
+            estadoBotones.actualizar = "inactivo";
+            inputsDesactivados.astCod = false;
+            inputsDesactivados.astEstReg = false;
+            inputsDesactivados.astEstNom = false;
+            inputsDesactivados.astTip = false;
+            operacionActual.value = "";
+            limpiarFormulario();
             if (limpiarFila) {
-                this.posFilaSeleccionada = -1;
+                posFilaSeleccionada.value = -1;
             }
-        },
-        limpiarFormulario() {
-            this.astCod = undefined;
-            this.astNom = undefined;
-            this.astTip = undefined;
-            this.astEstReg = "A";
-        },
-        marcarBotones(activos, inactivos, disponibles = []) {
-            this.limpiar();
+        };
+
+        const marcarBotones = (activos, inactivos, disponibles = []) => {
+            limpiar();
             for (const a of activos) {
-                this.estadoBotones[a] = "activo";
+                estadoBotones[a] = "activo";
             }
             for (const i of inactivos) {
-                this.estadoBotones[i] = "inactivo";
+                estadoBotones[i] = "inactivo";
             }
             for (const d of disponibles) {
-                this.estadoBotones[d] = "disponible";
+                estadoBotones[d] = "disponible";
             }
-        },
-        iniciarAdicion() {
-            if (this.estadoBotones.adicionar !== "disponible") return;
-            this.limpiarFormulario();
-            this.marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
-            this.operacionActual = "adicionar";
-        },
-        iniciarModificacion() {
-            if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
-            this.limpiarFormulario();
-            this.marcarBotones(["modificar"], ["adicionar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
-            this.operacionActual = "modificar";
+        };
 
-            const numFila = this.posFilaSeleccionada;
-            const fila = this.filas[numFila];
-            this.astCod = fila.AstCod;
-            this.astNom = fila.AstNom;
-            this.astTip = fila.AstTip;
-            this.astEstReg = fila.AstEstReg;
-            this.inputsDesactivados.astCod = true;
-            this.inputsDesactivados.astEstReg = true;
-        },
-        iniciarEliminar() {
-            if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
-            this.limpiarFormulario();
-            this.marcarBotones(["eliminar"], ["adicionar", "modificar", "inactivar", "reactivar"], ["actualizar"]);
-            this.operacionActual = "eliminar";
+        const cargarFilaAInputs = () => {
+            const fila = filas[posFilaSeleccionada.value];
+            astCod.value = fila.AstCod;
+            astNom.value = fila.AstNom;
+            astTip.value = fila.AstTip;
+            astEstReg.value = fila.AstEstReg
+        };
 
-            const numFila = this.posFilaSeleccionada;
-            const fila = this.filas[numFila];
-            this.astCod = fila.AstCod;
-            this.astNom = fila.AstNom;
-            this.astTip = fila.AstTip;
-            this.astEstReg = "*";
-            this.inputsDesactivados.astCod = true;
-            this.inputsDesactivados.astEstReg = true;
-            this.inputsDesactivados.astNom = true;
-            this.inputsDesactivados.astTip = true;
-        },
-        iniciarInactivar() {
-            if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
-            this.limpiarFormulario();
-            this.marcarBotones(["inactivar"], ["adicionar", "modificar", "eliminar", "reactivar"], ["actualizar"]);
-            this.operacionActual = "inactivar";
+        const cambiarEstadoInputs = (activos, inactivos) => {
+            for (const a of activos) {
+                inputsDesactivados[a] = false;
+            }
+            for (const i of inactivos) {
+                inputsDesactivados[i] = true;
+            }
+        }
 
-            const numFila = this.posFilaSeleccionada;
-            const fila = this.filas[numFila];
-            this.astCod = fila.AstCod;
-            this.astNom = fila.AstNom;
-            this.astTip = fila.AstTip;
-            this.astEstReg = "I";
-            this.inputsDesactivados.astCod = true;
-            this.inputsDesactivados.astEstReg = true;
-            this.inputsDesactivados.astNom = true;
-            this.inputsDesactivados.astTip = true;
-        },
-        iniciarReactivar() {
-            if (this.posFilaSeleccionada === -1 || this.estadoBotones.modificar !== "disponible") return;
-            this.limpiarFormulario();
-            this.marcarBotones(["reactivar"], ["adicionar", "modificar", "eliminar", "inactivar"], ["actualizar"]);
-            this.operacionActual = "reactivar";
+        const iniciarAdicion = () => {
+            if (estadoBotones.adicionar !== "disponible") return;
+            limpiarFormulario();
+            marcarBotones(["adicionar"], ["modificar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
+            operacionActual.value = "adicionar";
+        };
 
-            const numFila = this.posFilaSeleccionada;
-            const fila = this.filas[numFila];
-            this.astCod = fila.AstCod;
-            this.astNom = fila.AstNom;
-            this.astTip = fila.AstTip;
-            this.astEstReg = "A";
-            this.inputsDesactivados.astCod = true;
-            this.inputsDesactivados.astEstReg = true;
-            this.inputsDesactivados.astNom = true;
-            this.inputsDesactivados.astTip = true;
-        },
-        mostrarMensaje(msg, ms) {
-            this.mensajeError = msg;
-            const vm = this;
+        const iniciarModificacion = () => {
+            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
+            limpiarFormulario();
+            marcarBotones(["modificar"], ["adicionar", "eliminar", "inactivar", "reactivar"], ["actualizar"]);
+            operacionActual.value = "modificar";
+
+            cargarFilaAInputs();
+            cambiarEstadoInputs(["astNom", "astTip"], ["astCod", "astEstReg"]);
+        };
+
+        const iniciarEliminar = () => {
+            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
+            limpiarFormulario();
+            marcarBotones(["eliminar"], ["adicionar", "modificar", "inactivar", "reactivar"], ["actualizar"]);
+            operacionActual.value = "eliminar";
+
+            cargarFilaAInputs();
+            astEstReg.value = "*";
+            cambiarEstadoInputs([], ["astCod", "astEstReg", "astNom", "astTip"]);
+        };
+
+        const iniciarInactivar = () => {
+            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
+            limpiarFormulario();
+            marcarBotones(["inactivar"], ["adicionar", "modificar", "eliminar", "reactivar"], ["actualizar"]);
+            operacionActual.value = "inactivar";
+
+            cargarFilaAInputs();
+            astEstReg.value = "I";
+            cambiarEstadoInputs([], ["astCod", "astEstReg", "astNom", "astTip"]);
+        };
+
+        const iniciarReactivar = () => {
+            if (posFilaSeleccionada.value === -1 || estadoBotones.modificar !== "disponible") return;
+            limpiarFormulario();
+            marcarBotones(["reactivar"], ["adicionar", "modificar", "eliminar", "inactivar"], ["actualizar"]);
+            operacionActual.value = "reactivar";
+
+            cargarFilaAInputs();
+            astEstReg.value = "A";
+            cambiarEstadoInputs([], ["astCod", "astEstReg", "astNom", "astTip"]);
+        };
+
+        const mostrarMensaje = (msg, ms = 2500) => {
+            mensajeError.value = msg;
             setTimeout(() => {
-                vm.mensajeError = "_";
+                mensajeError.value = "_";
             }, ms);
-        },
-        async adicionar() {
-            const AstCod = parseInt(this.astCod);
-            const AstNom = this.astNom.toString();
-            const AstTip = parseInt(this.astTip) === 1? 1: 0;
-            const AstEstReg = this.astEstReg.toString();
+        };
+
+        const adicionar = async () => {
+            const AstCod = parseInt(astCod.value);
+            const AstNom = astNom.value.toString();
+            const AstTip = parseInt(astTip.value) === 1? 1: 0;
+            const AstEstReg = astEstReg.value.toString();
 
             const datos = { AstCod, AstNom, AstTip, AstEstReg };
             const body = [];
@@ -229,29 +225,30 @@ new Vue({
 
                     const resultado = await peticion.json();
                     if (resultado.count > 0) {
-                        this.mensajeError = "_";
-                        this.filas.push(datos);
+                        mensajeError.value = "_";
+                        filas.push(datos);
                     } else {
-                        this.mostrarMensaje("No se insertó ningún dato.", 5000);
+                        mostrarMensaje("No se insertó ningún dato.", 5000);
                     }
 
-                    this.limpiarFormulario();
-                    this.limpiar();
+                    limpiarFormulario();
+                    limpiar();
                 } else {
                     console.error(peticion);
-                    this.mensajeError = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+                    mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
                 }
 
             } catch (e) {
                 console.error(e);
-                this.mensajeError = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+                mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
             }
 
-        },
-        async modificar() {
-            const AstCod = this.astCod;
-            const AstNom = this.astNom.toString();
-            const AstTip = this.astTip;
+        };
+
+        const modificar = async () => {
+            const AstCod = astCod.value;
+            const AstNom = astNom.value.toString();
+            const AstTip = astTip.value;
 
             const datos = { operacion: "Modificar", AstCod, AstNom, AstTip };
             const body = [];
@@ -273,36 +270,37 @@ new Vue({
                 if (peticion.ok) {
                     const resultado = await peticion.json();
                     if (resultado.count > 0) {
-                        this.mensajeError = "_";
+                        mensajeError.value = "_";
                         const nuevaFila = {
                             AstCod,
                             AstNom,
                             AstTip,
-                            AstEstReg: this.astEstReg
+                            AstEstReg: astEstReg.value
                         };
-                        const posFila = this.posFilaSeleccionada;
-                        this.filas.splice(posFila, 1, nuevaFila);
+                        const posFila = posFilaSeleccionada.value;
+                        filas.splice(posFila, 1, nuevaFila);
                     } else {
-                        this.mostrarMensaje("No se modificó la fila.", 5000);
+                        mostrarMensaje("No se modificó la fila.", 5000);
                     }
 
-                    this.limpiarFormulario();
-                    this.limpiar(true);
+                    limpiarFormulario();
+                    limpiar(true);
                 } else {
                     console.error(peticion);
-                    this.mensajeError = "Error al modificar la fila de la tabla GZZ_ASTROS";
+                    mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
                 }
 
             } catch (e) {
                 console.error(e);
-                this.mensajeError = "Error al modificar la fila de la tabla GZZ_ASTROS";
+                mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
             }
 
-        },
-        async eliminar() {
-            const AstCod = this.astCod;
-            const AstNom = this.astNom.toString();
-            const AstTip = this.astTip;
+        };
+
+        const eliminar= async () => {
+            const AstCod = astCod.value;
+            const AstNom = astNom.value.toString();
+            const AstTip = astTip.value;
             const url = `${servidor}/api/gzz_astro/?AstCod=${decodeURIComponent(AstCod)}`;
             try {
                 const peticion = await fetch(url, {
@@ -317,36 +315,37 @@ new Vue({
                 if (peticion.ok) {
                     const resultado = await peticion.json();
                     if (resultado.count > 0) {
-                        this.mensajeError = "_";
+                        mensajeError.value = "_";
                         const nuevaFila = {
                             AstCod,
                             AstNom,
                             AstTip,
                             AstEstReg: "*"
                         };
-                        const posFila = this.posFilaSeleccionada;
-                        this.filas.splice(posFila, 1, nuevaFila);
+                        const posFila = posFilaSeleccionada.value;
+                        filas.splice(posFila, 1, nuevaFila);
                     } else {
-                        this.mostrarMensaje("No se eliminó la fila.", 5000);
+                        mostrarMensaje("No se eliminó la fila.", 5000);
                     }
 
-                    this.limpiarFormulario();
-                    this.limpiar(true);
+                    limpiarFormulario();
+                    limpiar(true);
                 } else {
                     console.error(peticion);
-                    this.mensajeError = "Error al eliminar la fila de la tabla GZZ_ASTROS";
+                    mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
                 }
 
             } catch (e) {
                 console.error(e);
-                this.mensajeError = "Error al eliminar la fila de la tabla GZZ_ASTROS";
+                mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
             }
-        },
-        async in_re_activar(esIn) {
-            const AstCod = this.astCod;
-            const AstNom = this.astNom.toString();
-            const AstTip = this.astTip;
-            const AstEstReg = this.astEstReg;
+        };
+
+        const in_re_activar = async (esIn) => {
+            const AstCod = astCod.value;
+            const AstNom = astNom.value.toString();
+            const AstTip = astTip.value;
+            const AstEstReg = astEstReg.value;
 
             const datos = { operacion: esIn? "Inactivar": "Reactivar", AstCod };
             const body = [];
@@ -368,82 +367,111 @@ new Vue({
                 if (peticion.ok) {
                     const resultado = await peticion.json();
                     if (resultado.count > 0) {
-                        this.mensajeError = "_";
+                        mensajeError.value = "_";
                         const nuevaFila = {
                             AstCod,
                             AstNom,
                             AstTip,
                             AstEstReg
                         };
-                        const posFila = this.posFilaSeleccionada;
-                        this.filas.splice(posFila, 1, nuevaFila);
+                        const posFila = posFilaSeleccionada.value;
+                        filas.splice(posFila, 1, nuevaFila);
                     } else {
-                        this.mostrarMensaje("No se modificó la fila.", 5000);
+                        mostrarMensaje("No se modificó la fila.", 5000);
                     }
 
-                    this.limpiarFormulario();
-                    this.limpiar(true);
+                    limpiarFormulario();
+                    limpiar(true);
                 } else {
                     console.error(peticion);
-                    this.mensajeError = "Error al modificar la fila de la tabla GZZ_ASTROS";
+                    mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
                 }
 
             } catch (e) {
                 console.error(e);
-                this.mensajeError = "Error al modificar la fila de la tabla GZZ_ASTROS";
+                mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
             }
-        },
-        actualizar() {
-            switch (this.operacionActual) {
+        };
+
+        const actualizar = async () => {
+            switch (operacionActual.value) {
                 case "adicionar": {
-                    this.adicionar();
+                    adicionar();
                     break;
                 }
                 case "modificar": {
-                    this.modificar();
+                    modificar();
                     break;
                 }
                 case "eliminar": {
-                    this.eliminar();
+                    eliminar();
                     break;
                 }
                 case "inactivar": {
-                    this.in_re_activar(true);
+                    in_re_activar(true);
                     break;
                 }
                 case "reactivar": {
-                    this.in_re_activar(false);
+                    in_re_activar(false);
                     break;
                 }
             }
-        },
-        cerrarVentana() {
+        };
+
+        const cerrarVentana = () => {
             window.location.assign("./");
-        },
-        async cargarFilas() {
+        };
+
+        const cargarFilas = async () => {
             const url = `${servidor}/api/gzz_astro/`;
             try {
                 const peticion = await fetch(url);
                 if (peticion.ok) {
-                    this.filas = await peticion.json();
-                    this.mensajeError = "_";
+                    filas.value = await peticion.json();
+                    mensajeError.value = "_";
                 } else {
                     console.error(peticion);
-                    this.mensajeError = "Ocurrió un error al recuperar los datos del servidor.";
+                    mensajeError.value = "Ocurrió un error al recuperar los datos del servidor.";
                 }
             } catch (e) {
                 console.error(e);
-                this.mensajeError = "Ocurrió un error al recuperar los datos del servidor.";
+                mensajeError.value = "Ocurrió un error al recuperar los datos del servidor.";
             }
-        },
-        seleccionarFila(posFila) {
-            if (this.operacionActual !== "") return;
+        };
+
+        const seleccionarFila = (posFila) => {
+            if (operacionActual.value !== "") return;
             const botonesDisponibles = ["modificar", "eliminar", "actualizar", "reactivar", "inactivar"];
-            this.marcarBotones([], ["adicionar"], botonesDisponibles);
-            this.posFilaSeleccionada = posFila;
+            marcarBotones([], ["adicionar"], botonesDisponibles);
+            posFilaSeleccionada.value = posFila;
+        };
+
+        setTimeout(cargarFilas, 0);
+
+        return {
+            astCod,
+            astNom,
+            astTip,
+            astEstReg,
+            inputsDesactivados,
+            filas,
+            mensajeError,
+            estadoBotones,
+            operacionActual,
+            posFilaSeleccionada,
+            estilosMensajeError,
+            nombresColumnas,
+            limpiarFormulario,
+            limpiar,
+            marcarBotones,
+            iniciarAdicion,
+            iniciarModificacion,
+            iniciarEliminar,
+            iniciarInactivar,
+            iniciarReactivar,
+            seleccionarFila,
+            cerrarVentana,
+            actualizar
         }
-    },
-    created() {
-        this.cargarFilas();
     }
 });
