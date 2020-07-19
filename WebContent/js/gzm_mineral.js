@@ -80,36 +80,9 @@ const app =  Vue.createApp({
             generarBody,
             realizarOperacion,
             cargarFilas,
-            enExitoModificarFila
+            enExitoModificarFila,
+            adicionar
         } = usarCamposAdaptados("gzm_mineral", campos, estados, mensajeError, mostrarMensaje);
-
-        const adicionar = async () => {
-            const AstCod = parseInt(MinCod.value);
-            const AstNom = MinNom.value.toString();
-            const AstTip = parseInt(astTip.value) === 1? 1: 0;
-            const AstEstReg = MinEstReg.value.toString();
-
-            const datos = { AstCod, AstNom, AstTip, AstEstReg };
-            const body = generarBody(datos);
-
-            const enExito = (resultado) => {
-                if (resultado.count > 0) {
-                    mensajeError.value = "_";
-                    filas.value.push(datos);
-                } else {
-                    mostrarMensaje("No se insertó ningún dato.", 5000);
-                }
-                limpiarCampos();
-                limpiar();
-            };
-
-            const enError = (e) => {
-                console.error(e);
-                mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
-            };
-
-            realizarOperacion(body, "POST", "gzz_astro", enExito, enError);
-        };
 
         const modificar = async () => {
             const AstCod = MinCod.value;

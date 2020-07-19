@@ -183,7 +183,8 @@ const usarCamposAdaptados = (recurso, campos, estados, mensajeError, mostrarMens
 
     const generarBody = (datos) => {
         const body = [];
-        for (const datosKey in datos) if (datos.hasOwnProperty(datosKey)) {
+        for (const datosKey in datos) {
+            if (datos.hasOwnProperty(datosKey))
             body.push(`${encodeURIComponent(datosKey)}=${encodeURIComponent(datos[datosKey])}`);
         }
         return body.join("&");
@@ -248,6 +249,29 @@ const usarCamposAdaptados = (recurso, campos, estados, mensajeError, mostrarMens
         limpiar(true);
     };
 
+    const adicionar = async () => {
+        const datos = Object.assign({}, valores)
+        const body = generarBody(datos);
+
+        const enExito = (resultado) => {
+            if (resultado.count > 0) {
+                mensajeError.value = "_";
+                filas.value.push(datos);
+            } else {
+                mostrarMensaje("No se insertó ningún dato.", 5000);
+            }
+            limpiarCampos();
+            limpiar();
+        };
+
+        const enError = (e) => {
+            console.error(e);
+            mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+        };
+
+        realizarOperacion(body, "POST", "gzz_astro", enExito, enError);
+    };
+
     return {
         filas,
         valores,
@@ -269,6 +293,7 @@ const usarCamposAdaptados = (recurso, campos, estados, mensajeError, mostrarMens
         generarBody,
         realizarOperacion,
         cargarFilas,
-        enExitoModificarFila
+        enExitoModificarFila,
+        adicionar
     }
 };
