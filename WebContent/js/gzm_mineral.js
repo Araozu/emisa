@@ -85,20 +85,9 @@ const app =  Vue.createApp({
             enExitoModificarFila,
             adicionar,
             modificar,
-            eliminar
+            eliminar,
+            in_re_activar
         } = usarCamposAdaptados(campos, estados, mensajeError, mostrarMensaje);
-
-        const in_re_activar = async (esIn) => {
-            const AstCod = MinCod.value;
-
-            const body = generarBody({ operacion: esIn? "Inactivar": "Reactivar", AstCod });
-
-            const enError = (e) => {
-                console.error(e);
-                mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
-            };
-            realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
-        };
 
         const actualizar = async () => {
             switch (operacionActual.value) {

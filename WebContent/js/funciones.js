@@ -299,6 +299,18 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
         realizarOperacion(body, "DELETE", "gzz_astro", enExitoModificarFila, enError);
     };
 
+    const in_re_activar = async (esIn) => {
+        const datos = { operacion: esIn? "Inactivar": "Reactivar"};
+        datos[nombreCampoCod] = valores[nombreCampoCod];
+        const body = generarBody(datos);
+
+        const enError = (e) => {
+            console.error(e);
+            mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
+        };
+        realizarOperacion(body, "PUT", "gzz_astro", enExitoModificarFila, enError);
+    };
+
     return {
         filas,
         valores,
@@ -323,6 +335,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
         enExitoModificarFila,
         adicionar,
         modificar,
-        eliminar
+        eliminar,
+        in_re_activar
     }
 };
