@@ -1,4 +1,64 @@
 
+app.component("grilla-datos", {
+    template: `
+    <div class="registro">
+        <h3>Registro de {{ etiqueta }}</h3>
+        <form @submit.prevent>
+            <div class="estr_form">
+                <template v-for="campo in campos">
+                    <template v-if="campo.tipo === 'number' || campo.tipo === 'text'">
+                        <label :for="campo.nombre">{{ campo.nombre }}</label>
+                        <input :id="campo.nombre" 
+                            :type="campo.tipo" 
+                            :name="campo.nombre"
+                            :value="valores[campo.nombre]"
+                            :disabled="camposDesactivados[campo.nombre] === true || operacionActual === ''"
+                            @input="funActualizarValor(campo.nombre, $event.target.value)">
+                    </template>
+                    <template v-else-if="campo.tipo === 'select'">
+                        <label :for="campo.nombre">{{ campo.nombre }}</label>
+                        <select :id="campo.nombre"
+                            :name="campo.nombre"
+                            :value="valores[campo.nombre]"
+                            :disabled="camposDesactivados[campo.nombre] === true || operacionActual === ''"
+                            @input="funActualizarValor(campo.nombre, $event.target.value)"
+                        >
+                            <option v-for="valor in campo.valores" :value="valor">{{ valor }}</option>
+                        </select>
+                    </template>
+                </template>
+            </div>
+        </form>
+    </div>
+    `,
+    props: {
+        etiqueta: {
+            type: String,
+            required: true
+        },
+        campos: {
+            type: Array,
+            required: true
+        },
+        camposDesactivados: {
+            tipe: Object,
+            required: true
+        },
+        operacionActual: {
+            type: String,
+            required: true
+        },
+        valores: {
+            type: Object,
+            required: true
+        },
+        funActualizarValor: {
+            type: Function,
+            required: true
+        }
+    }
+});
+
 app.component("tabla-datos", {
     template: `
         <div class="tabla">
