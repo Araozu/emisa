@@ -1,14 +1,14 @@
 const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
-        <h1>RZC_EMPLEO</h1>
-        <grilla-datos etiqueta="Empleo" :campos="campos" :camposDesactivados="camposDesactivados"
+        <h1>R7C_CATEGORIA</h1>
+        <grilla-datos etiqueta="Categoria" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
         <br>
         <tabla-datos
-            nombre="Tabla RZC_EMPLEO"
+            nombre="Tabla R7C_CATEGORIA"
             :nombresColumnas="nombresColumnas"
             :filas="filas"
             :funAlClick="seleccionarFila"
@@ -31,43 +31,30 @@ const app =  Vue.createApp({
         const campos = [
             {
                 tipo: "number",
-                nombre: "EmpCod"
+                nombre: "CatCod"
             },
             {
                 tipo: "text",
-                nombre: "EmpNom"
+                nombre: "CatNom"
             },
             {
                 tipo: "number",
-                nombre: "EmpSue"
+                nombre: "CatSuel"
             },
             {
                 tipo: "select",
-                nombre: "EmpEst",
-                valores: [0, 1]
-            },
-            {
-                tipo: "number",
-                nombre: "EmpViaCod",
-            },
-            {
-                tipo: "number",
-                nombre: "EmpCatCod"
-            },
-            {
-                tipo: "select",
-                nombre: "EmpEstReg",
+                nombre: "CatEstReg",
                 valores: ["A", "I", "*"]
             }
         ];
         const estados = {
-            recurso: "rzc_empleo",
-            nombreCampoCod: "AlimCod",
-            nombreCampoEstReg: "AlimEstReg",
-            estadoCamposModificar: [["EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod"], ["EmpCod", "EmpEstReg"]],
-            estadoCamposEliminar: [[], ["EmpCod", "EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod", "EmpEstReg"]],
-            estadoCamposInactivar: [[], ["EmpCod", "EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod", "EmpEstReg"]],
-            estadoCamposReactivar: [[], ["EmpCod", "EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod", "EmpEstReg"]]
+            recurso: "rzc_categoria",
+            nombreCampoCod: "CatCod",
+            nombreCampoEstReg: "CatEstReg",
+            estadoCamposModificar: [["CatNom", "CatSuel"], ["CatCod", "CatEstReg"]],
+            estadoCamposEliminar: [[], ["CatNom", "CatSuel", "CatCod", "CatEstReg"]],
+            estadoCamposInactivar: [[], ["CatNom", "CatSuel", "CatCod", "CatEstReg"]],
+            estadoCamposReactivar: [[], ["CatNom", "CatSuel", "CatCod", "CatEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

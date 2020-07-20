@@ -2,7 +2,7 @@ const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
         <h1>P8M_CENTRO</h1>
-        <grilla-datos etiqueta="Mineral" :campos="campos" :camposDesactivados="camposDesactivados"
+        <grilla-datos etiqueta="Centro" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
@@ -42,10 +42,6 @@ const app =  Vue.createApp({
                 nombre: "CenMinCod"
             },
             {
-                tipo: "text",
-                nombre: "CenMinNom"
-            },
-            {
                 tipo: "select",
                 nombre: "CenEstReg",
                 valores: ["A", "I", "*"]
@@ -55,10 +51,10 @@ const app =  Vue.createApp({
             recurso: "p8m_centro",
             nombreCampoCod: "CenCod",
             nombreCampoEstReg: "CenEstReg",
-            estadoCamposModificar: [["CenNom", "CenMinCod", "CenMinNom"], ["CenCod", "CenEstReg"]],
-            estadoCamposEliminar: [[], ["CenCod", "CenNom", "CenMinCod", "CenMinNom", "CenEstReg"]],
-            estadoCamposInactivar: [[], ["CenCod", "CenNom", "CenMinCod", "CenMinNom", "CenEstReg"]],
-            estadoCamposReactivar: [[], ["CenCod", "CenNom", "CenMinCod", "CenMinNom", "CenEstReg"]]
+            estadoCamposModificar: [["CenNom", "CenMinCod"], ["CenCod", "CenEstReg"]],
+            estadoCamposEliminar: [[], ["CenCod", "CenNom", "CenMinCod", "CenEstReg"]],
+            estadoCamposInactivar: [[], ["CenCod", "CenNom", "CenMinCod", "CenEstReg"]],
+            estadoCamposReactivar: [[], ["CenCod", "CenNom", "CenMinCod", "CenEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

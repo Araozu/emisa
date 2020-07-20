@@ -2,7 +2,7 @@ const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
         <h1>R7C_ALIMENTO</h1>
-        <grilla-datos etiqueta="Mineral" :campos="campos" :camposDesactivados="camposDesactivados"
+        <grilla-datos etiqueta="Alimento" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
