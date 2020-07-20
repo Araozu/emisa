@@ -1,14 +1,14 @@
 const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
-        <h1>GZM_MINERAL</h1>
+        <h1>RZC_EMPLEO</h1>
         <grilla-datos etiqueta="Mineral" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
         <br>
         <tabla-datos
-            nombre="Tabla GZM_MINERAL"
+            nombre="Tabla RZC_EMPLEO"
             :nombresColumnas="nombresColumnas"
             :filas="filas"
             :funAlClick="seleccionarFila"
@@ -31,26 +31,43 @@ const app =  Vue.createApp({
         const campos = [
             {
                 tipo: "number",
-                nombre: "MinCod"
+                nombre: "EmpCod"
             },
             {
                 tipo: "text",
-                nombre: "MinNom"
+                nombre: "EmpNom"
+            },
+            {
+                tipo: "number",
+                nombre: "EmpSue"
             },
             {
                 tipo: "select",
-                nombre: "MinEstReg",
+                nombre: "EmpEst",
+                valores: [0, 1]
+            },
+            {
+                tipo: "number",
+                nombre: "EmpViaCod",
+            },
+            {
+                tipo: "number",
+                nombre: "EmpCatCod"
+            },
+            {
+                tipo: "select",
+                nombre: "EmpEstReg",
                 valores: ["A", "I", "*"]
             }
         ];
         const estados = {
-            recurso: "gzm_mineral",
-            nombreCampoCod: "MinCod",
-            nombreCampoEstReg: "MinEstReg",
-            estadoCamposModificar: [["MinNom"], ["MinCod", "MinEstReg"]],
-            estadoCamposEliminar: [[], ["MinCod", "MinNom", "MinEstReg"]],
-            estadoCamposInactivar: [[], ["MinCod", "MinNom", "MinEstReg"]],
-            estadoCamposReactivar: [[], ["MinCod", "MinNom", "MinEstReg"]]
+            recurso: "rzc_empleo",
+            nombreCampoCod: "AlimCod",
+            nombreCampoEstReg: "AlimEstReg",
+            estadoCamposModificar: [["EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod"], ["EmpCod", "EmpEstReg"]],
+            estadoCamposEliminar: [[], ["EmpCod", "EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod", "EmpEstReg"]],
+            estadoCamposInactivar: [[], ["EmpCod", "EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod", "EmpEstReg"]],
+            estadoCamposReactivar: [[], ["EmpCod", "EmpNom", "EmpSue", "EmpEst", "EmpViaCod", "EmpCatCod", "EmpEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

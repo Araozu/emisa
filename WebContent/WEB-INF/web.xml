@@ -45,13 +45,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>R7C_Empleo</servlet-name>
-        <servlet-class>api.referencial.R7C_Empleo_Servlet</servlet-class>
+        <servlet-name>RZC_Empleo</servlet-name>
+        <servlet-class>api.referencial.RZC_Empleo_Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>R7C_Empleo</servlet-name>
-        <url-pattern>/api/r7c_empleo/</url-pattern>
+        <servlet-name>RZC_Empleo</servlet-name>
+        <url-pattern>/api/rzc_empleo/</url-pattern>
     </servlet-mapping>
 
     <servlet>

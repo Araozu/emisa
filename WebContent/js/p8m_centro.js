@@ -1,14 +1,14 @@
 const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
-        <h1>GZM_MINERAL</h1>
+        <h1>P8M_CENTRO</h1>
         <grilla-datos etiqueta="Mineral" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
         <br>
         <tabla-datos
-            nombre="Tabla GZM_MINERAL"
+            nombre="Tabla P8M_CENTRO"
             :nombresColumnas="nombresColumnas"
             :filas="filas"
             :funAlClick="seleccionarFila"
@@ -31,26 +31,34 @@ const app =  Vue.createApp({
         const campos = [
             {
                 tipo: "number",
-                nombre: "MinCod"
+                nombre: "CenCod"
             },
             {
                 tipo: "text",
-                nombre: "MinNom"
+                nombre: "CenNom"
+            },
+            {
+                tipo: "number",
+                nombre: "CenMinCod"
+            },
+            {
+                tipo: "text",
+                nombre: "CenMinNom"
             },
             {
                 tipo: "select",
-                nombre: "MinEstReg",
+                nombre: "CenEstReg",
                 valores: ["A", "I", "*"]
             }
         ];
         const estados = {
-            recurso: "gzm_mineral",
-            nombreCampoCod: "MinCod",
-            nombreCampoEstReg: "MinEstReg",
-            estadoCamposModificar: [["MinNom"], ["MinCod", "MinEstReg"]],
-            estadoCamposEliminar: [[], ["MinCod", "MinNom", "MinEstReg"]],
-            estadoCamposInactivar: [[], ["MinCod", "MinNom", "MinEstReg"]],
-            estadoCamposReactivar: [[], ["MinCod", "MinNom", "MinEstReg"]]
+            recurso: "p8m_centro",
+            nombreCampoCod: "CenCod",
+            nombreCampoEstReg: "CenEstReg",
+            estadoCamposModificar: [["CenNom", "CenMinCod", "CenMinNom"], ["CenCod", "CenEstReg"]],
+            estadoCamposEliminar: [[], ["CenCod", "CenNom", "CenMinCod", "CenMinNom", "CenEstReg"]],
+            estadoCamposInactivar: [[], ["CenCod", "CenNom", "CenMinCod", "CenMinNom", "CenEstReg"]],
+            estadoCamposReactivar: [[], ["CenCod", "CenNom", "CenMinCod", "CenMinNom", "CenEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

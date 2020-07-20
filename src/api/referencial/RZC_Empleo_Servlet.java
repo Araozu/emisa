@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import com.mysql.jdbc.Driver;
 
-public final class GZM_Mineral_Servlet extends HttpServlet {
+public final class RZC_Empleo_Servlet extends HttpServlet {
 
     final static String url = "jdbc:mysql://localhost:3306/";
     final static String dbName = "emisa";
@@ -38,7 +38,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                 return;
             }
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM gzm_mineral;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM rzc_empleo;");
 
             ResultSet rs = stmt.executeQuery();
             PrintWriter writer = res.getWriter();
@@ -49,11 +49,18 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
             writer.print("[");
             boolean esPrimer = true;
+            // TODO: Corregir
             while (rs.next()) {
                 writer.print(esPrimer? "{": ",{");
-                writer.print("\"MinCod\":" + rs.getInt("MinCod") + ",");
-                writer.print("\"MinNom\":\"" + rs.getString("MinNom") + "\",");
-                writer.print("\"MinEstReg\":\"" + rs.getString("MinEstReg") + "\"");
+                writer.print("\"EmpCod\":" + rs.getInt("EmpCod") + ",");
+                writer.print("\"EmpNom\":\"" + rs.getString("EmpNom") + "\",");
+                writer.print("\"EmpSue\":" + rs.getDouble("EmpSue") + ",");
+                writer.print("\"EmpViaCod\":" + rs.getInt("EmpViaCod") + ",");
+                writer.print("\"ViaFacCod\":" + rs.getInt("ViaFacCod") + ",");
+                writer.print("\"FacUbiCod\":" + rs.getInt("FacUbiCod") + ",");
+                writer.print("\"UbiAstCod\":" + rs.getInt("UbiAstCod") + ",");
+                writer.print("\"ViaNavCod\":" + rs.getInt("ViaNavCod") + ",");
+                writer.print("\"EmpEstReg\":\"" + rs.getString("AstEstReg") + "\"");
                 writer.print("}");
                 esPrimer = false;
             }
@@ -92,17 +99,29 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                 return;
             }
 
-            int minCod = Integer.parseInt(req.getParameter("MinCod"));
-            String minNom = req.getParameter("MinNom");
-            String minEstReg = req.getParameter("MinEstReg");
+            int empCod = Integer.parseInt(req.getParameter("EmpCod"));
+            String empNom = req.getParameter("EmpNom");
+            double empSue = Double.parseDouble(req.getParameter("EmpSue"));
+            int empViaCod = Integer.parseInt(req.getParameter("EmpViaCod"));
+            int viaFacCod = Integer.parseInt(req.getParameter("ViaFacCod"));
+            int facUbiCod = Integer.parseInt(req.getParameter("FacUbiCod"));
+            int ubiAstCod = Integer.parseInt(req.getParameter("UbiAstCod"));
+            int viaNavCod = Integer.parseInt(req.getParameter("ViaNavCod"));
+            String empEstReg = req.getParameter("EmpEstReg");
 
             PreparedStatement statement = conn.prepareStatement(
-                "INSERT INTO gzm_mineral (MinCod, MinNom, MinEstReg) VALUES (?, ?, ?)"
+                "INSERT INTO rzc_empleo (EmpCod, EmpNom, EmpSue, EmpViaCod, ViaFacCod, FacUbiCod, UbiAstCod, ViaNavCod, EmpEstReg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
 
-            statement.setInt(1, minCod);
-            statement.setString(2, minNom);
-            statement.setString(3, minEstReg);
+            statement.setInt(1, empCod);
+            statement.setString(2, empNom);
+            statement.setDouble(3, empSue);
+            statement.setInt(4, empViaCod);
+            statement.setInt(5, viaFacCod);
+            statement.setInt(6, facUbiCod);
+            statement.setInt(7, ubiAstCod);
+            statement.setInt(8, viaNavCod);
+            statement.setString(9, empEstReg);
 
             int count = statement.executeUpdate();
 
@@ -150,15 +169,31 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                 String operacion = req.getParameter("operacion");
 
                 if (operacion.equals("Modificar")) {
-                    int minCod = Integer.parseInt(req.getParameter("MinCod"));
-                    String minNom = req.getParameter("MinNom");
-
+                    int empCod = Integer.parseInt(req.getParameter("EmpCod"));
+                    String empNom = req.getParameter("EmpNom");
+                    double empSue = Double.parseDouble(req.getParameter("EmpSue"));
+                    int empViaCod = Integer.parseInt(req.getParameter("EmpViaCod"));
+                    int viaFacCod = Integer.parseInt(req.getParameter("ViaFacCod"));
+                    int facUbiCod = Integer.parseInt(req.getParameter("FacUbiCod"));
+                    int ubiAstCod = Integer.parseInt(req.getParameter("UbiAstCod"));
+                    int viaNavCod = Integer.parseInt(req.getParameter("ViaNavCod"));
+                    String empEstReg = req.getParameter("EmpEstReg");
+                    
+                    //esta parte no se como se hace (0.0)/
+                    //ya que segun la base de datos hay 5 llaves primarias, ademas del empcod
+                    
                     PreparedStatement statement = conn.prepareStatement(
-                        "UPDATE gzm_mineral SET MinNom=? WHERE MinCod=?;"
+                        "UPDATE rzc_empleo SET EmpNom=?, EmpSue=? WHERE EmpCod=?;"
                     );
 
-                    statement.setString(1, minNom);
-                    statement.setInt(2, minCod);
+                    statement.setString(1, empNom);
+                    statement.setDouble(2, empSue);
+                    statement.setInt(3, empViaCod);
+                    statement.setInt(4, viaFacCod);
+                    statement.setInt(5, facUbiCod);
+                    statement.setInt(6, ubiAstCod);
+                    statement.setInt(7, viaNavCod);
+                    statement.setInt(8, empCod);
 
                     int count = statement.executeUpdate();
 
@@ -171,13 +206,13 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
 
                 } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
 
-                    int minCod = Integer.parseInt(req.getParameter("MinCod"));
+                    int empCod = Integer.parseInt(req.getParameter("EmpCod"));
 
                     PreparedStatement statement = conn.prepareStatement(
-                        "UPDATE gzm_mineral SET MinEstReg=? WHERE MinCod=?;"
+                        "UPDATE rzc_empleo SET EmpEstReg=? WHERE EmpCod=?;"
                     );
                     statement.setString(1, operacion.equals("inactivar")? "I": "A");
-                    statement.setInt(2, minCod);
+                    statement.setInt(2, empCod);
 
                     int count = statement.executeUpdate();
 
@@ -235,13 +270,13 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                 return;
             }
 
-            int minCod = Integer.parseInt(req.getParameter("MinCod"));
+            int empCod = Integer.parseInt(req.getParameter("EmpCod"));
 
             PreparedStatement statement = conn.prepareStatement(
-                "UPDATE gzm_mineral SET MinEstReg='*' WHERE MinCod=?;"
+                "UPDATE rzc_empleo SET EmpEstReg='*' WHERE EmpCod=?;"
             );
 
-            statement.setInt(1, minCod);
+            statement.setInt(1, empCod);
 
             int count = statement.executeUpdate();
 

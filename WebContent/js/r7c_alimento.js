@@ -1,14 +1,14 @@
 const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
-        <h1>GZM_MINERAL</h1>
+        <h1>R7C_ALIMENTO</h1>
         <grilla-datos etiqueta="Mineral" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
         <br>
         <tabla-datos
-            nombre="Tabla GZM_MINERAL"
+            nombre="Tabla R7C_ALIMENTO"
             :nombresColumnas="nombresColumnas"
             :filas="filas"
             :funAlClick="seleccionarFila"
@@ -31,26 +31,34 @@ const app =  Vue.createApp({
         const campos = [
             {
                 tipo: "number",
-                nombre: "MinCod"
+                nombre: "AlimCod"
             },
             {
                 tipo: "text",
-                nombre: "MinNom"
+                nombre: "AlimNom"
+            },
+            {
+                tipo: "number",
+                nombre: "AlimCos"
+            },
+            {
+                tipo: "number",
+                nombre: "AlimCan"
             },
             {
                 tipo: "select",
-                nombre: "MinEstReg",
+                nombre: "AlimEstReg",
                 valores: ["A", "I", "*"]
             }
         ];
         const estados = {
-            recurso: "gzm_mineral",
-            nombreCampoCod: "MinCod",
-            nombreCampoEstReg: "MinEstReg",
-            estadoCamposModificar: [["MinNom"], ["MinCod", "MinEstReg"]],
-            estadoCamposEliminar: [[], ["MinCod", "MinNom", "MinEstReg"]],
-            estadoCamposInactivar: [[], ["MinCod", "MinNom", "MinEstReg"]],
-            estadoCamposReactivar: [[], ["MinCod", "MinNom", "MinEstReg"]]
+            recurso: "r7c_alimento",
+            nombreCampoCod: "AlimCod",
+            nombreCampoEstReg: "AlimEstReg",
+            estadoCamposModificar: [["AlimNom", "AlimCos", "AlimCan"], ["AlimCod", "AlimEstReg"]],
+            estadoCamposEliminar: [[], ["AlimCod", "AlimNom", "AlimCos", "AlimCan", "AlimEstReg"]],
+            estadoCamposInactivar: [[], ["AlimCod", "AlimNom", "AlimCos", "AlimCan", "AlimEstReg"]],
+            estadoCamposReactivar: [[], ["AlimCod", "AlimNom", "AlimCos", "AlimCan", "AlimEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();
