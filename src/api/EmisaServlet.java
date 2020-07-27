@@ -1,11 +1,16 @@
 package api;
 
+import com.mysql.jdbc.Driver;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class EmisaServlet extends HttpServlet {
 
@@ -53,6 +58,56 @@ public class EmisaServlet extends HttpServlet {
 
     protected void imprimirErrorEnvio(HttpServletResponse res, Exception e) {
         imprimirError(res, e, "Error al enviar los datos al cliente.");
+    }
+
+    protected void doInactivarReactivar(HttpServletRequest req, HttpServletResponse res, String nombreTabla, String estReg, String clave, String operacion) throws SQLException, IOException {
+        int catCod = Integer.parseInt(req.getParameter(clave));
+
+        PreparedStatement statement = conn.prepareStatement(
+            "UPDATE " + nombreTabla + " SET " + estReg + "=? WHERE " + clave + "=?;"
+        );
+        statement.setString(1, operacion.equals("Inactivar")? "I": "A");
+        statement.setInt(2, catCod);
+
+        int count = statement.executeUpdate();
+
+        imprimirEnJson(res, "{\"count\":" + count + "}");
+    }
+
+    protected void doDeleteG(HttpServletRequest req, HttpServletResponse res, String nombreTabla, String estReg, String clave) {
+        try {
+            new Driver();
+            conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
+
+            if (conn.isClosed()) {
+                imprimirErrorConexion(res);
+                return;
+            }
+
+            int alimCod = Integer.parseInt(req.getParameter(clave));
+
+            PreparedStatement statement = conn.prepareStatement(
+                "UPDATE " + nombreTabla + " SET " + estReg + "='*' WHERE " + clave + "=?;"
+            );
+
+            statement.setInt(1, alimCod);
+
+            int count = statement.executeUpdate();
+
+            imprimirEnJson(res, "{\"count\":" + count + "}");
+
+        } catch (Exception e) {
+            imprimirErrorEnvio(res, e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.err.println("Error al terminar la conexión con la base de datos.");
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

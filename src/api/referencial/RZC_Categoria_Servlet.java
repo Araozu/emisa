@@ -10,62 +10,42 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import api.EmisaServlet;
 import com.mysql.jdbc.Driver;
 
-public final class RZC_Categoria_Servlet extends HttpServlet {
-
-    final static String url = "jdbc:mysql://localhost:3306/";
-    final static String dbName = "emisa";
-    final static String driver = "com.mysql.jdbc.Driver";
-    final static String userName = "root";
-    final static String password = "";
-    final static String timezoneFix = "?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
-        "&useLegacyDatetimeCode=false&serverTimezone=UTC";
-
-    static Connection conn = null;
+public final class RZC_Categoria_Servlet extends EmisaServlet {
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) {
 
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.setStatus(500);
+                imprimirErrorConexion(res);
                 return;
             }
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM rzc_categoria;");
+            ResultSet rs = conn.prepareStatement("SELECT * FROM rzc_categoria;").executeQuery();
 
-            ResultSet rs = stmt.executeQuery();
-            PrintWriter writer = res.getWriter();
-
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            writer.print("[");
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
             boolean esPrimer = true;
             while (rs.next()) {
-                writer.print(esPrimer? "{": ",{");
-                writer.print("\"CatCod\":" + rs.getInt("CatCod") + ",");
-                writer.print("\"CatNom\":\"" + rs.getString("CatNom") + "\",");
-                writer.print("\"CatSuel\":" + rs.getDouble("CatSuel") + ",");
-                writer.print("\"CatEstReg\":\"" + rs.getString("CatEstReg") + "\"");
-                writer.print("}");
+                sb.append(esPrimer? "{": ",{")
+                    .append("\"CatCod\":" + rs.getInt("CatCod") + ",")
+                    .append("\"CatNom\":\"" + rs.getString("CatNom") + "\",")
+                    .append("\"CatSuel\":" + rs.getDouble("CatSuel") + ",")
+                    .append("\"CatEstReg\":\"" + rs.getString("CatEstReg") + "\"")
+                    .append("}");
                 esPrimer = false;
             }
-            writer.print("]");
+            sb.append("]");
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.setStatus(500);
+            imprimirErrorEnvio(res, e);
         } finally {
             try {
                 if (conn != null) {
@@ -80,16 +60,13 @@ public final class RZC_Categoria_Servlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.setStatus(500);
+                imprimirErrorConexion(res);
                 return;
             }
 
@@ -109,19 +86,10 @@ public final class RZC_Categoria_Servlet extends HttpServlet {
 
             int count = statement.executeUpdate();
 
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-
-            res.getWriter().print("{\"count\":" + count + "}");
+            imprimirEnJson(res, "{\"count\":" + count + "}");
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.setStatus(500);
+            imprimirErrorEnvio(res, e);
         } finally {
             try {
                 if (conn != null) {
@@ -135,17 +103,13 @@ public final class RZC_Categoria_Servlet extends HttpServlet {
     }
 
     @Override
-    public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doPut(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(500);
+                imprimirErrorConexion(res);
                 return;
             }
 
@@ -167,52 +131,19 @@ public final class RZC_Categoria_Servlet extends HttpServlet {
 
                     int count = statement.executeUpdate();
 
-                    res.setStatus(200);
-                    res.addHeader("Content-Type", "application/json");
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.getWriter().print("{\"count\":" + count + "}");
+                    imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
-
-                    int catCod = Integer.parseInt(req.getParameter("CatCod"));
-
-                    PreparedStatement statement = conn.prepareStatement(
-                        "UPDATE rzc_categoria SET CatSuel=? WHERE CatCod=?;"
-                    );
-                    statement.setString(1, operacion.equals("inactivar")? "I": "A");
-                    statement.setInt(2, catCod);
-
-                    int count = statement.executeUpdate();
-
-                    res.setStatus(200);
-                    res.addHeader("Content-Type", "application/json");
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.getWriter().print("{\"count\":" + count + "}");
-
+                    doInactivarReactivar(req, res, "rzc_categoria", "CatEstReg", "CatCod", operacion);
                 } else {
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.setStatus(400);
+                    imprimir400(res);
                 }
             } catch (NullPointerException e) {
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(400);
+                imprimir400(res);
             }
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-            res.setStatus(500);
+            imprimirErrorEnvio(res, e);
         } finally {
             try {
                 if (conn != null) {
@@ -226,63 +157,8 @@ public final class RZC_Categoria_Servlet extends HttpServlet {
     }
 
     @Override
-    public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        try {
-            new Driver();
-            conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
-
-            if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(500);
-                return;
-            }
-
-            int catCod = Integer.parseInt(req.getParameter("CatCod"));
-
-            PreparedStatement statement = conn.prepareStatement(
-                "UPDATE rzc_categoria SET CatSuel='*' WHERE CatCod=?;"
-            );
-
-            statement.setInt(1, catCod);
-
-            int count = statement.executeUpdate();
-
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-
-            res.getWriter().print("{\"count\":" + count + "}");
-
-        } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-            res.setStatus(500);
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Exception e) {
-                System.err.println("Error al terminar la conexión con la base de datos.");
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        super.doOptions(req, res);
-        res.addHeader("Access-Control-Allow-Origin", "*");
-        res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-        res.addHeader("Access-Control-Allow-Headers", "Content-Type");
+    public void doDelete(HttpServletRequest req, HttpServletResponse res) {
+        doDeleteG(req, res, "r7c_categoria", "CatEstReg", "CatCod");
     }
 
 }
