@@ -10,62 +10,43 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import api.EmisaServlet;
 import com.mysql.jdbc.Driver;
 
-public final class GZZ_Astro_Servlet extends HttpServlet {
-
-    final static String url = "jdbc:mysql://localhost:3306/";
-    final static String dbName = "emisa";
-    final static String driver = "com.mysql.jdbc.Driver";
-    final static String userName = "root";
-    final static String password = "";
-    final static String timezoneFix = "?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
-        "&useLegacyDatetimeCode=false&serverTimezone=UTC";
-
-    static Connection conn = null;
+public final class GZZ_Astro_Servlet extends EmisaServlet {
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) {
 
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.setStatus(500);
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM gzz_astros;");
+            ResultSet rs = conn.prepareStatement("SELECT * FROM gzz_astros;").executeQuery();
+            StringBuilder sb = new StringBuilder();
 
-            ResultSet rs = stmt.executeQuery();
-            PrintWriter writer = res.getWriter();
-
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            writer.print("[");
+            sb.append("[");
             boolean esPrimer = true;
             while (rs.next()) {
-                writer.print(esPrimer? "{": ",{");
-                writer.print("\"AstCod\":" + rs.getInt("AstCod") + ",");
-                writer.print("\"AstNom\":\"" + rs.getString("AstNom") + "\",");
-                writer.print("\"AstTip\":" + rs.getDouble("AstTip") + ",");
-                writer.print("\"AstEstReg\":\"" + rs.getString("AstEstReg") + "\"");
-                writer.print("}");
+                sb.append(esPrimer? "{": ",{")
+                    .append("\"AstCod\":" + rs.getInt("AstCod") + ",")
+                    .append("\"AstNom\":\"" + rs.getString("AstNom") + "\",")
+                    .append("\"AstTip\":" + rs.getDouble("AstTip") + ",")
+                    .append("\"AstEstReg\":\"" + rs.getString("AstEstReg") + "\"")
+                    .append("}");
                 esPrimer = false;
             }
-            writer.print("]");
+            sb.append("]");
 
+            imprimirEnJson(res, sb.toString());
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.setStatus(500);
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -80,16 +61,13 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.setStatus(500);
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -109,19 +87,10 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
             int count = statement.executeUpdate();
 
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-
-            res.getWriter().print("{\"count\":" + count + "}");
+            imprimirEnJson(res, "{\"count\":" + count + "}");
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.setStatus(500);
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -141,11 +110,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(500);
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -167,12 +132,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
                     int count = statement.executeUpdate();
 
-                    res.setStatus(200);
-                    res.addHeader("Content-Type", "application/json");
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.getWriter().print("{\"count\":" + count + "}");
+                    imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
 
@@ -186,33 +146,17 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
                     int count = statement.executeUpdate();
 
-                    res.setStatus(200);
-                    res.addHeader("Content-Type", "application/json");
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.getWriter().print("{\"count\":" + count + "}");
+                    imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else {
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.setStatus(400);
+                    imprimir400(res);
                 }
             } catch (NullPointerException e) {
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(400);
+                imprimir400(res);
             }
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-            res.setStatus(500);
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -232,11 +176,7 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(500);
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -250,21 +190,10 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
 
             int count = statement.executeUpdate();
 
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-
-            res.getWriter().print("{\"count\":" + count + "}");
+            imprimirEnJson(res, "{\"count\":" + count + "}");
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-            res.setStatus(500);
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -275,14 +204,6 @@ public final class GZZ_Astro_Servlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        super.doOptions(req, res);
-        res.addHeader("Access-Control-Allow-Origin", "*");
-        res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-        res.addHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 
 }

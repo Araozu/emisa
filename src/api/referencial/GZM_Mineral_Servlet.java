@@ -1,29 +1,15 @@
 package api.referencial;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import api.EmisaServlet;
 import com.mysql.jdbc.Driver;
-import api.utils.Utils;
 
-public final class GZM_Mineral_Servlet extends HttpServlet {
-
-    final static String url = "jdbc:mysql://localhost:3306/";
-    final static String dbName = "emisa";
-    final static String driver = "com.mysql.jdbc.Driver";
-    final static String userName = "root";
-    final static String password = "";
-    final static String timezoneFix = "?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
-        "&useLegacyDatetimeCode=false&serverTimezone=UTC";
-
-    static Connection conn = null;
+public final class GZM_Mineral_Servlet extends EmisaServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) {
@@ -33,7 +19,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -55,10 +41,10 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             }
             sb.append("]");
 
-            Utils.imprimirEnJson(res, sb.toString());
+            imprimirEnJson(res, sb.toString());
 
         } catch (Exception e) {
-            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -79,7 +65,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -96,10 +82,10 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             statement.setString(3, minEstReg);
 
             int count = statement.executeUpdate();
-            Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
+            imprimirEnJson(res, "{\"count\":" + count + "}");
 
         } catch (Exception e) {
-            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -119,7 +105,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -138,7 +124,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                     statement.setInt(2, minCod);
 
                     int count = statement.executeUpdate();
-                    Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
+                    imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
 
@@ -151,17 +137,17 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                     statement.setInt(2, minCod);
 
                     int count = statement.executeUpdate();
-                    Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
+                    imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else {
-                    Utils.imprimir400(res);
+                    imprimir400(res);
                 }
             } catch (NullPointerException e) {
-                Utils.imprimir400(res);
+                imprimir400(res);
             }
 
         } catch (Exception e) {
-            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -181,7 +167,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
+                imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -194,10 +180,10 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             statement.setInt(1, minCod);
 
             int count = statement.executeUpdate();
-            Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
+            imprimirEnJson(res, "{\"count\":" + count + "}");
 
         } catch (Exception e) {
-            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
+            imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -208,11 +194,6 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        Utils.doOptionsCors(res);
     }
 
 }
