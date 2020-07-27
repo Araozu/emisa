@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import com.mysql.jdbc.Driver;
+import api.utils.Utils;
 
 public final class GZM_Mineral_Servlet extends HttpServlet {
 
@@ -25,16 +26,14 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
     static Connection conn = null;
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) {
 
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.setStatus(500);
+                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -43,28 +42,23 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             ResultSet rs = stmt.executeQuery();
             PrintWriter writer = res.getWriter();
 
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            writer.print("[");
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
             boolean esPrimer = true;
             while (rs.next()) {
-                writer.print(esPrimer? "{": ",{");
-                writer.print("\"MinCod\":" + rs.getInt("MinCod") + ",");
-                writer.print("\"MinNom\":\"" + rs.getString("MinNom") + "\",");
-                writer.print("\"MinEstReg\":\"" + rs.getString("MinEstReg") + "\"");
-                writer.print("}");
+                sb.append(esPrimer? "{": ",{")
+                    .append("\"MinCod\":" + rs.getInt("MinCod") + ",")
+                    .append("\"MinNom\":\"" + rs.getString("MinNom") + "\",")
+                    .append("\"MinEstReg\":\"" + rs.getString("MinEstReg") + "\"")
+                    .append("}");
                 esPrimer = false;
             }
-            writer.print("]");
+            sb.append("]");
+
+            Utils.imprimirEnJson(res, sb.toString());
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.setStatus(500);
+            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -79,16 +73,13 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.setStatus(500);
+                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -105,20 +96,10 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             statement.setString(3, minEstReg);
 
             int count = statement.executeUpdate();
-
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-
-            res.getWriter().print("{\"count\":" + count + "}");
+            Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.setStatus(500);
+            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -132,17 +113,13 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
     }
 
     @Override
-    public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doPut(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(500);
+                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -161,13 +138,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                     statement.setInt(2, minCod);
 
                     int count = statement.executeUpdate();
-
-                    res.setStatus(200);
-                    res.addHeader("Content-Type", "application/json");
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.getWriter().print("{\"count\":" + count + "}");
+                    Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
 
@@ -176,38 +147,21 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
                     PreparedStatement statement = conn.prepareStatement(
                         "UPDATE gzm_mineral SET MinEstReg=? WHERE MinCod=?;"
                     );
-                    statement.setString(1, operacion.equals("inactivar")? "I": "A");
+                    statement.setString(1, operacion.equals("Inactivar")? "I": "A");
                     statement.setInt(2, minCod);
 
                     int count = statement.executeUpdate();
-
-                    res.setStatus(200);
-                    res.addHeader("Content-Type", "application/json");
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.getWriter().print("{\"count\":" + count + "}");
+                    Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else {
-                    res.addHeader("Access-Control-Allow-Origin", "*");
-                    res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                    res.setStatus(400);
+                    Utils.imprimir400(res);
                 }
             } catch (NullPointerException e) {
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(400);
+                Utils.imprimir400(res);
             }
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-            res.setStatus(500);
+            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -221,17 +175,13 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
     }
 
     @Override
-    public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doDelete(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
             if (conn.isClosed()) {
-                System.err.println("Error al iniciar conexion a la base de datos.");
-                res.addHeader("Access-Control-Allow-Origin", "*");
-                res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-                res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-                res.setStatus(500);
+                Utils.imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
                 return;
             }
 
@@ -244,22 +194,10 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
             statement.setInt(1, minCod);
 
             int count = statement.executeUpdate();
-
-            res.setStatus(200);
-            res.addHeader("Content-Type", "application/json");
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-
-            res.getWriter().print("{\"count\":" + count + "}");
+            Utils.imprimirEnJson(res, "{\"count\":" + count + "}");
 
         } catch (Exception e) {
-            System.err.println("Error al enviar los datos al cliente.");
-            e.printStackTrace();
-            res.addHeader("Access-Control-Allow-Origin", "*");
-            res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-            res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-            res.setStatus(500);
+            Utils.imprimirError(res, e, "Error al enviar los datos al cliente.");
         } finally {
             try {
                 if (conn != null) {
@@ -274,10 +212,7 @@ public final class GZM_Mineral_Servlet extends HttpServlet {
 
     @Override
     public void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        super.doOptions(req, res);
-        res.addHeader("Access-Control-Allow-Origin", "*");
-        res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
-        res.addHeader("Access-Control-Allow-Headers", "Content-Type");
+        Utils.doOptionsCors(res);
     }
 
 }
