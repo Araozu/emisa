@@ -23,6 +23,14 @@ public class EmisaServlet extends HttpServlet {
 
     protected static Connection conn = null;
 
+    private final String nombreTabla;
+    private final HashMap<String, String> campos;
+
+    public EmisaServlet(String nombreTabla, HashMap<String, String> campos) {
+        this.nombreTabla = nombreTabla;
+        this.campos = campos;
+    }
+
     protected void imprimirEnJson(HttpServletResponse res, String json) throws IOException {
         res.setStatus(200);
         res.addHeader("Content-Type", "application/json");
@@ -59,7 +67,8 @@ public class EmisaServlet extends HttpServlet {
         imprimirError(res, e, "Error al enviar los datos al cliente.");
     }
 
-    protected void doGetG(HttpServletRequest req, HttpServletResponse res, String tabla, HashMap<String, String> campos) {
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
@@ -69,7 +78,7 @@ public class EmisaServlet extends HttpServlet {
                 return;
             }
 
-            ResultSet rs = conn.prepareStatement("SELECT * FROM " + tabla + ";").executeQuery();
+            ResultSet rs = conn.prepareStatement("SELECT * FROM " + nombreTabla + ";").executeQuery();
 
             StringBuilder sb = new StringBuilder();
             sb.append("[");
