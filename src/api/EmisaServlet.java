@@ -19,7 +19,7 @@ public class EmisaServlet extends HttpServlet {
 
     protected static Connection conn = null;
 
-    public void imprimirEnJson(HttpServletResponse res, String json) throws IOException {
+    protected void imprimirEnJson(HttpServletResponse res, String json) throws IOException {
         res.setStatus(200);
         res.addHeader("Content-Type", "application/json");
         res.addHeader("Access-Control-Allow-Origin", "*");
@@ -29,7 +29,7 @@ public class EmisaServlet extends HttpServlet {
         res.getWriter().print(json);
     }
 
-    public void imprimirError(HttpServletResponse res, Exception e, String razon) {
+    protected void imprimirError(HttpServletResponse res, Exception e, String razon) {
         System.err.println(razon);
         if (e != null) {
             e.printStackTrace();
@@ -40,11 +40,19 @@ public class EmisaServlet extends HttpServlet {
         res.setStatus(500);
     }
 
-    public void imprimir400(HttpServletResponse res) {
+    protected void imprimir400(HttpServletResponse res) {
         res.addHeader("Access-Control-Allow-Origin", "*");
         res.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
         res.addHeader("Access-Control-Allow-Headers", "Content-Type");
         res.setStatus(400);
+    }
+
+    protected void imprimirErrorConexion(HttpServletResponse res) {
+        imprimirError(res, null, "Error al iniciar conexion a la base de datos.");
+    }
+
+    protected void imprimirErrorEnvio(HttpServletResponse res, Exception e) {
+        imprimirError(res, e, "Error al enviar los datos al cliente.");
     }
 
     @Override
