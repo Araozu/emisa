@@ -7,10 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EmisaServlet extends HttpServlet {
 
@@ -58,6 +57,64 @@ public class EmisaServlet extends HttpServlet {
 
     protected void imprimirErrorEnvio(HttpServletResponse res, Exception e) {
         imprimirError(res, e, "Error al enviar los datos al cliente.");
+    }
+
+    protected void doGetG(HttpServletRequest req, HttpServletResponse res, String tabla, HashMap<String, String> campos) {
+        try {
+            new Driver();
+            conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
+
+            if (conn.isClosed()) {
+                imprimirErrorConexion(res);
+                return;
+            }
+
+            ResultSet rs = conn.prepareStatement("SELECT * FROM " + tabla + ";").executeQuery();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            boolean esPrimer = true;
+            while (rs.next()) {
+                sb.append(esPrimer ? "{" : ",{");
+                int i = 0;
+                int max = campos.size();
+                for (Map.Entry<String, String> entry : campos.entrySet()) {
+                    sb.append("\"" + entry.getKey() + "\":");
+                    switch (entry.getValue()) {
+                        case "int": {
+                            sb.append(rs.getInt(entry.getKey()));
+                            break;
+                        }
+                        case "decimal": {
+                            sb.append(rs.getDouble(entry.getKey()));
+                            break;
+                        }
+                        case "string": {
+                            sb.append("\"" + rs.getString(entry.getKey()) + "\"");
+                            break;
+                        }
+                    }
+                    if (i < max) sb.append(",");
+                    i++;
+                }
+                sb.append("}");
+                esPrimer = false;
+            }
+            sb.append("]");
+
+            imprimirEnJson(res, sb.toString());
+        } catch (Exception e) {
+            imprimirErrorEnvio(res, e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.err.println("Error al terminar la conexión con la base de datos.");
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void doInactivarReactivar(HttpServletRequest req, HttpServletResponse res, String nombreTabla, String estReg, String clave, String operacion) throws SQLException, IOException {

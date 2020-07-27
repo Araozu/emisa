@@ -44,6 +44,7 @@ public final class RZC_Categoria_Servlet extends EmisaServlet {
             }
             sb.append("]");
 
+            imprimirEnJson(res, sb.toString());
         } catch (Exception e) {
             imprimirErrorEnvio(res, e);
         } finally {
