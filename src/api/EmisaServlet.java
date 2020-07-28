@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EmisaServlet extends HttpServlet {
@@ -23,11 +24,11 @@ public class EmisaServlet extends HttpServlet {
     protected static Connection conn = null;
 
     private final String nombreTabla;
-    private final HashMap<String, String> campos;
+    private final List<InfoCampo> campos;
     private final String campoId;
     private final String campoEstReg;
 
-    public EmisaServlet(String nombreTabla, HashMap<String, String> campos, String campoId, String campoEstReg) {
+    public EmisaServlet(String nombreTabla, List<InfoCampo> campos, String campoId, String campoEstReg) {
         this.nombreTabla = nombreTabla;
         this.campos = campos;
         this.campoId = campoId;
@@ -90,19 +91,22 @@ public class EmisaServlet extends HttpServlet {
                 sb.append(esPrimer ? "{" : ",{");
                 sb.append("\"" + campoId + "\":" + rs.getInt(campoId) + ",")
                     .append("\"" + campoEstReg + "\":\"" + rs.getString(campoEstReg) + "\"");
-                for (Map.Entry<String, String> entry : campos.entrySet()) {
-                    sb.append(",\"" + entry.getKey() + "\":");
-                    switch (entry.getValue()) {
+                for (InfoCampo i : campos) {
+                    String nombre = i.nombre;
+                    String tipo = i.tipo;
+
+                    sb.append(",\"" + nombre + "\":");
+                    switch (tipo) {
                         case "int": {
-                            sb.append(rs.getInt(entry.getKey()));
+                            sb.append(rs.getInt(nombre));
                             break;
                         }
                         case "decimal": {
-                            sb.append(rs.getDouble(entry.getKey()));
+                            sb.append(rs.getDouble(nombre));
                             break;
                         }
                         case "string": {
-                            sb.append("\"" + rs.getString(entry.getKey()) + "\"");
+                            sb.append("\"" + rs.getString(nombre) + "\"");
                             break;
                         }
                     }
@@ -127,13 +131,56 @@ public class EmisaServlet extends HttpServlet {
         }
     }
 
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            new Driver();
+            conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
+
+            if (conn.isClosed()) {
+                imprimirErrorConexion(res);
+                return;
+            }
+
+            int vCampoId = Integer.parseInt(req.getParameter(campoId));
+            String catNom = req.getParameter("CatNom");
+            double catSuel = Double.parseDouble(req.getParameter("CatSuel"));
+            String catEstReg = req.getParameter("CatEstReg");
+
+            PreparedStatement statement = conn.prepareStatement(
+                "INSERT INTO rzc_categoria (CatCod, CatNom, CatSuel, CatEstReg) VALUES (?, ?, ?, ?)"
+            );
+
+            statement.setInt(1, vCampoId);
+            statement.setString(2, catNom);
+            statement.setDouble(3, catSuel);
+            statement.setString(4, catEstReg);
+
+            int count = statement.executeUpdate();
+
+            imprimirEnJson(res, "{\"count\":" + count + "}");
+
+        } catch (Exception e) {
+            imprimirErrorEnvio(res, e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.err.println("Error al terminar la conexión con la base de datos.");
+                e.printStackTrace();
+            }
+        }
+    }
+
     protected void doInactivarReactivar(HttpServletRequest req, HttpServletResponse res, String operacion) throws SQLException, IOException {
         int catCod = Integer.parseInt(req.getParameter(campoId));
 
         PreparedStatement statement = conn.prepareStatement(
             "UPDATE " + nombreTabla + " SET " + campoEstReg + "=? WHERE " + campoId + "=?;"
         );
-        statement.setString(1, operacion.equals("Inactivar")? "I": "A");
+        statement.setString(1, operacion.equals("Inactivar") ? "I" : "A");
         statement.setInt(2, catCod);
 
         int count = statement.executeUpdate();
