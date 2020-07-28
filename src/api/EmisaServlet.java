@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EmisaServlet extends HttpServlet {
 
@@ -143,18 +141,44 @@ public class EmisaServlet extends HttpServlet {
             }
 
             int vCampoId = Integer.parseInt(req.getParameter(campoId));
-            String catNom = req.getParameter("CatNom");
-            double catSuel = Double.parseDouble(req.getParameter("CatSuel"));
-            String catEstReg = req.getParameter("CatEstReg");
+            String vCampoEstReg = req.getParameter(campoEstReg);
 
-            PreparedStatement statement = conn.prepareStatement(
-                "INSERT INTO rzc_categoria (CatCod, CatNom, CatSuel, CatEstReg) VALUES (?, ?, ?, ?)"
-            );
+            StringBuilder sql = new StringBuilder(
+                "INSERT INTO " + nombreTabla + "(" + campoId + ", " + campoEstReg);
+            for (InfoCampo i : campos) {
+                String nombre = i.nombre;
+                sql.append(", ").append(nombre);
+            }
+            sql.append(") VALUES (?, ?");
+            for (int i = 0; i < campos.size(); i++) {
+                sql.append(", ?");
+            }
+            sql.append(")");
+
+            PreparedStatement statement = conn.prepareStatement(sql.toString());
 
             statement.setInt(1, vCampoId);
-            statement.setString(2, catNom);
-            statement.setDouble(3, catSuel);
-            statement.setString(4, catEstReg);
+            statement.setString(2, vCampoEstReg);
+
+            int pos = 3;
+            for (InfoCampo infoCampo : campos) {
+                String valorCampo = req.getParameter(infoCampo.nombre);
+                switch (infoCampo.tipo) {
+                    case "int": {
+                        statement.setInt(pos, Integer.parseInt(valorCampo));
+                        break;
+                    }
+                    case "decimal": {
+                        statement.setDouble(pos, Double.parseDouble(valorCampo));
+                        break;
+                    }
+                    case "string": {
+                        statement.setString(pos, valorCampo);
+                        break;
+                    }
+                }
+                pos++;
+            }
 
             int count = statement.executeUpdate();
 
