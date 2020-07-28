@@ -15,7 +15,6 @@ public class EmisaServlet extends HttpServlet {
 
     protected static String url = "jdbc:mysql://localhost:3306/";
     protected static String dbName = "emisa";
-    protected static String driver = "com.mysql.jdbc.Driver";
     protected static String userName = "root";
     protected static String password = "";
     protected static String timezoneFix = "?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
@@ -25,10 +24,14 @@ public class EmisaServlet extends HttpServlet {
 
     private final String nombreTabla;
     private final HashMap<String, String> campos;
+    private final String campoId;
+    private final String campoEstReg;
 
-    public EmisaServlet(String nombreTabla, HashMap<String, String> campos) {
+    public EmisaServlet(String nombreTabla, HashMap<String, String> campos, String campoId, String campoEstReg) {
         this.nombreTabla = nombreTabla;
         this.campos = campos;
+        this.campoId = campoId;
+        this.campoEstReg = campoEstReg;
     }
 
     protected void imprimirEnJson(HttpServletResponse res, String json) throws IOException {
@@ -85,10 +88,10 @@ public class EmisaServlet extends HttpServlet {
             boolean esPrimer = true;
             while (rs.next()) {
                 sb.append(esPrimer ? "{" : ",{");
-                int i = 0;
-                int max = campos.size();
+                sb.append("\"" + campoId + "\":" + rs.getInt(campoId) + ",")
+                    .append("\"" + campoEstReg + "\":\"" + rs.getString(campoEstReg) + "\"");
                 for (Map.Entry<String, String> entry : campos.entrySet()) {
-                    sb.append("\"" + entry.getKey() + "\":");
+                    sb.append(",\"" + entry.getKey() + "\":");
                     switch (entry.getValue()) {
                         case "int": {
                             sb.append(rs.getInt(entry.getKey()));
@@ -103,8 +106,6 @@ public class EmisaServlet extends HttpServlet {
                             break;
                         }
                     }
-                    if (i < max) sb.append(",");
-                    i++;
                 }
                 sb.append("}");
                 esPrimer = false;
@@ -126,11 +127,11 @@ public class EmisaServlet extends HttpServlet {
         }
     }
 
-    protected void doInactivarReactivar(HttpServletRequest req, HttpServletResponse res, String nombreTabla, String estReg, String clave, String operacion) throws SQLException, IOException {
-        int catCod = Integer.parseInt(req.getParameter(clave));
+    protected void doInactivarReactivar(HttpServletRequest req, HttpServletResponse res, String operacion) throws SQLException, IOException {
+        int catCod = Integer.parseInt(req.getParameter(campoId));
 
         PreparedStatement statement = conn.prepareStatement(
-            "UPDATE " + nombreTabla + " SET " + estReg + "=? WHERE " + clave + "=?;"
+            "UPDATE " + nombreTabla + " SET " + campoEstReg + "=? WHERE " + campoId + "=?;"
         );
         statement.setString(1, operacion.equals("Inactivar")? "I": "A");
         statement.setInt(2, catCod);
@@ -140,7 +141,8 @@ public class EmisaServlet extends HttpServlet {
         imprimirEnJson(res, "{\"count\":" + count + "}");
     }
 
-    protected void doDeleteG(HttpServletRequest req, HttpServletResponse res, String nombreTabla, String estReg, String clave) {
+    @Override
+    public void doDelete(HttpServletRequest req, HttpServletResponse res) {
         try {
             new Driver();
             conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
@@ -150,10 +152,10 @@ public class EmisaServlet extends HttpServlet {
                 return;
             }
 
-            int alimCod = Integer.parseInt(req.getParameter(clave));
+            int alimCod = Integer.parseInt(req.getParameter(campoId));
 
             PreparedStatement statement = conn.prepareStatement(
-                "UPDATE " + nombreTabla + " SET " + estReg + "='*' WHERE " + clave + "=?;"
+                "UPDATE " + nombreTabla + " SET " + campoEstReg + "='*' WHERE " + campoId + "=?;"
             );
 
             statement.setInt(1, alimCod);

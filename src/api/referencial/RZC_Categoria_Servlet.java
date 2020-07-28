@@ -11,17 +11,17 @@ import java.util.HashMap;
 
 public final class RZC_Categoria_Servlet extends EmisaServlet {
 
-    static String nombreTabla = "r7c_categoria";
-    static HashMap<String, String> s = new HashMap<>();
+    static final String nombreTabla = "r7c_categoria";
+    static HashMap<String, String> campos = new HashMap<>();
+    static final String campoId = "CatCod";
+    static final String campoEstReg = "CatEstReg";
     static {
-        s.put("CatCod", "int");
-        s.put("CatNom", "string");
-        s.put("CatSuel", "decimal");
-        s.put("CatEstReg", "string");
+        campos.put("CatNom", "string");
+        campos.put("CatSuel", "decimal");
     }
 
     public RZC_Categoria_Servlet() {
-        super("r7c_categoria", s);
+        super(nombreTabla, campos, campoId, campoEstReg);
     }
 
     @Override
@@ -99,7 +99,7 @@ public final class RZC_Categoria_Servlet extends EmisaServlet {
                     imprimirEnJson(res, "{\"count\":" + count + "}");
 
                 } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
-                    doInactivarReactivar(req, res, nombreTabla, "CatEstReg", "CatCod", operacion);
+                    doInactivarReactivar(req, res, operacion);
                 } else {
                     imprimir400(res);
                 }
@@ -119,11 +119,6 @@ public final class RZC_Categoria_Servlet extends EmisaServlet {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void doDelete(HttpServletRequest req, HttpServletResponse res) {
-        doDeleteG(req, res, nombreTabla, "CatEstReg", "CatCod");
     }
 
 }
