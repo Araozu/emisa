@@ -1,70 +1,28 @@
 package api.referencial;
 
 import api.EmisaServlet;
+import api.InfoCampo;
 import com.mysql.jdbc.Driver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.util.HashMap;
+import java.util.LinkedList;
 
 public final class RZC_Categoria_Servlet extends EmisaServlet {
 
     static final String nombreTabla = "r7c_categoria";
-    static HashMap<String, String> campos = new HashMap<>();
+    static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "CatCod";
     static final String campoEstReg = "CatEstReg";
     static {
-        campos.put("CatNom", "string");
-        campos.put("CatSuel", "decimal");
+        campos.add(new InfoCampo("CatNom", "string"));
+        campos.add(new InfoCampo("CatSuel", "decimal"));
     }
 
     public RZC_Categoria_Servlet() {
         super(nombreTabla, campos, campoId, campoEstReg);
-    }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) {
-        try {
-            new Driver();
-            conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
-
-            if (conn.isClosed()) {
-                imprimirErrorConexion(res);
-                return;
-            }
-
-            int catCod = Integer.parseInt(req.getParameter("CatCod"));
-            String catNom = req.getParameter("CatNom");
-            double catSuel = Double.parseDouble(req.getParameter("CatSuel"));
-            String catEstReg = req.getParameter("CatEstReg");
-
-            PreparedStatement statement = conn.prepareStatement(
-                "INSERT INTO rzc_categoria (CatCod, CatNom, CatSuel, CatEstReg) VALUES (?, ?, ?, ?)"
-            );
-
-            statement.setInt(1, catCod);
-            statement.setString(2, catNom);
-            statement.setDouble(3, catSuel);
-            statement.setString(4, catEstReg);
-
-            int count = statement.executeUpdate();
-
-            imprimirEnJson(res, "{\"count\":" + count + "}");
-
-        } catch (Exception e) {
-            imprimirErrorEnvio(res, e);
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Exception e) {
-                System.err.println("Error al terminar la conexión con la base de datos.");
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

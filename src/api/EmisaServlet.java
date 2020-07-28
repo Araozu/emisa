@@ -153,7 +153,7 @@ public class EmisaServlet extends HttpServlet {
             for (int i = 0; i < campos.size(); i++) {
                 sql.append(", ?");
             }
-            sql.append(")");
+            sql.append(");");
 
             PreparedStatement statement = conn.prepareStatement(sql.toString());
 
@@ -161,24 +161,7 @@ public class EmisaServlet extends HttpServlet {
             statement.setString(2, vCampoEstReg);
 
             int pos = 3;
-            for (InfoCampo infoCampo : campos) {
-                String valorCampo = req.getParameter(infoCampo.nombre);
-                switch (infoCampo.tipo) {
-                    case "int": {
-                        statement.setInt(pos, Integer.parseInt(valorCampo));
-                        break;
-                    }
-                    case "decimal": {
-                        statement.setDouble(pos, Double.parseDouble(valorCampo));
-                        break;
-                    }
-                    case "string": {
-                        statement.setString(pos, valorCampo);
-                        break;
-                    }
-                }
-                pos++;
-            }
+            getPos(req, pos, statement);
 
             int count = statement.executeUpdate();
 
@@ -198,18 +181,98 @@ public class EmisaServlet extends HttpServlet {
         }
     }
 
-    protected void doInactivarReactivar(HttpServletRequest req, HttpServletResponse res, String operacion) throws SQLException, IOException {
-        int catCod = Integer.parseInt(req.getParameter(campoId));
+    @Override
+    public void doPut(HttpServletRequest req, HttpServletResponse res) {
+        try {
+            new Driver();
+            conn = DriverManager.getConnection(url + dbName + timezoneFix, userName, password);
 
-        PreparedStatement statement = conn.prepareStatement(
-            "UPDATE " + nombreTabla + " SET " + campoEstReg + "=? WHERE " + campoId + "=?;"
-        );
-        statement.setString(1, operacion.equals("Inactivar") ? "I" : "A");
-        statement.setInt(2, catCod);
+            if (conn.isClosed()) {
+                imprimirErrorConexion(res);
+                return;
+            }
 
-        int count = statement.executeUpdate();
+            try {
 
-        imprimirEnJson(res, "{\"count\":" + count + "}");
+                int vCampoId = Integer.parseInt(req.getParameter(campoId));
+                String operacion = req.getParameter("operacion");
+
+                if (operacion.equals("Modificar")) {
+
+                    StringBuilder sql = new StringBuilder(
+                        "UPDATE " + nombreTabla + " SET");
+                    int pos = 0;
+                    int max = campos.size();
+                    for (InfoCampo i : campos) {
+                        String nombre = i.nombre;
+                        sql.append(" " + nombre + "=?");
+                        if (pos < max) sql.append(",");
+                        pos++;
+                    }
+                    sql.append(" WHERE " + campoId + "=?;");
+
+                    PreparedStatement statement = conn.prepareStatement(sql.toString());
+
+                    pos = 1;
+                    pos = getPos(req, pos, statement);
+                    statement.setInt(pos, vCampoId);
+
+                    int count = statement.executeUpdate();
+
+                    imprimirEnJson(res, "{\"count\":" + count + "}");
+
+                } else if (operacion.equals("Inactivar") || operacion.equals("Reactivar")) {
+
+                    PreparedStatement statement = conn.prepareStatement(
+                        "UPDATE " + nombreTabla + " SET " + campoEstReg + "=? WHERE " + campoId + "=?;"
+                    );
+                    statement.setString(1, operacion.equals("Inactivar") ? "I" : "A");
+                    statement.setInt(2, vCampoId);
+
+                    int count = statement.executeUpdate();
+
+                    imprimirEnJson(res, "{\"count\":" + count + "}");
+                } else {
+                    imprimir400(res);
+                }
+            } catch (NullPointerException e) {
+                imprimir400(res);
+            }
+
+        } catch (Exception e) {
+            imprimirErrorEnvio(res, e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                System.err.println("Error al terminar la conexión con la base de datos.");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private int getPos(HttpServletRequest req, int pos, PreparedStatement statement) throws SQLException {
+        for (InfoCampo infoCampo : campos) {
+            String valorCampo = req.getParameter(infoCampo.nombre);
+            switch (infoCampo.tipo) {
+                case "int": {
+                    statement.setInt(pos, Integer.parseInt(valorCampo));
+                    break;
+                }
+                case "decimal": {
+                    statement.setDouble(pos, Double.parseDouble(valorCampo));
+                    break;
+                }
+                case "string": {
+                    statement.setString(pos, valorCampo);
+                    break;
+                }
+            }
+            pos++;
+        }
+        return pos;
     }
 
     @Override
