@@ -3,6 +3,11 @@
     margin: 1rem;
 }
 
+.contenedor-tablas {
+    display: grid;
+    grid-template-columns: 25rem 25rem auto;
+}
+
 .tablas-referenciales a {
     display: inline-block;
     color: #1976D2;
