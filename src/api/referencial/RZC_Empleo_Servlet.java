@@ -13,7 +13,7 @@ public final class RZC_Empleo_Servlet extends EmisaServlet {
     static final String campoEstReg = "EmpEstReg";
 
     static {
-        campos.add(new InfoCampo("EpmNom", "string"));
+        campos.add(new InfoCampo("EmpNom", "string"));
         campos.add(new InfoCampo("EmpSue", "decimal"));
         campos.add(new InfoCampo("EmpEst", "decimal"));
         campos.add(new InfoCampo("EmpViaCod", "int"));
