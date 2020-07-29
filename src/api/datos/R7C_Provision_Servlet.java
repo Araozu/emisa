@@ -1,4 +1,6 @@
 package api.datos;
 
-public class R7C_Provision_Servlet {
+import api.EmisaServlet;
+
+public class R7C_Provision_Servlet extends EmisaServlet {
 }

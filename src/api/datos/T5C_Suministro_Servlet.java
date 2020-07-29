@@ -1,4 +1,6 @@
 package api.datos;
 
-public class T5C_Suministro_Servlet {
+import api.EmisaServlet;
+
+public class T5C_Suministro_Servlet extends EmisaServlet {
 }

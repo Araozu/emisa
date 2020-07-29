@@ -1,4 +1,6 @@
 package api.datos;
 
-public class TZZ_Viaje_Servlet {
+import api.EmisaServlet;
+
+public class TZZ_Viaje_Servlet extends EmisaServlet {
 }

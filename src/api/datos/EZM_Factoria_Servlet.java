@@ -1,4 +1,6 @@
 package api.datos;
 
-public class EZM_Factoria_Servlet {
+import api.EmisaServlet;
+
+public class EZM_Factoria_Servlet extends EmisaServlet {
 }

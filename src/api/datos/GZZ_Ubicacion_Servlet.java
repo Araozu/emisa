@@ -1,4 +1,6 @@
 package api.datos;
 
-public class GZZ_Ubicacion_Servlet {
+import api.EmisaServlet;
+
+public class GZZ_Ubicacion_Servlet extends EmisaServlet {
 }

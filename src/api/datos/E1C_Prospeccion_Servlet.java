@@ -1,4 +1,6 @@
 package api.datos;
 
-public class E1C_Prospeccion_Servlet {
+import api.EmisaServlet;
+
+public class E1C_Prospeccion_Servlet extends EmisaServlet {
 }

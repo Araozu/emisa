@@ -1,4 +1,6 @@
 package api.datos;
 
-public class TZM_Nave_Servlet {
+import api.EmisaServlet;
+
+public class TZM_Nave_Servlet extends EmisaServlet {
 }
