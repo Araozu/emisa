@@ -11,3 +11,12 @@
 .tablas-referenciales a:visited {
     color: #3F51B5;
 }
+
+.tablas-de-datos a {
+    display: inline-block;
+    color: #1976D2;
+}
+
+.tablas-de-datos a:visited {
+    color: #3F51B5;
+}
