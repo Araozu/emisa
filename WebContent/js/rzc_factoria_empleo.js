@@ -1,14 +1,14 @@
 const app = Vue.createApp({
     template: `
     <div class="gzz_astro">
-        <h1>E1Z_HALLAZGO</h1>
-        <grilla-datos etiqueta="Hallazgo" :campos="campos" :camposDesactivados="camposDesactivados"
+        <h1>RZC_FACTORIA_EMPLEO</h1>
+        <grilla-datos etiqueta="Factoria_Empleo" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
         <br>
         <tabla-datos
-            nombre="Tabla E1Z_HALLAZGO"
+            nombre="Tabla RZC_FACTORIA_EMPLEO"
             :nombresColumnas="nombresColumnas"
             :filas="filas"
             :funAlClick="seleccionarFila"
@@ -31,34 +31,30 @@ const app = Vue.createApp({
         const campos = [
             {
                 tipo: "number",
-                nombre: "HalCod"
+                nombre: "FacEmpCod"
             },
             {
                 tipo: "number",
-                nombre: "HalProCod"
+                nombre: "FacEmpPerCod"
             },
             {
                 tipo: "number",
-                nombre: "HalMinCod"
-            },
-            {
-                tipo: "number",
-                nombre: "HalSit"
+                nombre: "FacCod"
             },
             {
                 tipo: "select",
-                nombre: "HalEstReg",
+                nombre: "FacEmpEstReg",
                 valores: ["A", "I", "*"]
             }
         ];
         const estados = {
-            recurso: "e1z_hallazgo",
-            nombreCampoCod: "HalCod",
-            nombreCampoEstReg: "HalEstReg",
-            estadoCamposModificar: [["HalProCod", "HalMinCod", "HalSit"], ["HalCod", "HalEstReg"]],
-            estadoCamposEliminar: [[], ["HalProCod", "HalMinCod", "HalSit", "HalCod", "HalEstReg"]],
-            estadoCamposInactivar: [[], ["HalProCod", "HalMinCod", "HalSit", "HalCod", "HalEstReg"]],
-            estadoCamposReactivar: [[], ["HalProCod", "HalMinCod", "HalSit", "HalCod", "HalEstReg"]]
+            recurso: "rzc_factoria_empleo",
+            nombreCampoCod: "FacEmpCod",
+            nombreCampoEstReg: "FacEmpEstReg",
+            estadoCamposModificar: [["FacEmpPerCod", "FacCod"], ["FacEmpCod", "FacEmpEstReg"]],
+            estadoCamposEliminar: [[], ["FacEmpPerCod", "FacCod", "FacEmpCod", "FacEmpEstReg"]],
+            estadoCamposInactivar: [[], ["FacEmpPerCod", "FacCod", "FacEmpCod", "FacEmpEstReg"]],
+            estadoCamposReactivar: [[], ["FacEmpPerCod", "FacCod", "FacEmpCod", "FacEmpEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();
