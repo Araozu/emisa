@@ -135,13 +135,23 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>RZC_Factoria</servlet-name>
+        <servlet-name>EZM_Factoria</servlet-name>
+        <servlet-class>api.datos.EZM_Factoria_Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EZM_Factoria</servlet-name>
+        <url-pattern>/api/ezm_factoria/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RZC_Factoria_Empleo</servlet-name>
         <servlet-class>api.datos.RZC_Factoria_Empleo_Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RZC_Factoria</servlet-name>
-        <url-pattern>/api/rzc_factoria/</url-pattern>
+        <servlet-name>RZC_Factoria_Empleo</servlet-name>
+        <url-pattern>/api/rzc_factoria_empleo/</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -185,13 +195,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>TZZ_Nave</servlet-name>
+        <servlet-name>TZZ_Viaje</servlet-name>
         <servlet-class>api.datos.TZZ_Viaje_Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>TZZ_Nave</servlet-name>
-        <url-pattern>/api/tzz_nave/</url-pattern>
+        <servlet-name>TZZ_Viaje</servlet-name>
+        <url-pattern>/api/tzz_viaje/</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
