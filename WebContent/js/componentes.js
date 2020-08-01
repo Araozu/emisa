@@ -7,7 +7,10 @@ app.component("grilla-datos", {
             <div class="estr_form">
                 <template v-for="campo in campos">
                     <template v-if="campo.tipo === 'number' || campo.tipo === 'text'">
-                        <label :for="campo.nombre">{{ campo.nombre }}</label>
+                        <label :for="campo.nombre">
+                            {{ campo.nombre }}
+                            {{ campo.ref? " - FK (" + campo.ref.toUpperCase() + ")": "" }}
+                        </label>
                         <input :id="campo.nombre" 
                             :type="campo.tipo" 
                             :name="campo.nombre"
