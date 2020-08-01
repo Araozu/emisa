@@ -195,7 +195,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
 
     const realizarOperacion = async (body, metodo, enExito, enError) => {
         const bodyEnUrl = metodo === "GET" || metodo === "PUT" || metodo === "DELETE";
-        const url = `${servidor}/api/${recurso}/${bodyEnUrl? '?' + body: ''}`;
+        const url = `${servidor}/api/${recurso}${bodyEnUrl ? '?' + body : ''}`;
         try {
             const datos = {
                 method: metodo,
@@ -217,7 +217,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
     };
 
     const cargarFilas = async () => {
-        const url = `${servidor}/api/${recurso}/`;
+        const url = `${servidor}/api/${recurso}`;
         try {
             const peticion = await fetch(url);
             if (peticion.ok) {
