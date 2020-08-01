@@ -40,7 +40,8 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "FacUbiCod"
+                nombre: "FacUbiCod",
+                ref: "gzz_ubicacion"
             },
             {
                 tipo: "select",

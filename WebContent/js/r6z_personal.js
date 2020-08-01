@@ -39,7 +39,8 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "PerEmpCod"
+                nombre: "PerEmpCod",
+                ref: "rzc_empleo"
             },
             {
                 tipo: "select",

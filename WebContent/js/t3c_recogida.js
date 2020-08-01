@@ -35,7 +35,8 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "RecViaCod"
+                nombre: "RecViaCod",
+                ref: "tzz_viaje"
             },
             {
                 tipo: "number",

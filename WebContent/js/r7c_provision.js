@@ -44,11 +44,13 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "ProvAlimCod"
+                nombre: "ProvAlimCod",
+                ref: "r7c_alimento"
             },
             {
                 tipo: "number",
-                nombre: "ProvSumCod"
+                nombre: "ProvSumCod",
+                ref: "t5c_suministro"
             },
             {
                 tipo: "number",

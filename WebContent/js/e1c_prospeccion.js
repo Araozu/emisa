@@ -39,7 +39,8 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "ProsUbiCod"
+                nombre: "ProsUbiCod",
+                ref: "gzz_ubicacion"
             },
             {
                 tipo: "select",

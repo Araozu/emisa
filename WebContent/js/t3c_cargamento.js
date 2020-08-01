@@ -35,11 +35,13 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "CarAlmCod"
+                nombre: "CarAlmCod",
+                ref: "e3m_almacen"
             },
             {
                 tipo: "number",
-                nombre: "CarRecCod"
+                nombre: "CarRecCod",
+                ref: "t3c_recogida"
             },
             {
                 tipo: "string",

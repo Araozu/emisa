@@ -39,7 +39,8 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "UbiAstCod"
+                nombre: "UbiAstCod",
+                ref: "gzz_astro"
             },
             {
                 tipo: "number",

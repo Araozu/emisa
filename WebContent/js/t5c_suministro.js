@@ -35,7 +35,8 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "SumViaCod"
+                nombre: "SumViaCod",
+                ref: "tzz_viaje"
             },
             {
                 tipo: "select",

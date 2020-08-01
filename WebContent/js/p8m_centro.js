@@ -39,7 +39,8 @@ const app =  Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "CenMinCod"
+                nombre: "CenMinCod",
+                ref: "gzm_mineral"
             },
             {
                 tipo: "select",

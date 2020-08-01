@@ -49,10 +49,12 @@ const app =  Vue.createApp({
             {
                 tipo: "number",
                 nombre: "EmpViaCod",
+                ref: "tzz_viaje"
             },
             {
                 tipo: "number",
-                nombre: "EmpCatCod"
+                nombre: "EmpCatCod",
+                ref: "rzc_categoria"
             },
             {
                 tipo: "select",

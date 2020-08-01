@@ -35,11 +35,13 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "AlmFacCod"
+                nombre: "AlmFacCod",
+                ref: "ezm_factoria"
             },
             {
                 tipo: "number",
-                nombre: "AlmMinCod"
+                nombre: "AlmMinCod",
+                ref: "gzm_mineral"
             },
             {
                 tipo: "number",

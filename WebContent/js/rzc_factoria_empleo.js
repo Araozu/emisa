@@ -35,11 +35,13 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "FacEmpPerCod"
+                nombre: "FacEmpPerCod",
+                ref: "r6z_personal"
             },
             {
                 tipo: "number",
-                nombre: "FacCod"
+                nombre: "FacCod",
+                ref: "ezm_factoria"
             },
             {
                 tipo: "select",

@@ -35,11 +35,13 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "ViaNavCod"
+                nombre: "ViaNavCod",
+                ref: "tzm_nave"
             },
             {
                 tipo: "number",
-                nombre: "ViaFacCod"
+                nombre: "ViaFacCod",
+                ref: "ezm_factoria"
             },
             {
                 tipo: "number",

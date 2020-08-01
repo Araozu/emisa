@@ -82,7 +82,7 @@ app.component("grilla-datos", {
                 if (peticion.ok) {
                     const data = await peticion.json();
                     if (data.length === 0) {
-                        timeouts.value[nombre].error = `Error en ${nombre} - No existe un registro en ${
+                        timeouts.value[nombre].error = `Error en la clave foranea ${nombre} - No existe un registro en ${
                             recursoFK.toUpperCase()} con valor ${valor}.`;
                     } else {
                         timeouts.value[nombre].error = "";

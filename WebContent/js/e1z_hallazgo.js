@@ -35,11 +35,13 @@ const app = Vue.createApp({
             },
             {
                 tipo: "number",
-                nombre: "HalProCod"
+                nombre: "HalProCod",
+                ref: "e1c_prospeccion"
             },
             {
                 tipo: "number",
-                nombre: "HalMinCod"
+                nombre: "HalMinCod",
+                ref: "gzm_mineral"
             },
             {
                 tipo: "number",
