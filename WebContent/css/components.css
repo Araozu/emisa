@@ -10,6 +10,10 @@
     width: 100%;
 }
 
+.tabla_datos thead {
+    font-weight: bold;
+}
+
 .tabla_datos thead tr {
     background-color: var(--color-fondo);
 }
