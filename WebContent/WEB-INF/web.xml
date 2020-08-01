@@ -11,7 +11,7 @@
 
     <servlet-mapping>
         <servlet-name>GZZ_Astro</servlet-name>
-        <url-pattern>/api/gzz_astro/</url-pattern>
+        <url-pattern>/api/gzz_astro</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -21,7 +21,7 @@
 
     <servlet-mapping>
         <servlet-name>GZM_Mineral</servlet-name>
-        <url-pattern>/api/gzm_mineral/</url-pattern>
+        <url-pattern>/api/gzm_mineral</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -31,7 +31,7 @@
 
     <servlet-mapping>
         <servlet-name>P8M_Centro</servlet-name>
-        <url-pattern>/api/p8m_centro/</url-pattern>
+        <url-pattern>/api/p8m_centro</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -41,7 +41,7 @@
 
     <servlet-mapping>
         <servlet-name>R7C_Alimento</servlet-name>
-        <url-pattern>/api/r7c_alimento/</url-pattern>
+        <url-pattern>/api/r7c_alimento</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -51,7 +51,7 @@
 
     <servlet-mapping>
         <servlet-name>RZC_Empleo</servlet-name>
-        <url-pattern>/api/rzc_empleo/</url-pattern>
+        <url-pattern>/api/rzc_empleo</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -61,7 +61,7 @@
 
     <servlet-mapping>
         <servlet-name>RZC_Categoria</servlet-name>
-        <url-pattern>/api/rzc_categoria/</url-pattern>
+        <url-pattern>/api/rzc_categoria</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -71,7 +71,7 @@
 
     <servlet-mapping>
         <servlet-name>E1C_Produccion</servlet-name>
-        <url-pattern>/api/e1c_produccion/</url-pattern>
+        <url-pattern>/api/e1c_produccion</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -81,7 +81,7 @@
 
     <servlet-mapping>
         <servlet-name>E1C_Prospeccion</servlet-name>
-        <url-pattern>/api/e1c_prospeccion/</url-pattern>
+        <url-pattern>/api/e1c_prospeccion</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -91,7 +91,7 @@
 
     <servlet-mapping>
         <servlet-name>E1Z_Hallazgo</servlet-name>
-        <url-pattern>/api/e1z_hallazgo/</url-pattern>
+        <url-pattern>/api/e1z_hallazgo</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -101,7 +101,7 @@
 
     <servlet-mapping>
         <servlet-name>E3M_Almacen</servlet-name>
-        <url-pattern>/api/e3m_almacen/</url-pattern>
+        <url-pattern>/api/e3m_almacen</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -111,7 +111,7 @@
 
     <servlet-mapping>
         <servlet-name>GZZ_Ubicacion</servlet-name>
-        <url-pattern>/api/gzz_ubicacion/</url-pattern>
+        <url-pattern>/api/gzz_ubicacion</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -121,7 +121,7 @@
 
     <servlet-mapping>
         <servlet-name>R6Z_Personal</servlet-name>
-        <url-pattern>/api/r6z_personal/</url-pattern>
+        <url-pattern>/api/r6z_personal</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -131,7 +131,7 @@
 
     <servlet-mapping>
         <servlet-name>R7C_Provision</servlet-name>
-        <url-pattern>/api/r7c_provision/</url-pattern>
+        <url-pattern>/api/r7c_provision</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -141,7 +141,7 @@
 
     <servlet-mapping>
         <servlet-name>EZM_Factoria</servlet-name>
-        <url-pattern>/api/ezm_factoria/</url-pattern>
+        <url-pattern>/api/ezm_factoria</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -151,7 +151,7 @@
 
     <servlet-mapping>
         <servlet-name>RZC_Factoria_Empleo</servlet-name>
-        <url-pattern>/api/rzc_factoria_empleo/</url-pattern>
+        <url-pattern>/api/rzc_factoria_empleo</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -161,7 +161,7 @@
 
     <servlet-mapping>
         <servlet-name>T3C_Cargamento</servlet-name>
-        <url-pattern>/api/t3c_cargamento/</url-pattern>
+        <url-pattern>/api/t3c_cargamento</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -171,7 +171,7 @@
 
     <servlet-mapping>
         <servlet-name>T3C_Recogida</servlet-name>
-        <url-pattern>/api/t3c_recogida/</url-pattern>
+        <url-pattern>/api/t3c_recogida</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -181,7 +181,7 @@
 
     <servlet-mapping>
         <servlet-name>T5C_Suministro</servlet-name>
-        <url-pattern>/api/t5c_suministro/</url-pattern>
+        <url-pattern>/api/t5c_suministro</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -191,7 +191,7 @@
 
     <servlet-mapping>
         <servlet-name>TZM_Nave</servlet-name>
-        <url-pattern>/api/tzm_nave/</url-pattern>
+        <url-pattern>/api/tzm_nave</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -201,7 +201,7 @@
 
     <servlet-mapping>
         <servlet-name>TZZ_Viaje</servlet-name>
-        <url-pattern>/api/tzz_viaje/</url-pattern>
+        <url-pattern>/api/tzz_viaje</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
