@@ -1,5 +1,4 @@
-
-const app = Vue.createApp({
+app.component("r7c-provision", {
     template: `
     <div class="gzz_astro">
         <h1>R7C_PROVISION</h1>

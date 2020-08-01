@@ -1,4 +1,4 @@
-const app = Vue.createApp({
+app.component("t3c-recogida", {
     template: `
     <div class="gzz_astro">
         <h1>T3C_RECOGIDA</h1>

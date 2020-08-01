@@ -1,4 +1,4 @@
-const app = Vue.createApp({
+app.component("t5c-suministro", {
     template: `
     <div class="gzz_astro">
         <h1>T5C_SUMINISTRO</h1>
