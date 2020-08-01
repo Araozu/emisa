@@ -13,7 +13,7 @@ app.component("grilla-datos", {
                             :name="campo.nombre"
                             :value="valores[campo.nombre]"
                             :disabled="camposDesactivados[campo.nombre] === true || operacionActual === ''"
-                            @input="funActualizarValor(campo.nombre, $event.target.value)">
+                            @input="actualizarCampo(campo.nombre, $event.target.value, campo.ref)">
                     </template>
                     <template v-else-if="campo.tipo === 'select'">
                         <label :for="campo.nombre">{{ campo.nombre }}</label>
@@ -29,6 +29,13 @@ app.component("grilla-datos", {
                 </template>
             </div>
         </form>
+        <div>
+            <div v-for="(v, k) in timeouts">
+                <div class="mensaje-error" v-if="v.error !== ''">
+                    {{ v.error }}
+                </div>
+            </div>
+        </div>
     </div>
     `,
     props: {
@@ -55,6 +62,56 @@ app.component("grilla-datos", {
         funActualizarValor: {
             type: Function,
             required: true
+        }
+    },
+    setup(props) {
+        const timeouts = Vue.ref({});
+        props.campos.forEach((x) => {
+            if (x.ref) {
+                timeouts.value[x.nombre] = {
+                    error: "",
+                    timeout: undefined
+                };
+            }
+        });
+
+        const verificarCampo = async (nombre, valor, recursoFK) => {
+            timeouts.value[nombre].timeout = undefined;
+            try {
+                const peticion = await fetch(`${servidor}/api/${recursoFK}?operacion=checkId&id=${encodeURI(valor)}`);
+                if (peticion.ok) {
+                    const data = await peticion.json();
+                    if (data.length === 0) {
+                        timeouts.value[nombre].error = `Error en ${nombre} - No existe un registro en ${
+                            recursoFK.toUpperCase()} con valor ${valor}.`;
+                    } else {
+                        timeouts.value[nombre].error = "";
+                    }
+                } else {
+                    console.error(peticion);
+                    timeouts.value[nombre].error = `Hubo un error al validar la clave foranea ${nombre}.`;
+                }
+            } catch (e) {
+                console.error(e);
+                timeouts.value[nombre].error = `Hubo un error al validar la clave foranea ${nombre}.`;
+            }
+        };
+
+        const actualizarCampo = (nombre, valor, recursoFK) => {
+            props.funActualizarValor(nombre, valor);
+            if (recursoFK) {
+                if (timeouts.value[nombre].timeout) {
+                    clearTimeout(timeouts.value[nombre].timeout);
+                }
+                timeouts.value[nombre].timeout = setTimeout(() => {
+                    verificarCampo(nombre, valor, recursoFK);
+                }, 1000);
+            }
+        };
+
+        return {
+            timeouts,
+            actualizarCampo
         }
     }
 });
