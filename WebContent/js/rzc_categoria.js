@@ -1,14 +1,14 @@
 const app =  Vue.createApp({
     template: `
     <div class="gzz_astro">
-        <h1>R7C_CATEGORIA</h1>
+        <h1>RZC_CATEGORIA</h1>
         <grilla-datos etiqueta="Categoria" :campos="campos" :camposDesactivados="camposDesactivados"
             :operacionActual="operacionActual"
             :valores="valores"
             :funActualizarValor="funActualizarValor"/>
         <br>
         <tabla-datos
-            nombre="Tabla R7C_CATEGORIA"
+            nombre="Tabla RZC_CATEGORIA"
             :nombresColumnas="nombresColumnas"
             :filas="filas"
             :funAlClick="seleccionarFila"
