@@ -69,6 +69,30 @@ public class EmisaServlet extends HttpServlet {
         imprimirError(res, e, "Error al enviar los datos al cliente.");
     }
 
+    private void checkId(HttpServletRequest req, HttpServletResponse res) throws Exception {
+        if (req.getParameter("operacion").equals("checkId")) {
+            int id = Integer.parseInt(req.getParameter("id"));
+            PreparedStatement ps = conn.prepareStatement(
+                "SELECT " + campoId + " FROM " + nombreTabla + " WHERE " + campoId + "=?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            boolean esPrimer = true;
+            while (rs.next()) {
+                sb.append(esPrimer ? "{" : ",{");
+                sb.append("\"" + campoId + "\":" + rs.getInt(campoId));
+                sb.append("}");
+                esPrimer = false;
+            }
+            sb.append("]");
+
+            imprimirEnJson(res, sb.toString());
+        } else {
+            throw new Exception("Error en doGet. Operacion invalida");
+        }
+    }
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) {
         try {
@@ -77,6 +101,11 @@ public class EmisaServlet extends HttpServlet {
 
             if (conn.isClosed()) {
                 imprimirErrorConexion(res);
+                return;
+            }
+
+            if (req.getParameter("operacion") != null) {
+                checkId(req, res);
                 return;
             }
 
