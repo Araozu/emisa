@@ -1,4 +1,6 @@
 .tabla {
+    max-height: 30rem;
+    overflow-y: scroll;
     min-height: 15rem;
     border: solid 1px var(--color-borde);
     padding: 1rem;
