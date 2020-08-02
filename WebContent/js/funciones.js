@@ -269,7 +269,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
 
         const enError = (e) => {
             console.error(e);
-            mensajeError.value = "Error al adicionar los datos a la tabla GZZ_ASTROS";
+            mensajeError.value = `Error al adicionar los datos a la tabla ${recurso.toUpperCase()}`;
         };
 
         realizarOperacion(body, "POST", enExito, enError);
@@ -283,7 +283,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
 
         const enError = (e) => {
             console.error(e);
-            mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
+            mensajeError.value = `Error al modificar la fila de la tabla ${recurso.toUpperCase()}`;
         }
 
         realizarOperacion(body, "PUT", enExitoModificarFila, enError);
@@ -294,7 +294,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
 
         const enError = (e) => {
             console.error(e);
-            mensajeError.value = "Error al eliminar la fila de la tabla GZZ_ASTROS";
+            mensajeError.value = `Error al eliminar la fila de la tabla ${recurso.toUpperCase()}`;
         }
 
         realizarOperacion(body, "DELETE", enExitoModificarFila, enError);
@@ -307,7 +307,7 @@ const usarCamposAdaptados = (campos, estados, mensajeError, mostrarMensaje) => {
 
         const enError = (e) => {
             console.error(e);
-            mensajeError.value = "Error al modificar la fila de la tabla GZZ_ASTROS";
+            mensajeError.value = `Error al modificar la fila de la tabla ${recurso.toUpperCase()}`;
         };
         realizarOperacion(body, "PUT", enExitoModificarFila, enError);
     };
