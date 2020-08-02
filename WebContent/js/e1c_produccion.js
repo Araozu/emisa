@@ -35,6 +35,11 @@ app.component("e1c-produccion", {
             },
             {
                 tipo: "number",
+                nombre: "ProMinCod",
+                ref: "gzm_mineral"
+            },
+            {
+                tipo: "number",
                 nombre: "ProMinCan"
             },
             {
@@ -43,15 +48,15 @@ app.component("e1c-produccion", {
             },
             {
                 tipo: "number",
-                nombre: "ProIniFecAnio"
+                nombre: "ProFecAnio"
             },
             {
                 tipo: "number",
-                nombre: "ProIniFecMes"
+                nombre: "ProFecMes"
             },
             {
                 tipo: "number",
-                nombre: "ProIniFecDia"
+                nombre: "ProFecDia"
             },
             {
                 tipo: "select",
@@ -63,10 +68,10 @@ app.component("e1c-produccion", {
             recurso: "e1c_produccion",
             nombreCampoCod: "ProCod",
             nombreCampoEstReg: "ProEstReg",
-            estadoCamposModificar: [["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia"], ["ProCod", "ProEstReg"]],
-            estadoCamposEliminar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]],
-            estadoCamposInactivar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]],
-            estadoCamposReactivar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]]
+            estadoCamposModificar: [["ProMinCan", "ProMinCod", "ProMinCal", "ProFecAnio", "ProFecMes", "ProFecDia"], ["ProCod", "ProEstReg"]],
+            estadoCamposEliminar: [[], ["ProMinCan", "ProMinCod", "ProMinCal", "ProFecAnio", "ProFecMes", "ProFecDia", "ProCod", "ProEstReg"]],
+            estadoCamposInactivar: [[], ["ProMinCan", "ProMinCod", "ProMinCal", "ProFecAnio", "ProFecMes", "ProFecDia", "ProCod", "ProEstReg"]],
+            estadoCamposReactivar: [[], ["ProMinCan", "ProMinCod", "ProMinCal", "ProFecAnio", "ProFecMes", "ProFecDia", "ProCod", "ProEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

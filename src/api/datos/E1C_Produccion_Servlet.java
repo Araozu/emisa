@@ -14,10 +14,11 @@ public class E1C_Produccion_Servlet extends EmisaServlet {
 
     static {
         campos.add(new InfoCampo("ProMinCan", "decimal"));
+        campos.add(new InfoCampo("ProMinCod", "int"));
         campos.add(new InfoCampo("ProMinCal", "decimal"));
-        campos.add(new InfoCampo("ProIniFecAnio", "decimal"));
-        campos.add(new InfoCampo("ProIniFecMes", "decimal"));
-        campos.add(new InfoCampo("ProIniFecDia", "decimal"));
+        campos.add(new InfoCampo("ProFecAnio", "decimal"));
+        campos.add(new InfoCampo("ProFecMes", "decimal"));
+        campos.add(new InfoCampo("ProFecDia", "decimal"));
     }
 
     public E1C_Produccion_Servlet() {
