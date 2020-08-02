@@ -15,10 +15,10 @@ public class TZZ_Viaje_Servlet extends EmisaServlet {
     static {
         campos.add(new InfoCampo("ViaNavCod", "int"));
         campos.add(new InfoCampo("ViaFacCod", "int"));
-        campos.add(new InfoCampo("FecDesAño", "decimal"));
+        campos.add(new InfoCampo("FecDesAnio", "decimal"));
         campos.add(new InfoCampo("FecDesMes", "decimal"));
         campos.add(new InfoCampo("FecDesDia", "decimal"));
-        campos.add(new InfoCampo("FecLleAño", "decimal"));
+        campos.add(new InfoCampo("FecLleAnio", "decimal"));
         campos.add(new InfoCampo("FecLleMes", "decimal"));
         campos.add(new InfoCampo("FecLleDia", "decimal"));
     }

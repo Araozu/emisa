@@ -53,7 +53,7 @@ app.component("t3c-cargamento", {
             },
             {
                 tipo: "number",
-                nombre: "CarFecAño"
+                nombre: "CarFecAnio"
             },
             {
                 tipo: "number",
@@ -73,10 +73,10 @@ app.component("t3c-cargamento", {
             recurso: "t3c_cargamento",
             nombreCampoCod: "FacCod",
             nombreCampoEstReg: "FacEstReg",
-            estadoCamposModificar: [["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAño", "CarFecMes", "CarFecDia"], ["CarCod", "CarEstReg"]],
-            estadoCamposEliminar: [[], ["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAño", "CarFecMes", "CarFecDia", "CarCod", "CarEstReg"]],
-            estadoCamposInactivar: [[], ["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAño", "CarFecMes", "CarFecDia", "CarCod", "CarEstReg"]],
-            estadoCamposReactivar: [[], ["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAño", "CarFecMes", "CarFecDia", "CarCod", "CarEstReg"]]
+            estadoCamposModificar: [["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAnio", "CarFecMes", "CarFecDia"], ["CarCod", "CarEstReg"]],
+            estadoCamposEliminar: [[], ["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAnio", "CarFecMes", "CarFecDia", "CarCod", "CarEstReg"]],
+            estadoCamposInactivar: [[], ["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAnio", "CarFecMes", "CarFecDia", "CarCod", "CarEstReg"]],
+            estadoCamposReactivar: [[], ["CarAlmCod", "CarRecCod", "CarNom", "CarMinCan", "CarFecAnio", "CarFecMes", "CarFecDia", "CarCod", "CarEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

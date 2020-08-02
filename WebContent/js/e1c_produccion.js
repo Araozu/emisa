@@ -43,7 +43,7 @@ app.component("e1c-produccion", {
             },
             {
                 tipo: "number",
-                nombre: "ProIniFecAño"
+                nombre: "ProIniFecAnio"
             },
             {
                 tipo: "number",
@@ -63,10 +63,10 @@ app.component("e1c-produccion", {
             recurso: "e1c_produccion",
             nombreCampoCod: "ProCod",
             nombreCampoEstReg: "ProEstReg",
-            estadoCamposModificar: [["ProMinCan", "ProMinCal", "ProIniFecAño", "ProIniFecMes", "ProIniFecDia"], ["ProCod", "ProEstReg"]],
-            estadoCamposEliminar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAño", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]],
-            estadoCamposInactivar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAño", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]],
-            estadoCamposReactivar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAño", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]]
+            estadoCamposModificar: [["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia"], ["ProCod", "ProEstReg"]],
+            estadoCamposEliminar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]],
+            estadoCamposInactivar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]],
+            estadoCamposReactivar: [[], ["ProMinCan", "ProMinCal", "ProIniFecAnio", "ProIniFecMes", "ProIniFecDia", "ProCod", "ProEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

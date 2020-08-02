@@ -40,7 +40,7 @@ app.component("t3c-recogida", {
             },
             {
                 tipo: "number",
-                nombre: "RecFecAño"
+                nombre: "RecFecAnio"
             },
             {
                 tipo: "number",
@@ -60,10 +60,10 @@ app.component("t3c-recogida", {
             recurso: "t3c_recogida",
             nombreCampoCod: "RecCod",
             nombreCampoEstReg: "RecEstReg",
-            estadoCamposModificar: [["RecViaCod", "RecFecAño", "RecFecMes", "RecFecDia"], ["RecCod", "RecEstReg"]],
-            estadoCamposEliminar: [[], ["RecViaCod", "RecFecAño", "RecFecMes", "RecFecDia", "RecCod", "RecEstReg"]],
-            estadoCamposInactivar: [[], ["RecViaCod", "RecFecAño", "RecFecMes", "RecFecDia", "RecCod", "RecEstReg"]],
-            estadoCamposReactivar: [[], ["RecViaCod", "RecFecAño", "RecFecMes", "RecFecDia", "RecCod", "RecEstReg"]]
+            estadoCamposModificar: [["RecViaCod", "RecFecAnio", "RecFecMes", "RecFecDia"], ["RecCod", "RecEstReg"]],
+            estadoCamposEliminar: [[], ["RecViaCod", "RecFecAnio", "RecFecMes", "RecFecDia", "RecCod", "RecEstReg"]],
+            estadoCamposInactivar: [[], ["RecViaCod", "RecFecAnio", "RecFecMes", "RecFecDia", "RecCod", "RecEstReg"]],
+            estadoCamposReactivar: [[], ["RecViaCod", "RecFecAnio", "RecFecMes", "RecFecDia", "RecCod", "RecEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

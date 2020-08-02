@@ -53,7 +53,7 @@ app.component("r7c-provision", {
             },
             {
                 tipo: "number",
-                nombre: "ProvFecLleAño"
+                nombre: "ProvFecLleAnio"
             },
             {
                 tipo: "number",
@@ -73,10 +73,10 @@ app.component("r7c-provision", {
             recurso: "r7c_provision",
             nombreCampoCod: "ProvCod",
             nombreCampoEstReg: "ProvEstReg",
-            estadoCamposModificar: [["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAño", "ProvFecLleMes", "ProvFecLleDia"], ["ProvCod", "ProvEstReg"]],
-            estadoCamposEliminar: [[], ["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAño", "ProvFecLleMes", "ProvFecLleDia", "ProvCod", "ProvEstReg"]],
-            estadoCamposInactivar: [[], ["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAño", "ProvFecLleMes", "ProvFecLleDia", "ProvCod", "ProvEstReg"]],
-            estadoCamposReactivar: [[], ["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAño", "ProvFecLleMes", "ProvFecLleDia", "ProvCod", "ProvEstReg"]]
+            estadoCamposModificar: [["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAnio", "ProvFecLleMes", "ProvFecLleDia"], ["ProvCod", "ProvEstReg"]],
+            estadoCamposEliminar: [[], ["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAnio", "ProvFecLleMes", "ProvFecLleDia", "ProvCod", "ProvEstReg"]],
+            estadoCamposInactivar: [[], ["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAnio", "ProvFecLleMes", "ProvFecLleDia", "ProvCod", "ProvEstReg"]],
+            estadoCamposReactivar: [[], ["ProvPes", "ProvAliCan", "ProvAlimCod", "ProvSumCod", "ProvFecLleAnio", "ProvFecLleMes", "ProvFecLleDia", "ProvCod", "ProvEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

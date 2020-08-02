@@ -45,7 +45,7 @@ app.component("tzz-viaje", {
             },
             {
                 tipo: "number",
-                nombre: "FecDesAño"
+                nombre: "FecDesAnio"
             },
             {
                 tipo: "number",
@@ -57,7 +57,7 @@ app.component("tzz-viaje", {
             },
             {
                 tipo: "number",
-                nombre: "FecLleAño"
+                nombre: "FecLleAnio"
             },
             {
                 tipo: "number",
@@ -77,10 +77,10 @@ app.component("tzz-viaje", {
             recurso: "tzz_viaje",
             nombreCampoCod: "ViaCod",
             nombreCampoEstReg: "ViaEstReg",
-            estadoCamposModificar: [["ViaNavCod", "ViaFacCod", "FecDesAño", "FecDesMes", "FecDesDia", "FecLleAño", "FecLleMes", "FecLleDia"], ["ViaCod", "ViaEstReg"]],
-            estadoCamposEliminar: [[], ["ViaNavCod", "ViaFacCod", "FecDesAño", "FecDesMes", "FecDesDia", "FecLleAño", "FecLleMes", "FecLleDia", "ViaCod", "ViaEstReg"]],
-            estadoCamposInactivar: [[], ["ViaNavCod", "ViaFacCod", "FecDesAño", "FecDesMes", "FecDesDia", "FecLleAño", "FecLleMes", "FecLleDia", "ViaCod", "ViaEstReg"]],
-            estadoCamposReactivar: [[], ["ViaNavCod", "ViaFacCod", "FecDesAño", "FecDesMes", "FecDesDia", "FecLleAño", "FecLleMes", "FecLleDia", "ViaCod", "ViaEstReg"]]
+            estadoCamposModificar: [["ViaNavCod", "ViaFacCod", "FecDesAnio", "FecDesMes", "FecDesDia", "FecLleAnio", "FecLleMes", "FecLleDia"], ["ViaCod", "ViaEstReg"]],
+            estadoCamposEliminar: [[], ["ViaNavCod", "ViaFacCod", "FecDesAnio", "FecDesMes", "FecDesDia", "FecLleAnio", "FecLleMes", "FecLleDia", "ViaCod", "ViaEstReg"]],
+            estadoCamposInactivar: [[], ["ViaNavCod", "ViaFacCod", "FecDesAnio", "FecDesMes", "FecDesDia", "FecLleAnio", "FecLleMes", "FecLleDia", "ViaCod", "ViaEstReg"]],
+            estadoCamposReactivar: [[], ["ViaNavCod", "ViaFacCod", "FecDesAnio", "FecDesMes", "FecDesDia", "FecLleAnio", "FecLleMes", "FecLleDia", "ViaCod", "ViaEstReg"]]
         };
 
         const {mensajeError, estilosMensajeError, mostrarMensaje} = usarMensajesError();

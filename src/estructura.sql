@@ -89,16 +89,16 @@ ALTER TABLE `TZM_NAVE`
 
 CREATE TABLE `TZZ_VIAJE`
 (
-    `ViaCod`    Int           NOT NULL,
-    `ViaNavCod` Int           NOT NULL,
-    `ViaFacCod` Int           NOT NULL,
-    `FecDesAño` Decimal(4, 0) NOT NULL,
-    `FecDesMes` Decimal(2, 0) NOT NULL,
-    `FecDesDia` Decimal(2, 0) NOT NULL,
-    `FecLleAño` Decimal(4, 0) NOT NULL,
-    `FecLleMes` Decimal(2, 0) NOT NULL,
-    `FecLleDia` Decimal(2, 0) NOT NULL,
-    `ViaEstReg` Char(1)       NOT NULL DEFAULT 'A'
+    `ViaCod`     Int           NOT NULL,
+    `ViaNavCod`  Int           NOT NULL,
+    `ViaFacCod`  Int           NOT NULL,
+    `FecDesAnio` Decimal(4, 0) NOT NULL,
+    `FecDesMes`  Decimal(2, 0) NOT NULL,
+    `FecDesDia`  Decimal(2, 0) NOT NULL,
+    `FecLleAnio` Decimal(4, 0) NOT NULL,
+    `FecLleMes`  Decimal(2, 0) NOT NULL,
+    `FecLleDia`  Decimal(2, 0) NOT NULL,
+    `ViaEstReg`  Char(1)       NOT NULL DEFAULT 'A'
 )
 ;
 
@@ -110,16 +110,16 @@ ALTER TABLE `TZZ_VIAJE`
 
 CREATE TABLE `R7C_PROVISION`
 (
-    `ProvCod`       Int           NOT NULL,
-    `ProvFacNom`    Varchar(60)   NOT NULL,
-    `ProvPes`       Decimal(4, 2) NOT NULL,
-    `ProvAliCan`    Decimal(6, 0) NOT NULL,
-    `ProvAlimCod`   Int           NOT NULL,
-    `ProvSumCod`    Int           NOT NULL,
-    `ProvFecLleAño` Decimal(4, 0) NOT NULL,
-    `ProvFecLleMes` Decimal(2, 0) NOT NULL,
-    `ProvFecLleDia` Decimal(2, 0) NOT NULL,
-    `ProvEstReg`    Char(1)       NOT NULL DEFAULT 'A'
+    `ProvCod`        Int           NOT NULL,
+    `ProvFacNom`     Varchar(60)   NOT NULL,
+    `ProvPes`        Decimal(4, 2) NOT NULL,
+    `ProvAliCan`     Decimal(6, 0) NOT NULL,
+    `ProvAlimCod`    Int           NOT NULL,
+    `ProvSumCod`     Int           NOT NULL,
+    `ProvFecLleAnio` Decimal(4, 0) NOT NULL,
+    `ProvFecLleMes`  Decimal(2, 0) NOT NULL,
+    `ProvFecLleDia`  Decimal(2, 0) NOT NULL,
+    `ProvEstReg`     Char(1)       NOT NULL DEFAULT 'A'
 )
 ;
 
@@ -220,14 +220,14 @@ ALTER TABLE `P8M_CENTRO`
 
 CREATE TABLE `E1C_PRODUCCION`
 (
-    `ProCod`    Int           NOT NULL,
-    `ProMinCan` Decimal(4, 0) NOT NULL,
-    `ProMinCal` Varchar(60)   NOT NULL,
-    `ProFecAño` Decimal(4, 0) NOT NULL,
-    `ProFecMes` Decimal(2, 0) NOT NULL,
-    `ProFecDia` Decimal(2, 0) NOT NULL,
-    `ProAlmCod` Int           NOT NULL,
-    `ProEstReg` Char(1)       NOT NULL DEFAULT 'A'
+    `ProCod`     Int           NOT NULL,
+    `ProMinCan`  Decimal(4, 0) NOT NULL,
+    `ProMinCal`  Varchar(60)   NOT NULL,
+    `ProFecAnio` Decimal(4, 0) NOT NULL,
+    `ProFecMes`  Decimal(2, 0) NOT NULL,
+    `ProFecDia`  Decimal(2, 0) NOT NULL,
+    `ProAlmCod`  Int           NOT NULL,
+    `ProEstReg`  Char(1)       NOT NULL DEFAULT 'A'
 )
 ;
 
@@ -288,15 +288,15 @@ ALTER TABLE `E3M_ALMACEN`
 
 CREATE TABLE `T3C_CARGAMENTO`
 (
-    `CarCod`    Int           NOT NULL,
-    `CarAlmCod` Int           NOT NULL,
-    `CarRecCod` Int           NOT NULL,
-    `CarNom`    Varchar(50)   NOT NULL,
-    `CarMinCan` Decimal(6, 4) NOT NULL,
-    `CarFecAño` Decimal(4, 0) NOT NULL,
-    `CarFecMes` Decimal(2, 0) NOT NULL,
-    `CarFecDia` Decimal(2, 0) NOT NULL,
-    `CarEstReg` Char(1)       NOT NULL DEFAULT 'A'
+    `CarCod`     Int           NOT NULL,
+    `CarAlmCod`  Int           NOT NULL,
+    `CarRecCod`  Int           NOT NULL,
+    `CarNom`     Varchar(50)   NOT NULL,
+    `CarMinCan`  Decimal(6, 4) NOT NULL,
+    `CarFecAnio` Decimal(4, 0) NOT NULL,
+    `CarFecMes`  Decimal(2, 0) NOT NULL,
+    `CarFecDia`  Decimal(2, 0) NOT NULL,
+    `CarEstReg`  Char(1)       NOT NULL DEFAULT 'A'
 )
 ;
 
@@ -308,12 +308,12 @@ ALTER TABLE `T3C_CARGAMENTO`
 
 CREATE TABLE `T3C_RECOGIDA`
 (
-    `RecCod`    Int           NOT NULL,
-    `RecViaCod` Int           NOT NULL,
-    `RecFecMes` Decimal(2, 0) NOT NULL,
-    `RecFecDia` Decimal(2, 0) NOT NULL,
-    `RecFecAño` Decimal(4, 0) NOT NULL,
-    `RecEstReg` Char(1)       NOT NULL DEFAULT 'A'
+    `RecCod`     Int           NOT NULL,
+    `RecViaCod`  Int           NOT NULL,
+    `RecFecMes`  Decimal(2, 0) NOT NULL,
+    `RecFecDia`  Decimal(2, 0) NOT NULL,
+    `RecFecAnio` Decimal(4, 0) NOT NULL,
+    `RecEstReg`  Char(1)       NOT NULL DEFAULT 'A'
 )
 ;
 

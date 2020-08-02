@@ -17,7 +17,7 @@ public class T3C_Cargamento_Servlet extends EmisaServlet {
         campos.add(new InfoCampo("CarRecCod", "int"));
         campos.add(new InfoCampo("CarNom", "string"));
         campos.add(new InfoCampo("CarMinCan", "decimal"));
-        campos.add(new InfoCampo("CarFecAño", "decimal"));
+        campos.add(new InfoCampo("CarFecAnio", "decimal"));
         campos.add(new InfoCampo("CarFecMes", "decimal"));
         campos.add(new InfoCampo("CarFecDia", "decimal"));
     }

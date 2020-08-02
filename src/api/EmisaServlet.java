@@ -17,7 +17,7 @@ public class EmisaServlet extends HttpServlet {
     protected static String userName = "root";
     protected static String password = "";
     protected static String timezoneFix = "?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
-        "&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        "&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8";
 
     protected static Connection conn = null;
 

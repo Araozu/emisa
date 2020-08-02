@@ -14,7 +14,7 @@ public class T3C_Recogida_Servlet extends EmisaServlet {
 
     static {
         campos.add(new InfoCampo("RecViaCod", "int"));
-        campos.add(new InfoCampo("RecFecAño", "decimal"));
+        campos.add(new InfoCampo("RecFecAnio", "decimal"));
         campos.add(new InfoCampo("RecFecMes", "decimal"));
         campos.add(new InfoCampo("RecFecDia", "decimal"));
     }

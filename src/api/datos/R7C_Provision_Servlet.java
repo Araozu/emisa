@@ -18,7 +18,7 @@ public class R7C_Provision_Servlet extends EmisaServlet {
         campos.add(new InfoCampo("ProvAliCan", "decimal"));
         campos.add(new InfoCampo("ProvAlimCod", "int"));
         campos.add(new InfoCampo("ProvSumCod", "int"));
-        campos.add(new InfoCampo("ProvFecLleAño", "decimal"));
+        campos.add(new InfoCampo("ProvFecLleAnio", "decimal"));
         campos.add(new InfoCampo("ProvFecLleMes", "decimal"));
         campos.add(new InfoCampo("ProvFecLleDia", "decimal"));
     }
