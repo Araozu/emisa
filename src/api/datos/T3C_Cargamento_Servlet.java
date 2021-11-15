@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class T3C_Cargamento_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "t3c_cargamento";
+    static final String nombreTabla = "T3C_CARGAMENTO";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "CarCod";
     static final String campoEstReg = "CarEstReg";

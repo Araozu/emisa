@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class EZM_Factoria_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "ezm_factoria";
+    static final String nombreTabla = "EZM_FACTORIA";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "FacCod";
     static final String campoEstReg = "FacEstReg";

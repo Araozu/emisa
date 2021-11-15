@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class TZM_Nave_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "tzm_nave";
+    static final String nombreTabla = "TZM_NAVE";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "NavCod";
     static final String campoEstReg = "NavEstReg";

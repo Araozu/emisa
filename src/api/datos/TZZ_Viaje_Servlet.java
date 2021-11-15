@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class TZZ_Viaje_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "tzz_viaje";
+    static final String nombreTabla = "TZZ_VIAJE";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "ViaCod";
     static final String campoEstReg = "ViaEstReg";

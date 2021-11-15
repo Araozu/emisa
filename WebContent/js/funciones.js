@@ -1,4 +1,4 @@
-const servidor = "http://localhost:8080/Emisa";
+const servidor = "";
 
 const usarMensajesError = () => {
     const mensajeError = Vue.ref("_");

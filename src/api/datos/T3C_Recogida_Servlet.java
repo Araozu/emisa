@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class T3C_Recogida_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "t3c_recogida";
+    static final String nombreTabla = "T3C_RECOGIDA";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "RecCod";
     static final String campoEstReg = "RecEstReg";

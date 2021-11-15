@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class E1Z_Hallazgo_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "e1z_hallazgo";
+    static final String nombreTabla = "E1Z_HALLAZGO";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "HalCod";
     static final String campoEstReg = "HalEstReg";

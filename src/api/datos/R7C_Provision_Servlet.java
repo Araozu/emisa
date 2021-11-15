@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class R7C_Provision_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "r7c_provision";
+    static final String nombreTabla = "R7C_PROVISION";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "ProvCod";
     static final String campoEstReg = "ProvEstReg";

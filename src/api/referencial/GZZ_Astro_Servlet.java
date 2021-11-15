@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public final class GZZ_Astro_Servlet extends EmisaServlet {
 
-    static final String nombreTabla = "gzz_astros";
+    static final String nombreTabla = "GZZ_ASTRO";
     static LinkedList<InfoCampo> campos = new LinkedList<>();
     static final String campoId = "AstCod";
     static final String campoEstReg = "AstEstReg";

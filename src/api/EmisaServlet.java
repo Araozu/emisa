@@ -14,8 +14,8 @@ public class EmisaServlet extends HttpServlet {
 
     protected static String url = "jdbc:mysql://localhost:3306/";
     protected static String dbName = "emisa";
-    protected static String userName = "root";
-    protected static String password = "";
+    protected static String userName = "admin";
+    protected static String password = "password";
     protected static String timezoneFix = "?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
         "&useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8";
 
